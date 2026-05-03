@@ -26,7 +26,7 @@ THC_REVIEW_RATE_LIMIT_PER_HOUR=4
 THC_PREVIEW_RATE_LIMIT_PER_HOUR=30
 GITHUB_TOKEN=
 THC_GITHUB_FETCH_TIMEOUT_MS=8000
-THC_MINIMAX_TIMEOUT_MS=20000
+THC_MINIMAX_TIMEOUT_MS=30000
 THC_REVIEW_WORKER_SHARED_SECRET=
 ```
 
@@ -74,7 +74,7 @@ When Supabase is configured, `/api/repositories/preview` and `/api/reviews` requ
 
 Browser session policy is intentionally simple: Supabase persists the user session with PKCE and auto-refresh under a named app storage key. The app does not create a second custom auth cookie or store server secrets in the browser. Server routes remain the authority for protected writes.
 
-Production review generation also requires `MINIMAX_API_KEY`. If MiniMax is not configured, production review creation fails closed instead of publishing mock AI reasoning. `MINIMAX_ALLOW_MOCKS=true` is only for explicit local/demo use. External GitHub and MiniMax calls are timeout-bounded; set `GITHUB_TOKEN` in production to raise GitHub API rate limits.
+Production review generation also requires `MINIMAX_API_KEY`. If MiniMax is not configured, production review creation fails closed instead of publishing mock AI reasoning. Provider timeouts and transient provider failures fall back to clearly labeled deterministic section notes so public scoring and report persistence can still complete. `MINIMAX_ALLOW_MOCKS=true` is only for explicit local/demo use. External GitHub and MiniMax calls are timeout-bounded; set `GITHUB_TOKEN` in production to raise GitHub API rate limits.
 
 ## In-App Repo Stars
 

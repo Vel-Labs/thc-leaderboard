@@ -29,7 +29,7 @@ Required for live MiniMax review:
 ```txt
 MINIMAX_API_KEY=
 MINIMAX_MODEL=MiniMax-M2.7
-THC_MINIMAX_TIMEOUT_MS=20000
+THC_MINIMAX_TIMEOUT_MS=30000
 ```
 
 Supabase registry setup for public v1:
@@ -72,6 +72,8 @@ GitHub OAuth is supported by Supabase Auth and should be used for identity, feed
 Public preview and review submissions require GitHub sign-in when Supabase is configured. Anonymous local submissions are only a development fallback. Supabase-backed deployments store review attempts in `review_submissions` through a server-only RPC so the hourly review limit survives cold starts, multiple instances, and parallel requests.
 
 Browser auth uses Supabase's persisted PKCE session under a named app storage key. The browser never receives `SUPABASE_SECRET_KEY`; server routes verify bearer tokens before writes.
+
+MiniMax is treated as a bounded sidecar for review notes. Production still requires `MINIMAX_API_KEY`, but provider timeouts, transient provider errors, and malformed provider output do not block deterministic THC scoring or report persistence.
 
 ## Deploy on Vercel
 

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { rememberSubmittedRepository } from "@/lib/ui/browser-submissions";
+import { readApiResult } from "./api-response";
 import { useDisplayMode } from "./mode-shell";
 import { reviewRequestHeaders } from "./review-session";
 
@@ -39,7 +40,7 @@ export function ReviewForm() {
         body: JSON.stringify({ repositoryUrl }),
       });
 
-      const payload = (await response.json()) as { reportId?: string; error?: string };
+      const payload = await readApiResult<{ reportId?: string }>(response, "Review failed.");
       if (!response.ok || !payload.reportId) {
         throw new Error(payload.error ?? "Review failed.");
       }

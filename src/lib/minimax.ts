@@ -10,7 +10,7 @@ type ReviewContext = {
   boundedEvidence: string;
 };
 
-const defaultMiniMaxTimeoutMs = 20_000;
+const defaultMiniMaxTimeoutMs = 30_000;
 
 export type MiniMaxReviewDraft = {
   summary: string;
@@ -29,50 +29,61 @@ export async function generateMiniMaxReviewDraft(context: ReviewContext): Promis
     return mockReviewDraft(context);
   }
 
-  const response = await fetchMiniMax({
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: process.env.MINIMAX_MODEL ?? "MiniMax-M2.7",
-      response_format: { type: "json_object" },
-      messages: [
-        {
-          role: "system",
-          content:
-            "You assist THC public reviews. Return JSON only. Do not invent files, endorsements, certification, security approval, production readiness, or Vel Labs review.",
-        },
-        {
-          role: "user",
-          content: [
-            "Review this public repository evidence under THC: Truth, Hardening, Clarity.",
-            "Local THC artifacts, if present, are input only and not public truth.",
-            "Return keys: summary, strengths, risks, uncertaintyNotes, sectionAnalysis.",
-            "sectionAnalysis must include evidence, capsApplied, hiddenTrust, localArtifacts, nextActions.",
-            "Each sectionAnalysis entry must include definition, whatIsWrong, aiNote.",
-            "Do not change scoring or level meanings; explain only from public evidence.",
-            JSON.stringify(context),
-          ].join("\n\n"),
-        },
-      ],
-    }),
-  });
+  try {
+    const response = await fetchMiniMax({
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: process.env.MINIMAX_MODEL ?? "MiniMax-M2.7",
+        response_format: { type: "json_object" },
+        messages: [
+          {
+            role: "system",
+            content:
+              "You assist THC public reviews. Return JSON only. Do not invent files, endorsements, certification, security approval, production readiness, or Vel Labs review.",
+          },
+          {
+            role: "user",
+            content: [
+              "Review this public repository evidence under THC: Truth, Hardening, Clarity.",
+              "Local THC artifacts, if present, are input only and not public truth.",
+              "Return keys: summary, strengths, risks, uncertaintyNotes, sectionAnalysis.",
+              "sectionAnalysis must include evidence, capsApplied, hiddenTrust, localArtifacts, nextActions.",
+              "Each sectionAnalysis entry must include definition, whatIsWrong, aiNote.",
+              "Do not change scoring or level meanings; explain only from public evidence.",
+              JSON.stringify(context),
+            ].join("\n\n"),
+          },
+        ],
+      }),
+    });
 
-  if (!response.ok) {
-    throw new Error(`MiniMax review failed with status ${response.status}.`);
+    if (!response.ok) {
+      if (response.status === 401 || response.status === 403 || response.status === 400) {
+        throw new Error(`MiniMax review failed with status ${response.status}.`);
+      }
+      return providerUnavailableDraft(context, `MiniMax returned status ${response.status}.`);
+    }
+
+    const payload = (await response.json()) as {
+      choices?: { message?: { content?: string } }[];
+    };
+    const content = payload.choices?.[0]?.message?.content;
+    if (!content) {
+      return providerUnavailableDraft(context, "MiniMax returned no review content.");
+    }
+
+    return normalizeDraft(parseMiniMaxJson(content));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "MiniMax review failed.";
+    if (message.includes("status 400") || message.includes("status 401") || message.includes("status 403")) {
+      throw error;
+    }
+    return providerUnavailableDraft(context, message);
   }
-
-  const payload = (await response.json()) as {
-    choices?: { message?: { content?: string } }[];
-  };
-  const content = payload.choices?.[0]?.message?.content;
-  if (!content) {
-    throw new Error("MiniMax review returned no content.");
-  }
-
-  return normalizeDraft(parseMiniMaxJson(content));
 }
 
 function mockReviewsAllowed() {
@@ -127,6 +138,25 @@ function mockReviewDraft(context: ReviewContext): MiniMaxReviewDraft {
     ],
     uncertaintyNotes: [
       "MiniMax API key was not configured, so deterministic mock reasoning was used.",
+    ],
+    sectionAnalysis: fallbackSectionAnalysis(context.projectName),
+  };
+}
+
+function providerUnavailableDraft(context: ReviewContext, reason: string): MiniMaxReviewDraft {
+  return {
+    summary: `${context.projectName} was reviewed from public repository artifacts at ${context.reviewedCommitSha.slice(0, 12)}. Deterministic THC scoring completed, but the configured AI note provider did not return in time for this live request.`,
+    strengths: [
+      context.inspectedFiles.includes("README.md")
+        ? "README evidence is visible at the reviewed commit."
+        : "Repository inspection completed, but top-level README evidence was limited.",
+    ],
+    risks: [
+      "AI sidecar notes were unavailable for this run; deterministic scoring, caps, evidence rows, and hidden-trust checks remain authoritative.",
+    ],
+    uncertaintyNotes: [
+      `AI note provider unavailable: ${reason}`,
+      "This report used deterministic fallback section notes so the public review could be saved instead of timing out.",
     ],
     sectionAnalysis: fallbackSectionAnalysis(context.projectName),
   };

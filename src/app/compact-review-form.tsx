@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { rememberSubmittedRepository } from "@/lib/ui/browser-submissions";
+import { readApiResult } from "./api-response";
 import { useDisplayMode } from "./mode-shell";
 import { reviewRequestHeaders } from "./review-session";
 
@@ -36,7 +37,7 @@ export function CompactReviewForm() {
         headers: reviewHeaders,
         body: JSON.stringify({ repositoryUrl }),
       });
-      const previewPayload = (await previewResponse.json()) as { repository?: Preview; error?: string };
+      const previewPayload = await readApiResult<{ repository?: Preview }>(previewResponse, "Repository preview failed.");
       if (!previewResponse.ok || !previewPayload.repository) throw new Error(previewPayload.error ?? "Repository preview failed.");
       setPreview(previewPayload.repository);
       setStage("inspect");
@@ -46,7 +47,7 @@ export function CompactReviewForm() {
         headers: reviewHeaders,
         body: JSON.stringify({ repositoryUrl }),
       });
-      const payload = (await response.json()) as { reportId?: string; error?: string };
+      const payload = await readApiResult<{ reportId?: string }>(response, "Review failed.");
       if (!response.ok || !payload.reportId) throw new Error(payload.error ?? "Review failed.");
       setStage("save");
       rememberSubmittedRepository(repositoryUrl);

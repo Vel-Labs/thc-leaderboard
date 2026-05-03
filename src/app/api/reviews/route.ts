@@ -4,7 +4,7 @@ import { createPublicReview } from "@/lib/thc/review";
 import { reviewRequestSchema } from "@/lib/thc/schema";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 45;
+export const maxDuration = 60;
 
 export async function POST(request: Request) {
   try {
