@@ -1,0 +1,230 @@
+- generic [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e13]:
+          - generic [ref=e14]: THC LEADERBOARD
+          - generic [ref=e15]: Truth · Hardening · Clarity
+        - generic [ref=e16]: ▓▒░ audit signal // public repo state // trust no lore ░▒▓
+        - generic [ref=e17]:
+          - link "Sign in with GitHub" [ref=e18]:
+            - /url: /auth/github
+            - generic [ref=e19]: GH
+            - generic [ref=e20]: Sign in with GitHub
+          - generic [ref=e21]:
+            - button "Clarity" [ref=e22]
+            - button "Dank" [active] [pressed] [ref=e23]
+      - generic [ref=e32]:
+        - generic [ref=e33]: Public GitHub repository URL
+        - generic [ref=e34]:
+          - generic [ref=e35]: ">"
+          - textbox "Public GitHub repository URL" [ref=e36]:
+            - /placeholder: https://github.com/owner/repo
+        - button "Review This Repo >_" [ref=e37]
+    - generic [ref=e38]:
+      - complementary [ref=e39]:
+        - generic [ref=e40]:
+          - link "About" [ref=e41]:
+            - /url: /
+          - link "Audit" [ref=e42]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85
+          - link "Leaderboard" [ref=e43]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/leaderboard
+        - paragraph [ref=e44]: Report Folder //
+        - navigation [ref=e45]:
+          - link "▣ Overview" [ref=e46]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85
+            - generic [ref=e47]: ▣
+            - generic [ref=e49]: Overview
+          - link "▤ Receipts" [ref=e50]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/evidence
+            - generic [ref=e51]: ▤
+            - generic [ref=e53]: Receipts
+          - link "△ Score Nerfs" [ref=e54]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/caps-applied
+            - generic [ref=e55]: △
+            - generic [ref=e57]: Score Nerfs
+          - link "◇ Biggest Sus" [ref=e58]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/hidden-trust
+            - generic [ref=e59]: ◇
+            - generic [ref=e61]: Biggest Sus
+          - link "▧ Claimed Lore" [ref=e62]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/local-artifacts
+            - generic [ref=e63]: ▧
+            - generic [ref=e65]: Claimed Lore
+          - link "▥ Un-Cook This Repo" [ref=e66]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/next-actions
+            - generic [ref=e67]: ▥
+            - generic [ref=e69]: Un-Cook This Repo
+          - link "✦ AI Analysis" [ref=e70]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/ai-analysis
+            - generic [ref=e71]: ✦
+            - generic [ref=e73]: AI Analysis
+          - link "↗ History" [ref=e74]:
+            - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/history
+            - generic [ref=e75]: ↗
+            - generic [ref=e77]: History
+        - generic [ref=e78]: Independent review of public repo state. Local artifacts are input, not truth.
+        - generic [ref=e79]:
+          - text: Rubric Version
+          - text: 0.2.0
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - heading "ClearIntent ⌐■-■" [level=1] [ref=e86]
+              - link "https://github.com/Vel-Labs/ClearIntent" [ref=e87]:
+                - /url: https://github.com/Vel-Labs/ClearIntent
+              - generic [ref=e88]:
+                - generic [ref=e89]:
+                  - paragraph [ref=e90]: Reviewed Commit
+                  - paragraph [ref=e91]: 303e060ee6a5164a6392a0fff0fe
+                - generic [ref=e92]:
+                  - paragraph [ref=e93]: Generated
+                  - paragraph [ref=e94]: 5/1/2026, 8:41:01 AM
+                - generic [ref=e95]:
+                  - paragraph [ref=e96]: Rubric Version
+                  - paragraph [ref=e97]: 0.2.0
+            - generic [ref=e98]:
+              - text: Automated
+              - text: Public Review
+              - generic [ref=e100]: "||||||||||||"
+          - generic [ref=e101]:
+            - generic [ref=e102]:
+              - paragraph [ref=e103]: THC Level
+              - paragraph [ref=e104]: THC-4
+              - paragraph [ref=e105]: Reproducible
+            - generic [ref=e108]:
+              - paragraph [ref=e109]: Total Score (Potency)
+              - paragraph [ref=e110]: 85/100
+              - paragraph [ref=e111]: same rubric
+            - generic [ref=e114]:
+              - paragraph [ref=e115]: Vibe Check
+              - paragraph [ref=e116]: 68%
+              - paragraph [ref=e117]: medium
+              - img [ref=e120]
+          - generic [ref=e122]:
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - generic [ref=e125]: Truth
+                - generic [ref=e126]: 30/30
+              - paragraph [ref=e127]: "30"
+            - generic [ref=e130]:
+              - generic [ref=e131]:
+                - generic [ref=e132]: Hardening
+                - generic [ref=e133]: 24/35
+              - paragraph [ref=e134]: "24"
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - generic [ref=e139]: Clarity
+                - generic [ref=e140]: 21/25
+              - paragraph [ref=e141]: "21"
+            - generic [ref=e144]:
+              - generic [ref=e145]:
+                - generic [ref=e146]: Audit History
+                - generic [ref=e147]: 10/10
+              - paragraph [ref=e148]: "10"
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - heading "Receipts" [level=2] [ref=e153]
+              - table [ref=e154]:
+                - rowgroup [ref=e161]:
+                  - row "Category Evidence Status Impact Notes" [ref=e162]:
+                    - columnheader "Category" [ref=e163]
+                    - columnheader "Evidence" [ref=e164]
+                    - columnheader "Status" [ref=e165]
+                    - columnheader "Impact" [ref=e166]
+                    - columnheader "Notes" [ref=e167]
+                - rowgroup [ref=e168]:
+                  - row "Truth README.md Found +4 Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims." [ref=e169]:
+                    - cell "Truth" [ref=e170]:
+                      - generic [ref=e171]: Truth
+                    - cell "README.md" [ref=e172]:
+                      - generic [ref=e173]: README.md
+                    - cell "Found" [ref=e174]
+                    - cell "+4" [ref=e175]
+                    - cell "Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims." [ref=e176]:
+                      - generic [ref=e177]: Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims.
+                  - row "Truth AGENTS.md Partial +4 Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims." [ref=e178]:
+                    - cell "Truth" [ref=e179]:
+                      - generic [ref=e180]: Truth
+                    - cell "AGENTS.md" [ref=e181]:
+                      - generic [ref=e182]: AGENTS.md
+                    - cell "Partial" [ref=e183]
+                    - cell "+4" [ref=e184]
+                    - cell "Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims." [ref=e185]:
+                      - generic [ref=e186]: Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims.
+                  - row "Hardening package.json Found +3 Scored from visible validation, CI, failure-mode, environment, and automation guardrail evidence." [ref=e187]:
+                    - cell "Hardening" [ref=e188]:
+                      - generic [ref=e189]: Hardening
+                    - cell "package.json" [ref=e190]:
+                      - generic [ref=e191]: package.json
+                    - cell "Found" [ref=e192]
+                    - cell "+3" [ref=e193]
+                    - cell "Scored from visible validation, CI, failure-mode, environment, and automation guardrail evidence." [ref=e194]:
+                      - generic [ref=e195]: Scored from visible validation, CI, failure-mode, environment, and automation guardrail evidence.
+            - generic [ref=e196]:
+              - generic [ref=e197]:
+                - heading "Biggest Sus" [level=2] [ref=e198]
+                - list [ref=e199]:
+                  - listitem [ref=e200]: ● No local THC artifacts were found at docs/thc/.
+                - paragraph [ref=e201]: "Impact: Moderate"
+              - generic [ref=e202]:
+                - heading "Score Nerfs" [level=2] [ref=e203]
+                - list
+          - generic [ref=e204]:
+            - generic [ref=e205]:
+              - heading "Un-Cook This Repo" [level=2] [ref=e206]
+              - generic [ref=e208]:
+                - checkbox "Regenerate local THC artifacts against the current public revision before using them as handoff evidence." [ref=e209]
+                - generic [ref=e210]: Regenerate local THC artifacts against the current public revision before using them as handoff evidence.
+            - generic [ref=e211]:
+              - heading "Claimed Lore" [level=2] [ref=e212]
+              - list [ref=e213]:
+                - listitem [ref=e214]: "State: absent"
+                - listitem [ref=e215]: "Files: none"
+                - listitem [ref=e216]: No local THC artifacts were found at docs/thc/.
+        - complementary [ref=e217]:
+          - generic [ref=e218]:
+            - paragraph [ref=e221]: At-a-Glance //
+            - list [ref=e222]:
+              - listitem [ref=e223]:
+                - generic [ref=e224]: Public repo inspected
+                - generic [ref=e225]: ✓
+              - listitem [ref=e226]:
+                - generic [ref=e227]: No code execution
+                - generic [ref=e228]: ✓
+              - listitem [ref=e229]:
+                - generic [ref=e230]: No private access
+                - generic [ref=e231]: ✓
+              - listitem [ref=e232]:
+                - generic [ref=e233]: Deterministic scoring
+                - generic [ref=e234]: ✓
+              - listitem [ref=e235]:
+                - generic [ref=e236]: Caps enforced
+                - generic [ref=e237]: ✓
+          - generic [ref=e238]:
+            - paragraph [ref=e241]: Evidence Note
+            - text: Evidence is inferred from public state. No private access used.
+          - generic [ref=e242]:
+            - paragraph [ref=e245]: AI Review Note
+            - generic [ref=e246]: ClearIntent is an authority layer for autonomous onchain agents, built with local scaffold-first development and explicit phase tracking. The repository demonstrates strong documentation discipline, fail-closed security...
+            - link "Read AI Report" [ref=e247]:
+              - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85/ai-analysis
+          - link "Download Report JSON" [ref=e248]:
+            - /url: data:application/json;charset=utf-8,%7B%0A%20%20%22id%22%3A%20%22a68b995b-8a73-4ea2-8e8e-eed9e9518e85%22%2C%0A%20%20%22projectName%22%3A%20%22ClearIntent%22%2C%0A%20%20%22repositoryUrl%22%3A%20%22https%3A%2F%2Fgithub.com%2FVel-Labs%2FClearIntent%22%2C%0A%20%20%22repositoryOwner%22%3A%20%22Vel-Labs%22%2C%0A%20%20%22repositoryName%22%3A%20%22ClearIntent%22%2C%0A%20%20%22repositoryStars%22%3A%200%2C%0A%20%20%22repositoryForks%22%3A%200%2C%0A%20%20%22repositoryOpenIssues%22%3A%200%2C%0A%20%20%22repositoryDescription%22%3A%20null%2C%0A%20%20%22defaultBranch%22%3A%20%22main%22%2C%0A%20%20%22reviewedCommitSha%22%3A%20%22303e060ee6a5164a6392a0fff0fe5af69347319e%22%2C%0A%20%20%22generatedAt%22%3A%20%222026-05-01T13%3A41%3A01.343Z%22%2C%0A%20%20%22rubricVersion%22%3A%20%22THC%20Methodology%200.2.0%22%2C%0A%20%20%22reviewLabel%22%3A%20%22Automated%20Public%20Review%22%2C%0A%20%20%22recommendedLevel%22%3A%20%22THC-4%20Reproducible%22%2C%0A%20%20%22totalScore%22%3A%2085%2C%0A%20%20%22confidence%22%3A%20%22medium%22%2C%0A%20%20%22capsApplied%22%3A%20%5B%5D%2C%0A%20%20%22evidenceTable%22%3A%20%5B%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22category%22%3A%20%22Truth%22%2C%0A%20%20%20%20%20%20%22evidence%22%3A%20%22README.md%2C%20AGENTS.md%22%2C%0A%20%20%20%20%20%20%22score%22%3A%2030%2C%0A%20%20%20%20%20%20%22notes%22%3A%20%22Scored%20from%20explicit%20purpose%2C%20source-of-truth%2C%20assumptions%2C%20boundaries%2C%20and%20evidence%20claims.%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22category%22%3A%20%22Hardening%22%2C%0A%20%20%20%20%20%20%22evidence%22%3A%20%22package.json%22%2C%0A%20%20%20%20%20%20%22score%22%3A%2024%2C%0A%20%20%20%20%20%20%22notes%22%3A%20%22Scored%20from%20visible%20validation%2C%20CI%2C%20failure-mode%2C%20environment%2C%20and%20automation%20guardrail%20evidence.%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22category%22%3A%20%22Clarity%22%2C%0A%20%20%20%20%20%20%22evidence%22%3A%20%22README.md%2C%20docs%2FREADME.md%22%2C%0A%20%20%20%20%20%20%22score%22%3A%2021%2C%0A%20%20%20%20%20%20%22notes%22%3A%20%22Scored%20from%20setup%2C%20contributor%2C%20operator%2C%20recovery%2C%20and%20navigation%20clarity.%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22category%22%3A%20%22Audit%20History%22%2C%0A%20%20%20%20%20%20%22evidence%22%3A%20%22CHANGELOG.md%22%2C%0A%20%20%20%20%20%20%22score%22%3A%2010%2C%0A%20%20%20%20%20%20%22notes%22%3A%20%22Scored%20from%20visible%20review%20history%2C%20known%20risks%2C%20hidden-trust%20findings%2C%20or%20decision%20history.%22%0A%20%20%20%20%7D%0A%20%20%5D%2C%0A%20%20%22hiddenTrustFindings%22%3A%20%5B%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22finding%22%3A%20%22No%20local%20THC%20artifacts%20were%20found%20at%20docs%2Fthc%2F.%22%2C%0A%20%20%20%20%20%20%22severity%22%3A%20%22medium%22%2C%0A%20%20%20%20%20%20%22evidence%22%3A%20%22docs%2Fthc%20local%20artifact%20status%22%2C%0A%20%20%20%20%20%20%22recommendation%22%3A%20%22Regenerate%20local%20THC%20artifacts%20against%20the%20current%20public%20revision%20before%20using%20them%20as%20handoff%20evidence.%22%0A%20%20%20%20%7D%0A%20%20%5D%2C%0A%20%20%22localArtifactStatus%22%3A%20%7B%0A%20%20%20%20%22state%22%3A%20%22absent%22%2C%0A%20%20%20%20%22filesPresent%22%3A%20%5B%5D%2C%0A%20%20%20%20%22findings%22%3A%20%5B%0A%20%20%20%20%20%20%22No%20local%20THC%20artifacts%20were%20found%20at%20docs%2Fthc%2F.%22%0A%20%20%20%20%5D%2C%0A%20%20%20%20%22publicReviewHandoffNotes%22%3A%20%5B%0A%20%20%20%20%20%20%22No%20local%20THC%20handoff%20was%20available%3B%20public%20review%20used%20repository%20files%20directly.%22%0A%20%20%20%20%5D%0A%20%20%7D%2C%0A%20%20%22inspectedFiles%22%3A%20%5B%0A%20%20%20%20%22AGENTS.md%22%2C%0A%20%20%20%20%22CHANGELOG.md%22%2C%0A%20%20%20%20%22README.md%22%2C%0A%20%20%20%20%22docs%2FREADME.md%22%2C%0A%20%20%20%20%22package-lock.json%22%2C%0A%20%20%20%20%22package.json%22%0A%20%20%5D%2C%0A%20%20%22summary%22%3A%20%22ClearIntent%20is%20an%20authority%20layer%20for%20autonomous%20onchain%20agents%2C%20built%20with%20local%20scaffold-first%20development%20and%20explicit%20phase%20tracking.%20The%20repository%20demonstrates%20strong%20documentation%20discipline%2C%20fail-closed%20security%20posture%2C%20and%20honest%20claim-level%20disclosure.%20Public%20evidence%20shows%20extensive%20local%20scaffolding%20across%20multiple%20phases%20(2A%2C%203A%2C%204A%2C%205A%2C%205B)%20with%20explicit%20deferral%20of%20live%20integration.%20No%20deployed%20contract%20addresses%2C%20live%20provider%20evidence%2C%20or%20external%20audit%20artifacts%20appear%20in%20bounded%20evidence.%20Phase%20completion%20claims%20are%20self-reported%20via%20CHANGELOG%20without%20independent%20verification.%22%2C%0A%20%20%22nextActions%22%3A%20%5B%0A%20%20%20%20%22Regenerate%20local%20THC%20artifacts%20against%20the%20current%20public%20revision%20before%20using%20them%20as%20handoff%20evidence.%22%0A%20%20%5D%2C%0A%20%20%22uncertaintyNotes%22%3A%20%5B%0A%20%20%20%20%22Phase%20completion%20dates%20(2026-04-27%20through%202026-04-30)%20suggest%20future-dated%20development%3B%20verification%20against%20actual%20implementation%20not%20possible%20from%20bounded%20evidence%22%2C%0A%20%20%20%20%22No%20evidence%20of%20external%20security%20audits%2C%20formal%20verification%2C%20or%20third-party%20review%20in%20bounded%20files%22%2C%0A%20%20%20%20%220G%20TS%20SDK%20dependency%20(%5E1.2.6)%20and%20ethers.js%20(%5E6.13.1)%20are%20npm-hosted%3B%20actual%20integration%20behavior%20unverified%20from%20public%20evidence%22%2C%0A%20%20%20%20%22Local%20setup%20instructions%20require%20npm%20install%20before%20any%20validation%3B%20no%20pre-built%20binaries%20or%20deployment%20artifacts%20visible%22%2C%0A%20%20%20%20%22docs%2Fproviders%2FWallets%2FPHASE_5_SOURCE_REVIEW.md%20referenced%20but%20not%20included%20in%20bounded%20evidence%22%2C%0A%20%20%20%20%22This%20is%20an%20automated%20public%20review%20artifact%2C%20not%20certification%2C%20security%20approval%2C%20production%20readiness%2C%20endorsement%2C%20or%20a%20reliability%20guarantee.%22%0A%20%20%5D%2C%0A%20%20%22topStrength%22%3A%20%22Fail-closed%20security%20posture%20with%20explicit%20blocking%20conditions%20(missing%20policy%2C%20nonce%2C%20deadline%2C%20executor%2C%20ENS%20identity%2C%20policy%20hash%20mismatch)%22%2C%0A%20%20%22topHiddenTrustFinding%22%3A%20%22No%20local%20THC%20artifacts%20were%20found%20at%20docs%2Fthc%2F.%22%2C%0A%20%20%22reviewAnalysis%22%3A%20%7B%0A%20%20%20%20%22evidence%22%3A%20%7B%0A%20%20%20%20%20%20%22definition%22%3A%20%22Evidence%20is%20the%20public%20repository%20material%20inspected%20for%20the%20THC%20review.%22%2C%0A%20%20%20%20%20%20%22whatIsWrong%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22Only%20visible%20public%20files%20can%20receive%20credit%3B%20private%20claims%20and%20unstated%20maintainer%20knowledge%20do%20not%20count.%22%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22aiNote%22%3A%20%22this%20repository%20should%20make%20evidence%20paths%20explicit%20so%20reviewers%20can%20verify%20claims%20without%20relying%20on%20implied%20context.%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22capsApplied%22%3A%20%7B%0A%20%20%20%20%20%20%22definition%22%3A%20%22Caps%20are%20deterministic%20limits%20applied%20after%20scoring%20when%20required%20evidence%20is%20missing%2C%20stale%2C%20or%20unverifiable.%22%2C%0A%20%20%20%20%20%20%22whatIsWrong%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22Caps%20indicate%20the%20repository%20has%20a%20review%20blocker%20even%20if%20some%20scorecard%20categories%20look%20strong.%22%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22aiNote%22%3A%20%22Resolve%20caps%20before%20optimizing%20for%20higher%20THC%20levels%3B%20caps%20are%20the%20ceiling%20that%20keeps%20the%20label%20honest.%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22hiddenTrust%22%3A%20%7B%0A%20%20%20%20%20%20%22definition%22%3A%20%22Hidden%20trust%20identifies%20places%20where%20users%20must%20trust%20claims%20not%20backed%20by%20public%2C%20inspectable%20evidence.%22%2C%0A%20%20%20%20%20%20%22whatIsWrong%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22The%20review%20penalizes%20missing%20setup%2C%20validation%2C%20provenance%2C%20and%20operational%20handoff%20evidence.%22%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22aiNote%22%3A%20%22Convert%20hidden%20trust%20into%20public%20artifacts%3A%20setup%20docs%2C%20validation%20commands%2C%20provenance%2C%20decision%20records%2C%20and%20recovery%20notes.%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22localArtifacts%22%3A%20%7B%0A%20%20%20%20%20%20%22definition%22%3A%20%22Local%20THC%20artifacts%20are%20useful%20inputs%20but%20are%20not%20public%20truth%20until%20independently%20verified%20against%20the%20reviewed%20commit.%22%2C%0A%20%20%20%20%20%20%22whatIsWrong%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22Absent%2C%20stale%2C%20or%20unverifiable%20local%20artifacts%20cannot%20raise%20the%20public%20review%20label.%22%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22aiNote%22%3A%20%22Keep%20docs%2Fthc%20artifacts%20fresh%2C%20hashable%2C%20and%20tied%20to%20the%20exact%20reviewed%20revision.%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22nextActions%22%3A%20%7B%0A%20%20%20%20%20%20%22definition%22%3A%20%22Next%20actions%20are%20concrete%20public%20changes%20likely%20to%20improve%20a%20future%20THC%20review.%22%2C%0A%20%20%20%20%20%20%22whatIsWrong%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22The%20current%20action%20list%20focuses%20on%20blockers%20and%20missing%20evidence%2C%20not%20cosmetic%20polish.%22%0A%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%22aiNote%22%3A%20%22Prioritize%20changes%20that%20make%20the%20repo%20independently%20inspectable%20from%20a%20fresh%20clone.%22%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D
+    - generic [ref=e249]:
+      - generic [ref=e250]: ☠
+      - generic [ref=e251]:
+        - text: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+        - link "Vel Labs GitHub" [ref=e252]:
+          - /url: https://github.com/Vel-Labs
+        - text: ·
+        - link "velcrafting GitHub" [ref=e253]:
+          - /url: https://github.com/velcrafting
+        - text: ·
+        - link "velcrafting X" [ref=e254]:
+          - /url: https://x.com/Velcrafting
+  - button "Open Next.js Dev Tools" [ref=e260] [cursor=pointer]:
+    - img [ref=e261]
+  - alert [ref=e264]

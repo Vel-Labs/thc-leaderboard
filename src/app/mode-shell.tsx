@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { copyForMode, sidebarItems, type DisplayMode } from "@/lib/ui/modes";
 
@@ -11,11 +12,12 @@ type ModeContextValue = {
 
 const ModeContext = createContext<ModeContextValue | null>(null);
 
-export function ModeShell({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<DisplayMode>("clarity");
+export function ModeShell({ children, initialMode }: { children: React.ReactNode; initialMode: DisplayMode }) {
+  const [mode, setMode] = useState<DisplayMode>(initialMode);
   const setPersistedMode = (nextMode: DisplayMode) => {
     setMode(nextMode);
     window.localStorage.setItem("thc-display-mode", nextMode);
+    document.cookie = `thc-display-mode=${nextMode}; Path=/; Max-Age=31536000; SameSite=Lax`;
   };
   const value = useMemo(() => ({ mode, setMode: setPersistedMode, copy: copyForMode(mode) }), [mode]);
 
@@ -24,6 +26,7 @@ export function ModeShell({ children }: { children: React.ReactNode }) {
       const savedMode = window.localStorage.getItem("thc-display-mode");
       if (savedMode === "clarity" || savedMode === "dank") {
         setMode(savedMode);
+        document.cookie = `thc-display-mode=${savedMode}; Path=/; Max-Age=31536000; SameSite=Lax`;
       }
     }, 0);
     return () => window.clearTimeout(timeoutId);
@@ -31,7 +34,7 @@ export function ModeShell({ children }: { children: React.ReactNode }) {
 
   return (
     <ModeContext.Provider value={value}>
-      <div data-mode={mode} className={`min-h-screen ${mode === "dank" ? "dank-cursor bg-[#09090b] text-lime-50" : "bg-[#f5f1e8] text-zinc-950"}`}>
+      <div suppressHydrationWarning data-mode={mode} className={`min-h-screen ${mode === "dank" ? "dank-cursor bg-[#09090b] text-lime-50" : "bg-[#f5f1e8] text-zinc-950"}`}>
         {children}
       </div>
     </ModeContext.Provider>
@@ -123,8 +126,21 @@ export function Workspace({ children }: { children: React.ReactNode }) {
   return <div className="grid gap-5 lg:grid-cols-[236px_1fr]">{children}</div>;
 }
 
-export function FolderSidebar({ active = "Overview" }: { active?: string }) {
+export function FolderSidebar({
+  active = "Overview",
+  items = sidebarItems,
+  latestReportId,
+}: {
+  active?: string;
+  items?: string[];
+  latestReportId?: string;
+}) {
   const { mode, copy } = useDisplayMode();
+  const primaryTabs = [
+    { label: "About", href: "/", active: active === "About" || active === "Overview" },
+    { label: "Audit", href: latestReportId ? `/reports/${latestReportId}` : "/audit", active: active === "Audit" },
+    { label: "Leaderboard", href: "/leaderboard", active: active === "Leaderboard" },
+  ];
   return (
     <aside
       className={
@@ -133,12 +149,27 @@ export function FolderSidebar({ active = "Overview" }: { active?: string }) {
           : "sticky top-5 self-start rounded-xl border border-stone-300/90 bg-[#f8ecd3] p-3 text-sm shadow-[9px_12px_0_rgba(68,64,60,0.07)]"
       }
     >
+      <div className={mode === "dank" ? "mb-3 grid grid-cols-[0.8fr_0.8fr_1.35fr] gap-1.5 text-[10px] font-black uppercase" : "mb-3 flex items-end gap-1.5 text-[10px] font-semibold uppercase tracking-wide"}>
+        {primaryTabs.map((tab) => (
+          <Link
+            key={tab.label}
+            href={tab.href}
+            className={
+              mode === "dank"
+                ? `border px-2 py-1.5 ${tab.active ? "border-lime-300 bg-lime-300/15 text-lime-100" : "border-pink-400/20 text-pink-100/55"}`
+                : `relative rounded-t-sm border border-b-0 px-2 py-1.5 ${tab.active ? "border-emerald-700/60 bg-[#fff8e8] text-emerald-900" : "border-stone-300 bg-[#e5d8bd] text-stone-500"}`
+            }
+          >
+            {tab.label}
+          </Link>
+        ))}
+      </div>
       <div className={mode === "dank" ? "mb-3 flex items-center gap-2 px-2 font-black uppercase tracking-wide text-pink-200" : "mb-3 flex items-center gap-2 px-2 font-semibold text-stone-800"}>
         <span aria-hidden>{mode === "dank" ? "[-_-]" : "FILE"}</span>
         {copy.sidebarTitle}
       </div>
       <nav className="space-y-1">
-        {sidebarItems.map((item) => {
+        {items.map((item) => {
           const mapped = mode === "dank" ? mapDankSidebarItem(item) : item;
           const isActive = item === active;
           return (

@@ -1,0 +1,143 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]: THC LEADERBOARD
+          - generic [ref=e8]: Truth · Hardening · Clarity
+        - generic [ref=e10]: Profile, repos, and public owner settings
+        - generic [ref=e11]:
+          - link "Sign in with GitHub" [ref=e12] [cursor=pointer]:
+            - /url: /auth/github
+            - generic [ref=e13]: ◆
+            - generic [ref=e14]: Sign in with GitHub
+          - generic [ref=e15]:
+            - button "Clarity" [pressed] [ref=e16]
+            - button "Dank" [ref=e17]
+      - generic [ref=e20]:
+        - generic [ref=e21]: Public GitHub repository URL
+        - generic [ref=e22]:
+          - generic [ref=e23]: ↗
+          - textbox "Public GitHub repository URL" [ref=e24]:
+            - /placeholder: https://github.com/owner/repo
+        - button "Start Review ->" [ref=e25]
+    - generic [ref=e26]:
+      - complementary [ref=e27]:
+        - generic [ref=e28]:
+          - link "About" [ref=e29] [cursor=pointer]:
+            - /url: /
+            - text: About
+          - link "Audit" [ref=e31] [cursor=pointer]:
+            - /url: /audit
+            - text: Audit
+          - link "Leaderboard" [ref=e33] [cursor=pointer]:
+            - /url: /leaderboard
+            - text: Leaderboard
+        - paragraph [ref=e35]: □ Profile Folder
+        - generic [ref=e36]:
+          - generic [ref=e37]: □
+          - generic [ref=e38]: owner settings
+        - navigation [ref=e39]:
+          - link "My Repos" [ref=e40] [cursor=pointer]:
+            - /url: "#my-repos"
+          - link "Achievements" [ref=e41] [cursor=pointer]:
+            - /url: "#achievements"
+        - generic [ref=e42]: Profile signals are display context only.
+      - generic [ref=e45]:
+        - generic [ref=e47]:
+          - generic [ref=e50]:
+            - generic "GitHub profile avatar" [ref=e51]:
+              - generic:
+                - img
+              - generic:
+                - img
+              - generic:
+                - img
+            - generic [ref=e53]:
+              - paragraph [ref=e54]: Profile folder page
+              - heading "GitHub profile" [level=1] [ref=e55]
+              - paragraph [ref=e56]: Sign in with GitHub to connect this profile.
+          - generic [ref=e57]:
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - paragraph [ref=e61]: Clarity Loadout
+                - heading "Avatar Cosmetics" [level=2] [ref=e62]
+                - paragraph [ref=e63]: Formal accessories are independent from dank mode. Tune the cap, glasses, cube, and pointer without changing the dank loadout.
+              - generic [ref=e64]:
+                - generic [ref=e65]:
+                  - text: Accessory
+                  - combobox "Accessory" [ref=e66]:
+                    - option "Hat" [selected]
+                    - option "Glasses"
+                    - option "Necklace"
+                    - option "Joint"
+                - generic [ref=e67]:
+                  - button "Remove Hat" [pressed] [ref=e68]:
+                    - generic [ref=e69]: Remove
+                    - generic [ref=e70]: Hat
+                  - button "Flip Mirror item" [ref=e71]:
+                    - generic [ref=e72]: Flip
+                    - generic [ref=e73]: Mirror item
+            - generic [ref=e74]:
+              - generic "Avatar cosmetic preview" [ref=e76]:
+                - generic:
+                  - img
+                - generic:
+                  - img
+                - generic:
+                  - img
+              - generic [ref=e78]:
+                - generic [ref=e79]:
+                  - generic [ref=e80]:
+                    - generic [ref=e81]: Hat Left / Right
+                    - generic [ref=e82]: "0"
+                  - slider "Hat Left / Right 0" [ref=e83]: "0"
+                - generic [ref=e84]:
+                  - generic [ref=e85]:
+                    - generic [ref=e86]: Hat Up / Down
+                    - generic [ref=e87]: "-38"
+                  - slider "Hat Up / Down -38" [ref=e88]: "-38"
+                - generic [ref=e89]:
+                  - generic [ref=e90]:
+                    - generic [ref=e91]: Hat Scale
+                    - generic [ref=e92]: "0.95"
+                  - slider "Hat Scale 0.95" [ref=e93]: "0.95"
+                - generic [ref=e94]:
+                  - generic [ref=e95]:
+                    - generic [ref=e96]: Hat Opacity
+                    - generic [ref=e97]: "1"
+                  - slider "Hat Opacity 1" [ref=e98]: "1"
+                - generic [ref=e99]:
+                  - button "Reset item" [ref=e100]
+                  - button "Reset all" [ref=e101]
+                  - button "Add all" [ref=e102]
+                  - button "Save public loadout" [disabled] [ref=e103]
+                - paragraph [ref=e104]: Saved loadouts appear for this GitHub owner in clarity mode.
+          - generic [ref=e105]:
+            - generic [ref=e106]:
+              - generic [ref=e107]:
+                - heading "My Repos" [level=2] [ref=e108]
+                - paragraph [ref=e109]: Browser-submitted reports for now. Supabase-backed ownership can replace this once repo ownership verification is wired.
+              - link "Add public repo" [ref=e110] [cursor=pointer]:
+                - /url: /audit
+            - paragraph [ref=e112]: No connected reports yet.
+          - generic [ref=e113]:
+            - heading "Achievements" [level=2] [ref=e114]
+            - paragraph [ref=e115]: Achievement rows belong in Supabase once reports, verified ownership, and award jobs are connected.
+        - complementary [ref=e116]:
+          - generic [ref=e117]: Use this page for GitHub identity, reviewed repos, achievements, and public display settings.
+          - generic [ref=e118]: Profile settings never change methodology scores.
+    - generic [ref=e119]:
+      - generic [ref=e120]: i
+      - generic [ref=e121]:
+        - text: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+        - link "Vel Labs GitHub" [ref=e122] [cursor=pointer]:
+          - /url: https://github.com/Vel-Labs
+        - text: ·
+        - link "velcrafting GitHub" [ref=e123] [cursor=pointer]:
+          - /url: https://github.com/velcrafting
+        - text: ·
+        - link "velcrafting X" [ref=e124] [cursor=pointer]:
+          - /url: https://x.com/Velcrafting
+  - button "Open Next.js Dev Tools" [ref=e130] [cursor=pointer]:
+    - img [ref=e131]

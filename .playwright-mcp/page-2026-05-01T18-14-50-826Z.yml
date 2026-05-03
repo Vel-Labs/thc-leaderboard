@@ -1,0 +1,225 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: ☼
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: THC LEADERBOARD
+          - generic [ref=e9]: Truth · Hardening · Clarity
+        - generic [ref=e10]:
+          - generic [ref=e11]: Analyze a public GitHub repository
+          - generic [ref=e12]: ↘
+        - generic [ref=e13]:
+          - link "Sign in with GitHub" [ref=e14] [cursor=pointer]:
+            - /url: /auth/github
+            - generic [ref=e15]: ◆
+            - generic [ref=e16]: Sign in with GitHub
+          - generic [ref=e17]:
+            - button "Clarity" [pressed] [ref=e18]
+            - button "Dank" [ref=e19]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Public GitHub repository URL
+        - generic [ref=e24]:
+          - generic [ref=e25]: ↗
+          - textbox "Public GitHub repository URL" [ref=e26]:
+            - /placeholder: https://github.com/owner/repo
+        - button "Start Review ->" [ref=e27]
+    - generic [ref=e28]:
+      - complementary [ref=e29]:
+        - generic [ref=e30]:
+          - link "About" [ref=e31] [cursor=pointer]:
+            - /url: /
+            - text: About
+          - link "Audit" [ref=e33] [cursor=pointer]:
+            - /url: /audit
+            - text: Audit
+          - link "Leaderboard" [ref=e35] [cursor=pointer]:
+            - /url: /leaderboard
+            - text: Leaderboard
+        - paragraph [ref=e37]:
+          - generic [ref=e38]: □
+          - text: Leaderboard Folder
+        - generic [ref=e39]:
+          - generic [ref=e40]: □
+          - generic [ref=e41]: public registry
+        - navigation [ref=e42]:
+          - link "▣ Leaderboard All ranked artifacts" [ref=e43] [cursor=pointer]:
+            - /url: "#leaderboard"
+            - generic [ref=e44]: ▣
+            - generic [ref=e45]:
+              - generic [ref=e46]: Leaderboard
+              - generic [ref=e47]: All ranked artifacts
+          - link "▤ Operators Owner rollups" [ref=e48] [cursor=pointer]:
+            - /url: "#operators"
+            - generic [ref=e49]: ▤
+            - generic [ref=e50]:
+              - generic [ref=e51]: Operators
+              - generic [ref=e52]: Owner rollups
+          - link "▤ Most Truthful Truth evidence" [ref=e53] [cursor=pointer]:
+            - /url: "#most-truthful"
+            - generic [ref=e54]: ▤
+            - generic [ref=e55]:
+              - generic [ref=e56]: Most Truthful
+              - generic [ref=e57]: Truth evidence
+          - link "▤ Most Hardened Validation paths" [ref=e58] [cursor=pointer]:
+            - /url: "#most-hardened"
+            - generic [ref=e59]: ▤
+            - generic [ref=e60]:
+              - generic [ref=e61]: Most Hardened
+              - generic [ref=e62]: Validation paths
+          - link "▤ Most Clarified Setup clarity" [ref=e63] [cursor=pointer]:
+            - /url: "#most-clarified"
+            - generic [ref=e64]: ▤
+            - generic [ref=e65]:
+              - generic [ref=e66]: Most Clarified
+              - generic [ref=e67]: Setup clarity
+          - link "▤ Best Audit History Decision trail" [ref=e68] [cursor=pointer]:
+            - /url: "#best-audit-history"
+            - generic [ref=e69]: ▤
+            - generic [ref=e70]:
+              - generic [ref=e71]: Best Audit History
+              - generic [ref=e72]: Decision trail
+          - link "▤ Highest THC Total score" [ref=e73] [cursor=pointer]:
+            - /url: "#highest-thc"
+            - generic [ref=e74]: ▤
+            - generic [ref=e75]:
+              - generic [ref=e76]: Highest THC
+              - generic [ref=e77]: Total score
+        - generic [ref=e78]: Ranking is based on stored public review artifacts, not repo popularity.
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - paragraph [ref=e84]: Leaderboard folder page
+            - heading "Public Review Index" [level=1] [ref=e85]
+            - paragraph [ref=e86]: Stored Automated Public Review artifacts ranked by evidence categories. Repository owner, stars, and metadata are display context only; they never affect score, caps, or THC level.
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - paragraph [ref=e89]: Leaderboard Window
+              - paragraph [ref=e90]: Filters top boards, tables, and operators by report timestamp.
+            - generic [ref=e91]:
+              - button "All Time" [ref=e92]
+              - button "Last 24 Hours" [ref=e93]
+          - generic [ref=e94]:
+            - article [ref=e95]:
+              - paragraph [ref=e96]: Most Truthful
+              - paragraph [ref=e97]: ClearIntent
+              - paragraph [ref=e98]: "30"
+            - article [ref=e99]:
+              - paragraph [ref=e100]: Most Hardened
+              - paragraph [ref=e101]: ClearIntent
+              - paragraph [ref=e102]: "24"
+            - article [ref=e103]:
+              - paragraph [ref=e104]: Most Clarified
+              - paragraph [ref=e105]: ClearIntent
+              - paragraph [ref=e106]: "21"
+            - article [ref=e107]:
+              - paragraph [ref=e108]: Best Audit History
+              - paragraph [ref=e109]: ClearIntent
+              - paragraph [ref=e110]: "10"
+            - article [ref=e111]:
+              - paragraph [ref=e112]: Highest THC
+              - paragraph [ref=e113]: ClearIntent
+              - paragraph [ref=e114]: "85"
+          - generic [ref=e115]:
+            - generic [ref=e116]:
+              - generic [ref=e117]:
+                - generic [ref=e118]:
+                  - heading "Recent Reports" [level=2] [ref=e119]
+                  - paragraph [ref=e120]: Most recent 10 public review artifacts.
+                - generic [ref=e121]: "1"
+              - table [ref=e123]:
+                - rowgroup [ref=e130]:
+                  - row "Owner Repository Level Score Report" [ref=e131]:
+                    - columnheader "Owner" [ref=e132]
+                    - columnheader "Repository" [ref=e133]
+                    - columnheader "Level" [ref=e134]
+                    - columnheader "Score" [ref=e135]
+                    - columnheader "Report" [ref=e136]
+                - rowgroup [ref=e137]:
+                  - row "Vel-Labs ClearIntent THC-4 Reproducible 85 Open" [ref=e138]:
+                    - cell "Vel-Labs" [ref=e139]:
+                      - link "Vel-Labs" [ref=e140] [cursor=pointer]:
+                        - /url: https://github.com/Vel-Labs
+                    - cell "ClearIntent" [ref=e141]:
+                      - link "ClearIntent" [ref=e142] [cursor=pointer]:
+                        - /url: https://github.com/Vel-Labs/ClearIntent
+                    - cell "THC-4 Reproducible" [ref=e143]:
+                      - generic [ref=e144]: THC-4 Reproducible
+                    - cell "85" [ref=e145]
+                    - cell "Open" [ref=e146]:
+                      - generic [ref=e147]:
+                        - link "Open" [ref=e148] [cursor=pointer]:
+                          - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85
+                        - button "Local app star for now. GitHub login-backed registry stars are the next Supabase auth step." [ref=e149]:
+                          - generic [ref=e150]: ☆
+            - generic [ref=e151]:
+              - generic [ref=e152]:
+                - generic [ref=e153]:
+                  - heading "App Reports" [level=2] [ref=e154]
+                  - paragraph [ref=e155]: All completed reports currently stored by the app.
+                - generic [ref=e156]: "1"
+              - table [ref=e158]:
+                - rowgroup [ref=e165]:
+                  - row "Owner Repository Level Score Report" [ref=e166]:
+                    - columnheader "Owner" [ref=e167]
+                    - columnheader "Repository" [ref=e168]
+                    - columnheader "Level" [ref=e169]
+                    - columnheader "Score" [ref=e170]
+                    - columnheader "Report" [ref=e171]
+                - rowgroup [ref=e172]:
+                  - row "Vel-Labs ClearIntent THC-4 Reproducible 85 Open" [ref=e173]:
+                    - cell "Vel-Labs" [ref=e174]:
+                      - link "Vel-Labs" [ref=e175] [cursor=pointer]:
+                        - /url: https://github.com/Vel-Labs
+                    - cell "ClearIntent" [ref=e176]:
+                      - link "ClearIntent" [ref=e177] [cursor=pointer]:
+                        - /url: https://github.com/Vel-Labs/ClearIntent
+                    - cell "THC-4 Reproducible" [ref=e178]:
+                      - generic [ref=e179]: THC-4 Reproducible
+                    - cell "85" [ref=e180]
+                    - cell "Open" [ref=e181]:
+                      - generic [ref=e182]:
+                        - link "Open" [ref=e183] [cursor=pointer]:
+                          - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85
+                        - button "Local app star for now. GitHub login-backed registry stars are the next Supabase auth step." [ref=e184]:
+                          - generic [ref=e185]: ☆
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188]:
+                  - heading "Operators" [level=2] [ref=e189]
+                  - paragraph [ref=e190]: Repo-owner rollups across submitted public reports.
+                - generic [ref=e191]: "1"
+              - table [ref=e193]:
+                - rowgroup [ref=e194]:
+                  - row "Operator Repos Avg Top" [ref=e195]:
+                    - columnheader "Operator" [ref=e196]
+                    - columnheader "Repos" [ref=e197]
+                    - columnheader "Avg" [ref=e198]
+                    - columnheader "Top" [ref=e199]
+                - rowgroup [ref=e200]:
+                  - row "Vel-Labs 1 reports 1 85 85 ClearIntent" [ref=e201]:
+                    - cell "Vel-Labs 1 reports" [ref=e202]:
+                      - link "Vel-Labs" [ref=e203] [cursor=pointer]:
+                        - /url: https://github.com/Vel-Labs
+                      - generic [ref=e204]: 1 reports
+                    - cell "1" [ref=e205]
+                    - cell "85" [ref=e206]
+                    - cell "85 ClearIntent" [ref=e207]:
+                      - generic [ref=e208]: "85"
+                      - generic [ref=e209]: ClearIntent
+        - complementary [ref=e210]:
+          - generic [ref=e211]:
+            - paragraph [ref=e213]: Registry Rule
+            - text: Leaderboard placement is a stored review artifact, not certification, endorsement, or production readiness.
+          - generic [ref=e214]:
+            - paragraph [ref=e216]: Top 10 Boards
+            - text: Truth, Hardening, Clarity, Audit History, and total THC each rank independently from the same report payload.
+          - generic [ref=e217]:
+            - paragraph [ref=e219]: Refresh Model
+            - text: Re-reviews should enqueue work, skip unchanged commits, and preserve old reports by reviewed SHA.
+    - generic [ref=e220]:
+      - generic [ref=e221]: i
+      - generic [ref=e222]: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+  - button "Open Next.js Dev Tools" [ref=e228] [cursor=pointer]:
+    - img [ref=e229]
+  - alert [ref=e232]

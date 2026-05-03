@@ -1,0 +1,185 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]: THC LEADERBOARD
+          - generic [ref=e8]: Truth · Hardening · Clarity
+        - generic [ref=e9]: ▓▒░ about // audit // leaderboard ░▒▓
+        - generic [ref=e10]:
+          - link "Sign in with GitHub" [ref=e11]:
+            - /url: /auth/github
+            - generic [ref=e12]: GH
+            - generic [ref=e13]: Sign in with GitHub
+          - generic [ref=e14]:
+            - button "Clarity" [ref=e15]
+            - button "Dank" [pressed] [ref=e16]
+      - generic [ref=e19]:
+        - generic [ref=e20]: Public GitHub repository URL
+        - generic [ref=e21]:
+          - generic [ref=e22]: ">"
+          - textbox "Public GitHub repository URL" [ref=e23]:
+            - /placeholder: https://github.com/owner/repo
+        - button "Review This Repo >_" [ref=e24]
+    - generic [ref=e25]:
+      - complementary [ref=e26]:
+        - generic [ref=e27]:
+          - link "About" [ref=e28]:
+            - /url: /
+          - link "Audit" [ref=e29]:
+            - /url: /audit
+          - link "Leaderboard" [ref=e30]:
+            - /url: /leaderboard
+        - paragraph [ref=e31]: About Folder //
+        - navigation [ref=e32]:
+          - link "Desk Dashboard" [ref=e33]:
+            - /url: /
+            - generic [ref=e34]: Desk
+            - generic [ref=e35]: Dashboard
+          - link "Score Law Concepts" [ref=e36]:
+            - /url: /about/methodology
+            - generic [ref=e37]: Score Law
+            - generic [ref=e38]: Concepts
+          - link "Local Receipts Move up" [ref=e39]:
+            - /url: /about/self-audit
+            - generic [ref=e40]: Local Receipts
+            - generic [ref=e41]: Move up
+          - link "Receipt Types Good / weak" [ref=e42]:
+            - /url: /about/evidence
+            - generic [ref=e43]: Receipt Types
+            - generic [ref=e44]: Good / weak
+          - link "No Vibes Verify" [ref=e45]:
+            - /url: /about/trust-boundary
+            - generic [ref=e46]: No Vibes
+            - generic [ref=e47]: Verify
+          - link "Receipt Log Recent" [ref=e48]:
+            - /url: /about/reports
+            - generic [ref=e49]: Receipt Log
+            - generic [ref=e50]: Recent
+        - generic [ref=e51]: Same scoring. Different chaos layer.
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Desk // public repo scanner
+            - heading "Review Desk" [level=1] [ref=e58]
+            - paragraph [ref=e59]: Repo goes in. Receipts, caps, score nerfs, and a shareable report come out. Vibes are decorative.
+            - generic [ref=e60]:
+              - text: Automated
+              - text: Public Review
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - article [ref=e65]:
+                - paragraph [ref=e66]: Input
+                - paragraph [ref=e67]: Repo URL
+                - paragraph [ref=e68]: public repository root only
+              - article [ref=e69]:
+                - paragraph [ref=e70]: Review State
+                - paragraph [ref=e71]: Commit SHA
+                - paragraph [ref=e72]: resolved before scoring
+              - article [ref=e73]:
+                - paragraph [ref=e74]: Reasoning
+                - paragraph [ref=e75]: AI Review
+                - paragraph [ref=e76]: bounded evidence notes
+              - article [ref=e77]:
+                - paragraph [ref=e78]: Authority
+                - paragraph [ref=e79]: Code
+                - paragraph [ref=e80]: score, caps, label
+            - generic [ref=e81]:
+              - generic [ref=e82]:
+                - heading "Review Flow //" [level=2] [ref=e83]
+                - generic [ref=e84]:
+                  - generic [ref=e85]:
+                    - generic [ref=e86]: "01"
+                    - generic [ref=e87]:
+                      - generic [ref=e88]: Gate URL
+                      - generic [ref=e89]: public github root or bounce
+                  - generic [ref=e90]:
+                    - generic [ref=e91]: "02"
+                    - generic [ref=e92]:
+                      - generic [ref=e93]: Grab Receipts
+                      - generic [ref=e94]: files only, no install script jump scares
+                  - generic [ref=e95]:
+                    - generic [ref=e96]: "03"
+                    - generic [ref=e97]:
+                      - generic [ref=e98]: Ask AI Review
+                      - generic [ref=e99]: bounded notes, no score lawmaking
+                  - generic [ref=e100]:
+                    - generic [ref=e101]: "04"
+                    - generic [ref=e102]:
+                      - generic [ref=e103]: Apply Nerfs
+                      - generic [ref=e104]: deterministic caps and level mapping
+              - generic [ref=e105]:
+                - generic [ref=e106]:
+                  - generic [ref=e107]:
+                    - heading "Recent Receipts" [level=2] [ref=e108]
+                    - link "All" [ref=e109]:
+                      - /url: /leaderboard
+                  - link "Vel-Labs/ClearIntent THC-4 Reproducible 85" [ref=e111]:
+                    - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85
+                    - generic [ref=e112]:
+                      - generic [ref=e113]: Vel-Labs/ClearIntent
+                      - generic [ref=e114]: THC-4 Reproducible
+                    - generic [ref=e115]: "85"
+                - generic [ref=e116]:
+                  - heading "Score Law //" [level=2] [ref=e117]
+                  - paragraph [ref=e118]: Truth, Hardening, and Clarity are scored from public evidence. Levels are mapped from score, then deterministic caps can lower the recommendation.
+                  - generic [ref=e119]:
+                    - generic [ref=e120]:
+                      - generic [ref=e121]: Truth
+                      - generic [ref=e122]: 30 pts
+                    - generic [ref=e123]:
+                      - generic [ref=e124]: Hardening
+                      - generic [ref=e125]: 35 pts
+                    - generic [ref=e126]:
+                      - generic [ref=e127]: Clarity
+                      - generic [ref=e128]: 25 pts
+                    - generic [ref=e129]:
+                      - generic [ref=e130]: Audit History
+                      - generic [ref=e131]: 10 pts
+                - generic [ref=e132]:
+                  - heading "Score Signals //" [level=2] [ref=e133]
+                  - generic [ref=e134]:
+                    - article [ref=e135]:
+                      - generic [ref=e136]:
+                        - heading "Strong" [level=3] [ref=e137]
+                        - generic [ref=e138]: Strong
+                      - paragraph [ref=e139]: Public setup, checks, CI, docs, decisions, current THC provenance.
+                    - article [ref=e140]:
+                      - generic [ref=e141]:
+                        - heading "Needs work" [level=3] [ref=e142]
+                        - generic [ref=e143]: Improve
+                      - paragraph [ref=e144]: Claims exist, but freshness, commands, or handoff are incomplete.
+                    - article [ref=e145]:
+                      - generic [ref=e146]:
+                        - heading "Absent" [level=3] [ref=e147]
+                        - generic [ref=e148]: Absent
+                      - paragraph [ref=e149]: No public evidence path, private-only proof, or unverifiable claims.
+                    - article [ref=e150]:
+                      - generic [ref=e151]:
+                        - heading "Neutral" [level=3] [ref=e152]
+                        - generic [ref=e153]: Note
+                      - paragraph [ref=e154]: Stars, popularity, and polish are display context only.
+        - complementary [ref=e155]:
+          - generic [ref=e156]:
+            - heading "Boundary //" [level=2] [ref=e157]
+            - paragraph [ref=e158]: AI review explains bounded evidence. App code owns scores, levels, caps, and disclaimers.
+          - generic [ref=e159]:
+            - heading "Batch Re-Cook //" [level=2] [ref=e160]
+            - paragraph [ref=e161]: Use a queue plus cron later. Never let unattended runs execute repo code on the app server.
+          - generic [ref=e162]:
+            - heading "Export //" [level=2] [ref=e163]
+            - paragraph [ref=e164]: JSON now. Markdown/PDF later from the same payload.
+    - generic [ref=e165]:
+      - generic [ref=e166]: ☠
+      - generic [ref=e167]:
+        - text: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+        - link "Vel Labs GitHub" [ref=e168]:
+          - /url: https://github.com/Vel-Labs
+        - text: ·
+        - link "velcrafting GitHub" [ref=e169]:
+          - /url: https://github.com/velcrafting
+        - text: ·
+        - link "velcrafting X" [ref=e170]:
+          - /url: https://x.com/Velcrafting
+  - button "Open Next.js Dev Tools" [ref=e176] [cursor=pointer]:
+    - img [ref=e177]

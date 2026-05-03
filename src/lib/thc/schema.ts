@@ -55,10 +55,32 @@ export const localArtifactStatusSchema = z.object({
   publicReviewHandoffNotes: z.array(z.string()),
 });
 
+export const sectionAnalysisSchema = z.object({
+  definition: z.string(),
+  whatIsWrong: z.array(z.string()),
+  aiNote: z.string(),
+});
+
+export const reviewAnalysisSchema = z.object({
+  evidence: sectionAnalysisSchema,
+  capsApplied: sectionAnalysisSchema,
+  hiddenTrust: sectionAnalysisSchema,
+  localArtifacts: sectionAnalysisSchema,
+  nextActions: sectionAnalysisSchema,
+});
+
 export const reportSchema = z.object({
   id: z.string(),
   projectName: z.string(),
   repositoryUrl: z.string().url(),
+  repositoryOwner: z.string().optional(),
+  repositoryOwnerAvatarUrl: z.string().url().optional(),
+  repositoryName: z.string().optional(),
+  repositoryStars: z.number().int().min(0).default(0),
+  repositoryForks: z.number().int().min(0).default(0),
+  repositoryOpenIssues: z.number().int().min(0).default(0),
+  repositoryDescription: z.string().nullable().optional(),
+  defaultBranch: z.string().optional(),
   reviewedCommitSha: z.string().min(7),
   generatedAt: z.string(),
   rubricVersion: z.string(),
@@ -76,6 +98,33 @@ export const reportSchema = z.object({
   uncertaintyNotes: z.array(z.string()),
   topStrength: z.string(),
   topHiddenTrustFinding: z.string(),
+  reviewAnalysis: reviewAnalysisSchema.default({
+    evidence: {
+      definition: "Evidence is the public repository material inspected for the THC review.",
+      whatIsWrong: ["Section analysis was not captured for this older report."],
+      aiNote: "Regenerate the report to include AI-generated section notes.",
+    },
+    capsApplied: {
+      definition: "Caps are deterministic limits applied after scoring when required evidence is missing or unverifiable.",
+      whatIsWrong: ["Section analysis was not captured for this older report."],
+      aiNote: "Regenerate the report to include AI-generated section notes.",
+    },
+    hiddenTrust: {
+      definition: "Hidden trust identifies claims that require faith beyond public evidence.",
+      whatIsWrong: ["Section analysis was not captured for this older report."],
+      aiNote: "Regenerate the report to include AI-generated section notes.",
+    },
+    localArtifacts: {
+      definition: "Local THC artifacts are treated as input hints, not public truth.",
+      whatIsWrong: ["Section analysis was not captured for this older report."],
+      aiNote: "Regenerate the report to include AI-generated section notes.",
+    },
+    nextActions: {
+      definition: "Next actions are concrete changes likely to improve a future public review.",
+      whatIsWrong: ["Section analysis was not captured for this older report."],
+      aiNote: "Regenerate the report to include AI-generated section notes.",
+    },
+  }),
 });
 
 export const reviewRequestSchema = z.object({
@@ -88,4 +137,5 @@ export type EvidenceCategory = z.infer<typeof evidenceCategorySchema>;
 export type EvidenceRow = z.infer<typeof evidenceRowSchema>;
 export type HiddenTrustFinding = z.infer<typeof hiddenTrustFindingSchema>;
 export type LocalArtifactStatus = z.infer<typeof localArtifactStatusSchema>;
+export type ReviewAnalysis = z.infer<typeof reviewAnalysisSchema>;
 export type THCReport = z.infer<typeof reportSchema>;

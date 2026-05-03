@@ -1,0 +1,35 @@
+- generic [ref=e1] [box=0,0,1707,975]:
+  - main [ref=e3] [box=0,0,1707,975]:
+    - generic [ref=e4] [box=12,8,1683,118]:
+      - generic [ref=e5] [box=21,17,1665,44]:
+        - generic [ref=e6] [box=21,17,360,44]
+        - generic [ref=e9] [box=389,29,949,20]: ▓▒░ about // audit // leaderboard ░▒▓
+        - generic [ref=e10] [box=1346,20,340,38]
+      - generic [ref=e19] [box=21,69,1665,48]:
+        - generic [ref=e20] [box=20,68,1,1]: Public GitHub repository URL
+        - generic [ref=e21] [box=21,69,1421,48]
+        - button "Review This Repo >_" [ref=e24] [box=1454,69,232,48]
+    - generic [ref=e25] [box=12,134,1683,779]:
+      - complementary [ref=e26] [box=12,134,315,779]:
+        - generic [ref=e27] [box=25,147,289,29]
+        - paragraph [ref=e31] [box=25,188,289,16]: About Folder //
+        - navigation [ref=e32] [box=25,216,289,320]
+        - generic [ref=e51] [box=25,556,289,46]: Same scoring. Different chaos layer.
+      - generic [ref=e54] [box=344,143,1342,761]:
+        - generic [ref=e55] [box=344,143,1059,761]
+        - complementary [ref=e155] [box=1411,143,275,761]
+    - generic [ref=e165] [box=12,921,1683,46]:
+      - generic [ref=e166] [box=21,930,28,28]: ☠
+      - generic [ref=e167] [box=61,934,1490,20]:
+        - text: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+        - link "Vel Labs GitHub" [ref=e168] [box=1177,936,108,16]:
+          - /url: https://github.com/Vel-Labs
+        - text: ·
+        - link "velcrafting GitHub" [ref=e169] [box=1307,936,130,16]:
+          - /url: https://github.com/velcrafting
+        - text: ·
+        - link "velcrafting X" [ref=e170] [box=1458,936,94,16]:
+          - /url: https://x.com/Velcrafting
+  - button "Open Next.js Dev Tools" [ref=e176] [cursor=pointer] [box=22,921,32,32]:
+    - img [ref=e177] [box=22,917,40,40]
+  - alert [ref=e180] [box=-1,974,1,1]

@@ -10,7 +10,11 @@ import type { EvidenceRow, HiddenTrustFinding, THCReport } from "./schema";
 
 const rubricVersion = "THC Methodology 0.2.0";
 
-export async function createPublicReview(repositoryUrl: string): Promise<THCReport> {
+type CreatePublicReviewOptions = {
+  submittedBy?: string;
+};
+
+export async function createPublicReview(repositoryUrl: string, options: CreatePublicReviewOptions = {}): Promise<THCReport> {
   const inspected = await inspectPublicGitHubRepository(repositoryUrl);
   const localArtifactStatus = assessLocalArtifacts({
     reviewedCommitSha: inspected.reviewedCommitSha,
@@ -35,6 +39,14 @@ export async function createPublicReview(repositoryUrl: string): Promise<THCRepo
     id: randomUUID(),
     projectName: inspected.projectName,
     repositoryUrl: inspected.repositoryUrl,
+    repositoryOwner: inspected.owner,
+    repositoryOwnerAvatarUrl: inspected.ownerAvatarUrl,
+    repositoryName: inspected.repo,
+    repositoryStars: inspected.stars,
+    repositoryForks: inspected.forks,
+    repositoryOpenIssues: inspected.openIssues,
+    repositoryDescription: inspected.description,
+    defaultBranch: inspected.defaultBranch,
     reviewedCommitSha: inspected.reviewedCommitSha,
     generatedAt: new Date().toISOString(),
     rubricVersion,
@@ -55,9 +67,10 @@ export async function createPublicReview(repositoryUrl: string): Promise<THCRepo
     ],
     topStrength: draft.strengths[0] ?? "Public repository state was inspected without executing project code.",
     topHiddenTrustFinding: hiddenTrustFindings[0]?.finding ?? "No critical hidden-trust finding was identified from the inspected files.",
+    reviewAnalysis: draft.sectionAnalysis,
   };
 
-  return saveReport(report);
+  return saveReport(report, { submittedBy: options.submittedBy });
 }
 
 function scoreEvidence(files: Record<string, string | undefined>): EvidenceRow[] {

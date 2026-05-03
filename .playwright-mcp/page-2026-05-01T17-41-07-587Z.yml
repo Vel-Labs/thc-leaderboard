@@ -1,0 +1,141 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: ☼
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: THC LEADERBOARD
+          - generic [ref=e9]: Truth · Hardening · Clarity
+        - generic [ref=e10]:
+          - generic [ref=e11]: Analyze a public GitHub repository
+          - generic [ref=e12]: ↘
+        - generic [ref=e13]:
+          - link "Sign in with GitHub" [ref=e14] [cursor=pointer]:
+            - /url: /auth/github
+            - generic [ref=e15]: ◆
+            - generic [ref=e16]: Sign in with GitHub
+          - generic [ref=e17]:
+            - button "Clarity" [pressed] [ref=e18]
+            - button "Dank" [ref=e19]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Public GitHub repository URL
+        - generic [ref=e24]:
+          - generic [ref=e25]: ↗
+          - textbox "Public GitHub repository URL" [ref=e26]:
+            - /placeholder: https://github.com/owner/repo
+        - button "Start Review ->" [ref=e27]
+    - generic [ref=e28]:
+      - complementary [ref=e29]:
+        - generic [ref=e30]:
+          - link "About" [ref=e31] [cursor=pointer]:
+            - /url: /
+            - text: About
+          - link "Audit" [ref=e33] [cursor=pointer]:
+            - /url: /audit
+            - text: Audit
+          - link "Leaderboard" [ref=e35] [cursor=pointer]:
+            - /url: /leaderboard
+            - text: Leaderboard
+        - paragraph [ref=e37]:
+          - generic [ref=e38]: □
+          - text: About Folder
+        - generic [ref=e39]: thc-leaderboard
+        - navigation [ref=e40]:
+          - link "Desk Dashboard" [ref=e41] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e42]: Desk
+            - generic [ref=e43]: Dashboard
+          - link "Methodology Concepts" [ref=e44] [cursor=pointer]:
+            - /url: /about/methodology
+            - generic [ref=e45]: Methodology
+            - generic [ref=e46]: Concepts
+          - link "Self-Audit Move up" [ref=e47] [cursor=pointer]:
+            - /url: /about/self-audit
+            - generic [ref=e48]: Self-Audit
+            - generic [ref=e49]: Move up
+          - link "Evidence Examples Good / weak" [ref=e50] [cursor=pointer]:
+            - /url: /about/evidence
+            - generic [ref=e51]: Evidence Examples
+            - generic [ref=e52]: Good / weak
+          - link "Trust Boundary Verify" [ref=e53] [cursor=pointer]:
+            - /url: /about/trust-boundary
+            - generic [ref=e54]: Trust Boundary
+            - generic [ref=e55]: Verify
+          - link "Reports Recent" [ref=e56] [cursor=pointer]:
+            - /url: /about/reports
+            - generic [ref=e57]: Reports
+            - generic [ref=e58]: Recent
+        - generic [ref=e59]: Public review registry. Local artifacts are input, not truth.
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - paragraph [ref=e65]: Evidence folder page
+            - heading "Evidence Examples" [level=1] [ref=e66]
+            - paragraph [ref=e67]: Examples of what earns credit, what stays neutral, and what becomes hidden trust when claims outrun public evidence.
+            - generic [ref=e68]:
+              - text: Automated
+              - text: Public Review
+          - generic [ref=e72]:
+            - group [ref=e73]:
+              - generic "✓ Strong evidence Strong" [ref=e74] [cursor=pointer]:
+                - generic "Click to expand" [ref=e75]: ✓
+                - text: Strong evidence
+                - generic [ref=e76]: Strong
+              - paragraph [ref=e77]: Fresh-clone setup, deterministic validation commands, CI, decision history, and current docs/thc provenance tied to the reviewed commit.
+            - group [ref=e78]:
+              - generic "✓ Strong hardening Strong" [ref=e79] [cursor=pointer]:
+                - generic "Click to expand" [ref=e80]: ✓
+                - text: Strong hardening
+                - generic [ref=e81]: Strong
+              - paragraph [ref=e82]: Tests or checks are named, runnable, documented, and connected to CI or an equivalent repeatable validation path.
+            - group [ref=e83]:
+              - generic "△ Partial evidence Improve" [ref=e84] [cursor=pointer]:
+                - generic "Click to expand" [ref=e85]: △
+                - text: Partial evidence
+                - generic [ref=e86]: Improve
+              - paragraph [ref=e87]: A useful README or architecture note exists, but validation commands, freshness, or operational handoff are incomplete.
+            - group [ref=e88]:
+              - generic "△ Needs improvement Improve" [ref=e89] [cursor=pointer]:
+                - generic "Click to expand" [ref=e90]: △
+                - text: Needs improvement
+                - generic [ref=e91]: Improve
+              - paragraph [ref=e92]: Evidence exists but is scattered, stale, inconsistent, or requires guessing across unrelated files.
+            - group [ref=e93]:
+              - generic "× Missing evidence Absent" [ref=e94] [cursor=pointer]:
+                - generic "Click to expand" [ref=e95]: ×
+                - text: Missing evidence
+                - generic [ref=e96]: Absent
+              - paragraph [ref=e97]: Claims of reliability, safety, or production readiness appear without inspectable public files.
+            - group [ref=e98]:
+              - generic "× Private evidence Absent" [ref=e99] [cursor=pointer]:
+                - generic "Click to expand" [ref=e100]: ×
+                - text: Private evidence
+                - generic [ref=e101]: Absent
+              - paragraph [ref=e102]: Maintainer knowledge, private dashboards, private tests, or closed docs. Useful internally, but not public score evidence.
+            - group [ref=e103]:
+              - generic "△ Stale evidence Improve" [ref=e104] [cursor=pointer]:
+                - generic "Click to expand" [ref=e105]: △
+                - text: Stale evidence
+                - generic [ref=e106]: Improve
+              - paragraph [ref=e107]: Local artifacts or docs reference a different revision than the reviewed public commit.
+            - group [ref=e108]:
+              - generic "× Hidden trust Absent" [ref=e109] [cursor=pointer]:
+                - generic "Click to expand" [ref=e110]: ×
+                - text: Hidden trust
+                - generic [ref=e111]: Absent
+              - paragraph [ref=e112]: Any place the reader must trust reputation or vibes because public evidence does not close the loop.
+        - complementary [ref=e113]:
+          - generic [ref=e114]:
+            - paragraph [ref=e116]: Review Boundary
+            - text: Public files inspected. No private access. No code execution. Deterministic scoring remains authoritative.
+          - generic [ref=e117]:
+            - paragraph [ref=e119]: Cadence Idea
+            - text: Manual audits capture now. Scheduled re-reviews should run from a queue, dedupe by repo, and save each reviewed commit.
+          - generic [ref=e120]:
+            - paragraph [ref=e122]: Download Path
+            - text: Report pages expose JSON download now. Markdown/PDF export can layer on the same report payload later.
+    - generic [ref=e123]:
+      - generic [ref=e124]: i
+      - generic [ref=e125]: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+  - button "Open Next.js Dev Tools" [ref=e131] [cursor=pointer]:
+    - img [ref=e132]

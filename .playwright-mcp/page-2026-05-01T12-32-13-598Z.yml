@@ -1,0 +1,165 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e6]:
+        - button "Clarity" [pressed] [ref=e7]
+        - button "Dank" [ref=e8]
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - paragraph [ref=e11]: Clarity Mode · Paper dossier workspace
+          - heading "THC Leaderboard" [level=1] [ref=e12]
+          - paragraph [ref=e13]: Public GitHub repo in, independently recomputed THC report out. Same truth engine, different operating mood.
+        - generic [ref=e15]:
+          - generic [ref=e16]: Public GitHub repository URL
+          - generic [ref=e17]:
+            - textbox "Public GitHub repository URL" [ref=e18]:
+              - /placeholder: https://github.com/owner/repo
+            - button "Start Review" [ref=e19]
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: Status
+              - generic [ref=e23]: Ready
+            - paragraph [ref=e26]: v1 fetches public GitHub files only. It does not run installs, scripts, tests, or project code.
+    - generic [ref=e27]:
+      - complementary [ref=e28]:
+        - generic [ref=e29]:
+          - link "About" [ref=e30] [cursor=pointer]:
+            - /url: /
+          - link "Audit" [ref=e31] [cursor=pointer]:
+            - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+          - link "Leaderboard" [ref=e32] [cursor=pointer]:
+            - /url: /leaderboard
+        - generic [ref=e33]:
+          - generic [ref=e34]: FILE
+          - text: Review Folder
+        - navigation [ref=e35]:
+          - link "Review Desk" [ref=e36] [cursor=pointer]:
+            - /url: "#review-desk"
+          - link "Evidence Examples" [ref=e37] [cursor=pointer]:
+            - /url: "#evidence-examples"
+          - link "Agent Boundary" [ref=e38] [cursor=pointer]:
+            - /url: "#agent-boundary"
+          - link "Report Downloads" [ref=e39] [cursor=pointer]:
+            - /url: "#report-downloads"
+          - link "Recent Reports" [ref=e40] [cursor=pointer]:
+            - /url: "#recent-reports"
+        - generic [ref=e41]: Not certification. Not security approval. Not production readiness.
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - paragraph [ref=e44]: submit, inspect, publish
+          - heading "Review Desk" [level=2] [ref=e45]
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - paragraph [ref=e49]: THC Leaderboard turns a public GitHub repository into a shareable public review artifact. The app inspects public files, resolves the reviewed commit, applies deterministic caps, and keeps the score grounded in visible evidence.
+              - generic [ref=e50]:
+                - generic [ref=e51]: URL Ingest
+                - generic [ref=e52]: Commit SHA
+                - generic [ref=e53]: Evidence Table
+                - generic [ref=e54]: Caps Applied
+                - generic [ref=e55]: Leaderboard Entry
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - generic [ref=e58]: Truth
+                - generic [ref=e59]: Claims and source-of-truth boundaries.
+              - generic [ref=e60]:
+                - generic [ref=e61]: Hardening
+                - generic [ref=e62]: Validation, guardrails, drift and failure evidence.
+              - generic [ref=e63]:
+                - generic [ref=e64]: Clarity
+                - generic [ref=e65]: Setup, operator, contributor and recovery legibility.
+        - generic [ref=e66]:
+          - generic [ref=e67]: Local THC artifacts can point to evidence faster, but the public score is recomputed from the inspected commit.
+          - generic [ref=e69]: Truth, Hardening, and Clarity use the same scorecard in both display modes.
+          - generic [ref=e71]: Automated Public Review is not certification, security approval, production readiness, endorsement, or a reliability guarantee.
+        - generic [ref=e73]:
+          - paragraph [ref=e74]: good, neutral, bad
+          - heading "Evidence Examples" [level=2] [ref=e75]
+          - generic [ref=e77]:
+            - article [ref=e78]:
+              - heading "Good Evidence" [level=3] [ref=e79]
+              - paragraph [ref=e80]: A fresh-clone setup path, deterministic validation commands, CI workflow, decision log, and THC provenance tied to the reviewed commit.
+            - article [ref=e81]:
+              - heading "Neutral Evidence" [level=3] [ref=e82]
+              - paragraph [ref=e83]: A polished README with a clear project purpose, but partial setup, limited tests, or sparse audit history. Useful, but capped.
+            - article [ref=e84]:
+              - heading "Hidden Trust" [level=3] [ref=e85]
+              - paragraph [ref=e86]: Claims of reliability, security, production readiness, or agent correctness without public files a reviewer can inspect at the commit.
+        - generic [ref=e87]:
+          - paragraph [ref=e88]: MiniMax explains, deterministic code scores
+          - heading "Agent Boundary" [level=2] [ref=e89]
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - paragraph [ref=e93]: MiniMax reviews bounded public repository evidence and writes section analysis notes. The THC score, score-to-level mapping, caps, label, and disclaimer still come from deterministic app code.
+              - paragraph [ref=e94]: v1 does not run installs, tests, scripts, or project code. A future sandbox worker can add optional remote validation, but it should be isolated, time-limited, network-controlled, and clearly separated from the current public-file review.
+            - generic [ref=e95]: Stars, owner reputation, package popularity, and maintainer identity are display metadata only. They never add THC score.
+        - generic [ref=e97]:
+          - paragraph [ref=e98]: portable review artifact
+          - heading "Report Downloads" [level=2] [ref=e99]
+          - generic [ref=e101]:
+            - paragraph [ref=e102]: Each report page exposes a downloadable JSON artifact containing the reviewed commit, scoring rows, caps, hidden-trust findings, MiniMax notes, and the non-certification disclaimer.
+            - paragraph [ref=e103]: A company-facing PDF or markdown export can build from the same report payload later without changing the public review contract.
+        - generic [ref=e104]:
+          - paragraph [ref=e105]: Leaderboard preview
+          - heading "Recent Reports" [level=2] [ref=e106]
+          - generic [ref=e107]:
+            - link "View leaderboard" [ref=e109] [cursor=pointer]:
+              - /url: /leaderboard
+            - table [ref=e111]:
+              - rowgroup [ref=e112]:
+                - row "Owner Repository Stars Level Score Label Generated Report" [ref=e113]:
+                  - columnheader "Owner" [ref=e114]
+                  - columnheader "Repository" [ref=e115]
+                  - columnheader "Stars" [ref=e116]
+                  - columnheader "Level" [ref=e117]
+                  - columnheader "Score" [ref=e118]
+                  - columnheader "Label" [ref=e119]
+                  - columnheader "Generated" [ref=e120]
+                  - columnheader "Report" [ref=e121]
+              - rowgroup [ref=e122]:
+                - row "LedgerHQ agent-skills 0 THC-1 Documented 33 Automated Public Review 4/30/2026, 11:50:32 PM Open" [ref=e123]:
+                  - cell "LedgerHQ" [ref=e124]:
+                    - link "LedgerHQ" [ref=e125] [cursor=pointer]:
+                      - /url: https://github.com/LedgerHQ
+                  - cell "agent-skills" [ref=e126]:
+                    - link "agent-skills" [ref=e127] [cursor=pointer]:
+                      - /url: https://github.com/LedgerHQ/agent-skills
+                  - cell "0" [ref=e128]
+                  - cell "THC-1 Documented" [ref=e129]
+                  - cell "33" [ref=e130]
+                  - cell "Automated Public Review" [ref=e131]
+                  - cell "4/30/2026, 11:50:32 PM" [ref=e132]
+                  - cell "Open" [ref=e133]:
+                    - link "Open" [ref=e134] [cursor=pointer]:
+                      - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+                - row "Vel-Labs thc-methodology 0 THC-1 Documented 60 Automated Public Review 4/30/2026, 11:43:39 PM Open" [ref=e135]:
+                  - cell "Vel-Labs" [ref=e136]:
+                    - link "Vel-Labs" [ref=e137] [cursor=pointer]:
+                      - /url: https://github.com/Vel-Labs
+                  - cell "thc-methodology" [ref=e138]:
+                    - link "thc-methodology" [ref=e139] [cursor=pointer]:
+                      - /url: https://github.com/Vel-Labs/thc-methodology
+                  - cell "0" [ref=e140]
+                  - cell "THC-1 Documented" [ref=e141]
+                  - cell "60" [ref=e142]
+                  - cell "Automated Public Review" [ref=e143]
+                  - cell "4/30/2026, 11:43:39 PM" [ref=e144]
+                  - cell "Open" [ref=e145]:
+                    - link "Open" [ref=e146] [cursor=pointer]:
+                      - /url: /reports/47be3a4d-03ae-4acc-8765-aaa65ed61329
+                - row "Vel-Labs thc-methodology 0 THC-1 Documented 60 Automated Public Review 4/29/2026, 5:21:14 PM Open" [ref=e147]:
+                  - cell "Vel-Labs" [ref=e148]:
+                    - link "Vel-Labs" [ref=e149] [cursor=pointer]:
+                      - /url: https://github.com/Vel-Labs
+                  - cell "thc-methodology" [ref=e150]:
+                    - link "thc-methodology" [ref=e151] [cursor=pointer]:
+                      - /url: https://github.com/Vel-Labs/thc-methodology
+                  - cell "0" [ref=e152]
+                  - cell "THC-1 Documented" [ref=e153]
+                  - cell "60" [ref=e154]
+                  - cell "Automated Public Review" [ref=e155]
+                  - cell "4/29/2026, 5:21:14 PM" [ref=e156]
+                  - cell "Open" [ref=e157]:
+                    - link "Open" [ref=e158] [cursor=pointer]:
+                      - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+  - button "Open Next.js Dev Tools" [ref=e164] [cursor=pointer]:
+    - img [ref=e165]

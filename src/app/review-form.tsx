@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { rememberSubmittedRepository } from "@/lib/ui/browser-submissions";
 import { useDisplayMode } from "./mode-shell";
+import { reviewRequestHeaders } from "./review-session";
 
 type ReviewState = "idle" | "validating" | "fetching" | "reviewing" | "saving" | "error";
 
@@ -30,9 +32,10 @@ export function ReviewForm() {
     try {
       setState("fetching");
       setTimeout(() => setState((current) => (current === "fetching" ? "reviewing" : current)), 700);
+      const reviewHeaders = await reviewRequestHeaders();
       const response = await fetch("/api/reviews", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: reviewHeaders,
         body: JSON.stringify({ repositoryUrl }),
       });
 
@@ -42,6 +45,7 @@ export function ReviewForm() {
       }
 
       setState("saving");
+      rememberSubmittedRepository(repositoryUrl);
       router.push(`/reports/${payload.reportId}`);
       router.refresh();
     } catch (caught) {
@@ -106,7 +110,7 @@ export function ReviewForm() {
         </div>
         {error ? <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p> : null}
         <p className={mode === "dank" ? "text-xs leading-5 text-lime-50/55" : "text-xs leading-5 text-zinc-500"}>
-          v1 fetches public GitHub files only. It does not run installs, scripts, tests, or project code.
+          v1 fetches public GitHub files and sends bounded evidence to configured AI review providers for section notes. It does not run installs, scripts, tests, or project code.
         </p>
       </div>
     </form>

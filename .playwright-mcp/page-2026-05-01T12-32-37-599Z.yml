@@ -1,0 +1,202 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e6]:
+        - button "Clarity" [pressed] [ref=e7]
+        - button "Dank" [ref=e8]
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - paragraph [ref=e11]: Clarity Mode · Paper dossier workspace
+          - heading "THC Leaderboard" [level=1] [ref=e12]
+          - paragraph [ref=e13]: Public GitHub repo in, independently recomputed THC report out. Same truth engine, different operating mood.
+        - generic [ref=e15]:
+          - generic [ref=e16]: Public GitHub repository URL
+          - generic [ref=e17]:
+            - textbox "Public GitHub repository URL" [ref=e18]:
+              - /placeholder: https://github.com/owner/repo
+            - button "Start Review" [ref=e19]
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: Status
+              - generic [ref=e23]: Ready
+            - paragraph [ref=e26]: v1 fetches public GitHub files only. It does not run installs, scripts, tests, or project code.
+    - generic [ref=e27]:
+      - complementary [ref=e28]:
+        - generic [ref=e29]:
+          - link "About" [ref=e30] [cursor=pointer]:
+            - /url: /
+          - link "Audit" [ref=e31] [cursor=pointer]:
+            - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+          - link "Leaderboard" [ref=e32] [cursor=pointer]:
+            - /url: /leaderboard
+        - generic [ref=e33]:
+          - generic [ref=e34]: FILE
+          - text: Review Folder
+        - navigation [ref=e35]:
+          - link "Public Review Index" [ref=e36] [cursor=pointer]:
+            - /url: "#public-review-index"
+          - link "Top Boards" [ref=e37] [cursor=pointer]:
+            - /url: "#top-boards"
+          - link "Leaderboard" [ref=e38] [cursor=pointer]:
+            - /url: "#leaderboard"
+        - generic [ref=e39]: Not certification. Not security approval. Not production readiness.
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - paragraph [ref=e42]: ranked artifacts, not reputation
+          - heading "Public Review Index" [level=2] [ref=e43]
+          - generic [ref=e45]:
+            - paragraph [ref=e46]: Each entry links to a report with the reviewed commit, scorecard rows, level caps, uncertainty, and hidden-trust findings.
+            - generic [ref=e47]:
+              - generic [ref=e48]: Evidence Linked
+              - generic [ref=e49]: Caps Visible
+              - generic [ref=e50]: Commit Pinned
+              - generic [ref=e51]: Disclaimer Present
+        - generic [ref=e52]:
+          - generic [ref=e53]: Public registry v1 is file-backed JSON from stored Automated Public Review reports. Supabase can replace this storage adapter later without changing the public report contract.
+          - generic [ref=e55]: Placement does not imply certification, security approval, production readiness, endorsement, or guaranteed reliability.
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - heading "Most Truthful" [level=2] [ref=e59]
+            - list [ref=e60]:
+              - listitem [ref=e61]:
+                - link "1. thc-methodology" [ref=e62] [cursor=pointer]:
+                  - /url: /reports/47be3a4d-03ae-4acc-8765-aaa65ed61329
+                - generic [ref=e63]: "30"
+              - listitem [ref=e64]:
+                - link "2. thc-methodology" [ref=e65] [cursor=pointer]:
+                  - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+                - generic [ref=e66]: "30"
+              - listitem [ref=e67]:
+                - link "3. agent-skills" [ref=e68] [cursor=pointer]:
+                  - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+                - generic [ref=e69]: "22"
+          - generic [ref=e70]:
+            - heading "Most Hardened" [level=2] [ref=e71]
+            - list [ref=e72]:
+              - listitem [ref=e73]:
+                - link "1. thc-methodology" [ref=e74] [cursor=pointer]:
+                  - /url: /reports/47be3a4d-03ae-4acc-8765-aaa65ed61329
+                - generic [ref=e75]: "11"
+              - listitem [ref=e76]:
+                - link "2. thc-methodology" [ref=e77] [cursor=pointer]:
+                  - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+                - generic [ref=e78]: "11"
+              - listitem [ref=e79]:
+                - link "3. agent-skills" [ref=e80] [cursor=pointer]:
+                  - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+                - generic [ref=e81]: "0"
+          - generic [ref=e82]:
+            - heading "Most Clarified" [level=2] [ref=e83]
+            - list [ref=e84]:
+              - listitem [ref=e85]:
+                - link "1. thc-methodology" [ref=e86] [cursor=pointer]:
+                  - /url: /reports/47be3a4d-03ae-4acc-8765-aaa65ed61329
+                - generic [ref=e87]: "14"
+              - listitem [ref=e88]:
+                - link "2. thc-methodology" [ref=e89] [cursor=pointer]:
+                  - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+                - generic [ref=e90]: "14"
+              - listitem [ref=e91]:
+                - link "3. agent-skills" [ref=e92] [cursor=pointer]:
+                  - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+                - generic [ref=e93]: "11"
+          - generic [ref=e94]:
+            - heading "Best Audit History" [level=2] [ref=e95]
+            - list [ref=e96]:
+              - listitem [ref=e97]:
+                - link "1. thc-methodology" [ref=e98] [cursor=pointer]:
+                  - /url: /reports/47be3a4d-03ae-4acc-8765-aaa65ed61329
+                - generic [ref=e99]: "5"
+              - listitem [ref=e100]:
+                - link "2. thc-methodology" [ref=e101] [cursor=pointer]:
+                  - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+                - generic [ref=e102]: "5"
+              - listitem [ref=e103]:
+                - link "3. agent-skills" [ref=e104] [cursor=pointer]:
+                  - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+                - generic [ref=e105]: "0"
+          - generic [ref=e106]:
+            - heading "Highest THC" [level=2] [ref=e107]
+            - list [ref=e108]:
+              - listitem [ref=e109]:
+                - link "1. thc-methodology" [ref=e110] [cursor=pointer]:
+                  - /url: /reports/47be3a4d-03ae-4acc-8765-aaa65ed61329
+                - generic [ref=e111]: "60"
+              - listitem [ref=e112]:
+                - link "2. thc-methodology" [ref=e113] [cursor=pointer]:
+                  - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+                - generic [ref=e114]: "60"
+              - listitem [ref=e115]:
+                - link "3. agent-skills" [ref=e116] [cursor=pointer]:
+                  - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+                - generic [ref=e117]: "33"
+        - generic [ref=e118]:
+          - paragraph [ref=e119]: public review artifacts
+          - heading "Leaderboard" [level=2] [ref=e120]
+          - table [ref=e123]:
+            - rowgroup [ref=e124]:
+              - row "Owner Repository Stars THC Level Score Review Label Generated Top Strength Top Hidden-Trust Finding Report" [ref=e125]:
+                - columnheader "Owner" [ref=e126]
+                - columnheader "Repository" [ref=e127]
+                - columnheader "Stars" [ref=e128]
+                - columnheader "THC Level" [ref=e129]
+                - columnheader "Score" [ref=e130]
+                - columnheader "Review Label" [ref=e131]
+                - columnheader "Generated" [ref=e132]
+                - columnheader "Top Strength" [ref=e133]
+                - columnheader "Top Hidden-Trust Finding" [ref=e134]
+                - columnheader "Report" [ref=e135]
+            - rowgroup [ref=e136]:
+              - row "LedgerHQ agent-skills 0 THC-1 Documented 33 Automated Public Review 4/30/2026 Prominent, comprehensive legal notice explicitly disclaiming security audit, certification, and endorsement Validation path is not visible. Open" [ref=e137]:
+                - cell "LedgerHQ" [ref=e138]:
+                  - link "LedgerHQ" [ref=e139] [cursor=pointer]:
+                    - /url: https://github.com/LedgerHQ
+                - cell "agent-skills" [ref=e140]:
+                  - link "agent-skills" [ref=e141] [cursor=pointer]:
+                    - /url: https://github.com/LedgerHQ/agent-skills
+                - cell "0" [ref=e142]
+                - cell "THC-1 Documented" [ref=e143]
+                - cell "33" [ref=e144]
+                - cell "Automated Public Review" [ref=e145]
+                - cell "4/30/2026" [ref=e146]
+                - cell "Prominent, comprehensive legal notice explicitly disclaiming security audit, certification, and endorsement" [ref=e147]
+                - cell "Validation path is not visible." [ref=e148]
+                - cell "Open" [ref=e149]:
+                  - link "Open" [ref=e150] [cursor=pointer]:
+                    - /url: /reports/1cc3896f-8ed6-4e4c-bd7e-4fef30a718ac
+              - row "Vel-Labs thc-methodology 0 THC-1 Documented 60 Automated Public Review 4/30/2026 Clear, self-aware distinction between what THC is and is not (explicit non-goals documented) Setup path is missing or unclear. Open" [ref=e151]:
+                - cell "Vel-Labs" [ref=e152]:
+                  - link "Vel-Labs" [ref=e153] [cursor=pointer]:
+                    - /url: https://github.com/Vel-Labs
+                - cell "thc-methodology" [ref=e154]:
+                  - link "thc-methodology" [ref=e155] [cursor=pointer]:
+                    - /url: https://github.com/Vel-Labs/thc-methodology
+                - cell "0" [ref=e156]
+                - cell "THC-1 Documented" [ref=e157]
+                - cell "60" [ref=e158]
+                - cell "Automated Public Review" [ref=e159]
+                - cell "4/30/2026" [ref=e160]
+                - cell "Clear, self-aware distinction between what THC is and is not (explicit non-goals documented)" [ref=e161]
+                - cell "Setup path is missing or unclear." [ref=e162]
+                - cell "Open" [ref=e163]:
+                  - link "Open" [ref=e164] [cursor=pointer]:
+                    - /url: /reports/47be3a4d-03ae-4acc-8765-aaa65ed61329
+              - row "Vel-Labs thc-methodology 0 THC-1 Documented 60 Automated Public Review 4/29/2026 README evidence is visible at the reviewed commit. Setup path is missing or unclear. Open" [ref=e165]:
+                - cell "Vel-Labs" [ref=e166]:
+                  - link "Vel-Labs" [ref=e167] [cursor=pointer]:
+                    - /url: https://github.com/Vel-Labs
+                - cell "thc-methodology" [ref=e168]:
+                  - link "thc-methodology" [ref=e169] [cursor=pointer]:
+                    - /url: https://github.com/Vel-Labs/thc-methodology
+                - cell "0" [ref=e170]
+                - cell "THC-1 Documented" [ref=e171]
+                - cell "60" [ref=e172]
+                - cell "Automated Public Review" [ref=e173]
+                - cell "4/29/2026" [ref=e174]
+                - cell "README evidence is visible at the reviewed commit." [ref=e175]
+                - cell "Setup path is missing or unclear." [ref=e176]
+                - cell "Open" [ref=e177]:
+                  - link "Open" [ref=e178] [cursor=pointer]:
+                    - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+  - button "Open Next.js Dev Tools" [ref=e184] [cursor=pointer]:
+    - img [ref=e185]

@@ -1,0 +1,35 @@
+- generic [ref=e1]:
+  - main [ref=e225]:
+    - generic [ref=e226]:
+      - generic [ref=e227]:
+        - generic [ref=e228]
+        - generic [ref=e231]: ▓▒░ public registry // top 10 boards ░▒▓
+        - generic [ref=e232]
+      - generic [ref=e247]:
+        - generic [ref=e248]: Public GitHub repository URL
+        - generic [ref=e249]
+        - button "Review This Repo >_" [ref=e252]
+    - generic [ref=e253]:
+      - complementary [ref=e254]:
+        - generic [ref=e255]
+        - paragraph [ref=e259]: Leaderboard Folder //
+        - navigation [ref=e260]
+        - generic [ref=e268]: Public receipts only. Clout is not a score category.
+      - generic [ref=e271]:
+        - generic [ref=e272]
+        - complementary [ref=e390]
+    - generic [ref=e403]:
+      - generic [ref=e404]: ☠
+      - generic [ref=e405]:
+        - text: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+        - link "Vel Labs GitHub" [ref=e406]:
+          - /url: https://github.com/Vel-Labs
+        - text: ·
+        - link "velcrafting GitHub" [ref=e407]:
+          - /url: https://github.com/velcrafting
+        - text: ·
+        - link "velcrafting X" [ref=e408]:
+          - /url: https://x.com/Velcrafting
+  - button "Open Next.js Dev Tools" [ref=e221] [cursor=pointer]:
+    - img [ref=e222]
+  - alert [ref=e409]

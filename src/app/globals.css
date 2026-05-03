@@ -143,3 +143,62 @@ body {
     radial-gradient(circle at 75% 15%, rgba(236, 72, 153, 0.18), transparent 30%);
   background-size: 28px 28px, 28px 28px, 100% 100%;
 }
+
+.dank-rainbow-fill {
+  animation: dank-rainbow-surge 1.15s linear infinite;
+  background-size: 240% 100%;
+  box-shadow:
+    0 0 10px rgba(190, 242, 100, 0.6),
+    0 0 18px rgba(236, 72, 153, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.dank-rainbow-fill::after {
+  animation: dank-spark-sweep 1.45s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+  content: "";
+  inset: 0;
+  position: absolute;
+  transform: translateX(-120%);
+}
+
+@keyframes dank-rainbow-surge {
+  0% {
+    background-position: 0% 50%;
+    filter: saturate(1.1);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: saturate(1.8) brightness(1.15);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: saturate(1.1);
+  }
+}
+
+@keyframes dank-spark-sweep {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.8;
+  }
+  70% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dank-rainbow-fill,
+  .dank-rainbow-fill::after {
+    animation: none;
+  }
+}

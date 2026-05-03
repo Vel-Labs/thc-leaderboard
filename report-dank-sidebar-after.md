@@ -1,0 +1,36 @@
+- generic [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e13]
+        - generic [ref=e16]: ▓▒░ audit signal // public repo state // trust no lore ░▒▓
+        - generic [ref=e17]
+      - generic [ref=e32]:
+        - generic [ref=e33]: Public GitHub repository URL
+        - generic [ref=e34]
+        - button "Review This Repo >_" [ref=e37]
+    - generic [ref=e38]:
+      - complementary [ref=e39]:
+        - generic [ref=e40]
+        - paragraph [ref=e44]: Report Folder //
+        - navigation [ref=e45]
+        - generic [ref=e78]: Independent review of public repo state. Local artifacts are input, not truth.
+        - generic [ref=e79]
+      - generic [ref=e82]:
+        - generic [ref=e83]
+        - complementary [ref=e217]
+    - generic [ref=e249]:
+      - generic [ref=e250]: ☠
+      - generic [ref=e251]:
+        - text: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+        - link "Vel Labs GitHub" [ref=e252]:
+          - /url: https://github.com/Vel-Labs
+        - text: ·
+        - link "velcrafting GitHub" [ref=e253]:
+          - /url: https://github.com/velcrafting
+        - text: ·
+        - link "velcrafting X" [ref=e254]:
+          - /url: https://x.com/Velcrafting
+  - button "Open Next.js Dev Tools" [ref=e260] [cursor=pointer]:
+    - img [ref=e261]
+  - alert [ref=e264]

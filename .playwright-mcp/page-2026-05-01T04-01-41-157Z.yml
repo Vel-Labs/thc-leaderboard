@@ -1,0 +1,232 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: ☼
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: THC LEADERBOARD
+          - generic [ref=e9]: Truth · Hardening · Clarity
+        - generic [ref=e10]:
+          - generic [ref=e11]: Analyze a public GitHub repository
+          - generic [ref=e12]: ↘
+        - generic [ref=e14]:
+          - button "Clarity" [pressed] [ref=e15]
+          - button "Dank" [ref=e16]
+      - generic [ref=e19]:
+        - generic [ref=e20]: Public GitHub repository URL
+        - generic [ref=e21]:
+          - generic [ref=e22]: ↗
+          - textbox "Public GitHub repository URL" [ref=e23]:
+            - /placeholder: https://github.com/owner/repo
+        - button "Start Review ->" [ref=e24]
+    - generic [ref=e25]:
+      - complementary [ref=e26]:
+        - generic [ref=e27]:
+          - link "Audit" [ref=e28] [cursor=pointer]:
+            - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+          - link "Leaderboard" [ref=e29] [cursor=pointer]:
+            - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc/leaderboard
+        - generic:
+          - img
+        - paragraph [ref=e31]:
+          - generic [ref=e32]: □
+          - text: Report Folder
+        - generic [ref=e33]:
+          - generic [ref=e34]: □
+          - generic [ref=e35]: thc-methodology
+        - navigation [ref=e36]:
+          - link "▣ Overview" [ref=e37] [cursor=pointer]:
+            - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc
+            - generic [ref=e38]: ▣
+            - generic [ref=e40]: Overview
+          - link "▤ Evidence" [ref=e41] [cursor=pointer]:
+            - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc/evidence
+            - generic [ref=e42]: ▤
+            - generic [ref=e44]: Evidence
+          - link "△ Caps Applied" [ref=e45] [cursor=pointer]:
+            - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc/caps-applied
+            - generic [ref=e46]: △
+            - generic [ref=e48]: Caps Applied
+          - link "⚠ Hidden Trust" [ref=e49] [cursor=pointer]:
+            - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc/hidden-trust
+            - generic [ref=e50]: ⚠
+            - generic [ref=e52]: Hidden Trust
+          - link "▣ Local Artifacts" [ref=e53] [cursor=pointer]:
+            - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc/local-artifacts
+            - generic [ref=e54]: ▣
+            - generic [ref=e56]: Local Artifacts
+          - link "▤ Next Actions" [ref=e57] [cursor=pointer]:
+            - /url: /reports/8d92ac69-d73c-4c7b-a43a-5fb02d5e1ecc/next-actions
+            - generic [ref=e58]: ▤
+            - generic [ref=e60]: Next Actions
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - generic:
+              - img
+            - text: Independent review of public repository state. Local artifacts are input, not truth.
+          - generic [ref=e63]:
+            - paragraph [ref=e64]: Rubric Version
+            - paragraph [ref=e65]: 0.2.0
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - heading "thc-methodology" [level=1] [ref=e71]
+            - link "https://github.com/Vel-Labs/thc-methodology" [ref=e72] [cursor=pointer]:
+              - /url: https://github.com/Vel-Labs/thc-methodology
+            - generic [ref=e73]:
+              - generic [ref=e74]:
+                - paragraph [ref=e75]: Reviewed Commit
+                - paragraph [ref=e76]: 617d28cbf2806c54c3948a825551
+              - generic [ref=e77]:
+                - paragraph [ref=e78]: Generated
+                - paragraph [ref=e79]: 4/29/2026, 5:21:14 PM
+              - generic [ref=e80]:
+                - paragraph [ref=e81]: Rubric Version
+                - paragraph [ref=e82]: 0.2.0
+            - generic [ref=e83]:
+              - text: Automated
+              - text: Public Review
+              - generic:
+                - img
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - paragraph [ref=e87]: THC Level
+              - generic [ref=e88]: THC-1
+              - paragraph [ref=e89]: Documented
+              - generic [ref=e90]: ✓
+            - generic [ref=e91]:
+              - paragraph [ref=e92]: Total Score
+              - generic [ref=e93]: 60 / 100
+              - generic [ref=e97]:
+                - generic [ref=e98]: "0"
+                - generic [ref=e99]: "25"
+                - generic [ref=e100]: "50"
+                - generic [ref=e101]: "75"
+                - generic [ref=e102]: "100"
+            - generic [ref=e103]:
+              - paragraph [ref=e104]: Confidence
+              - generic [ref=e105]: 68%
+              - paragraph [ref=e106]: medium
+          - generic [ref=e111]:
+            - generic [ref=e113]:
+              - generic [ref=e114]: Truth
+              - generic [ref=e115]: 30 / 30
+            - generic [ref=e119]:
+              - generic [ref=e120]: Hardening
+              - generic [ref=e121]: 11 / 35
+            - generic [ref=e125]:
+              - generic [ref=e126]: Clarity
+              - generic [ref=e127]: 14 / 25
+            - generic [ref=e131]:
+              - generic [ref=e132]: Audit History
+              - generic [ref=e133]: 5 / 10
+          - generic [ref=e136]:
+            - generic [ref=e137]:
+              - heading "Evidence" [level=2] [ref=e138]
+              - table [ref=e139]:
+                - rowgroup [ref=e146]:
+                  - row "Category Evidence Status Impact Notes" [ref=e147]:
+                    - columnheader "Category" [ref=e148]
+                    - columnheader "Evidence" [ref=e149]
+                    - columnheader "Status" [ref=e150]
+                    - columnheader "Impact" [ref=e151]
+                    - columnheader "Notes" [ref=e152]
+                - rowgroup [ref=e153]:
+                  - row "Truth README.md Found +4 Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims." [ref=e154]:
+                    - cell "Truth" [ref=e155]:
+                      - generic [ref=e156]: Truth
+                    - cell "README.md" [ref=e157]:
+                      - generic [ref=e158]: README.md
+                    - cell "Found" [ref=e159]
+                    - cell "+4" [ref=e160]
+                    - cell "Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims." [ref=e161]:
+                      - generic [ref=e162]: Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims.
+                  - row "Truth AGENTS.md Partial +4 Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims." [ref=e163]:
+                    - cell "Truth" [ref=e164]:
+                      - generic [ref=e165]: Truth
+                    - cell "AGENTS.md" [ref=e166]:
+                      - generic [ref=e167]: AGENTS.md
+                    - cell "Partial" [ref=e168]
+                    - cell "+4" [ref=e169]
+                    - cell "Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims." [ref=e170]:
+                      - generic [ref=e171]: Scored from explicit purpose, source-of-truth, assumptions, boundaries, and evidence claims.
+                  - row "Hardening No direct evidence found in inspected candidate files. Missing +1 Scored from visible validation, CI, failure-mode, environment, and automation guardrail evidence." [ref=e172]:
+                    - cell "Hardening" [ref=e173]:
+                      - generic [ref=e174]: Hardening
+                    - cell "No direct evidence found in inspected candidate files." [ref=e175]:
+                      - generic [ref=e176]: No direct evidence found in inspected candidate files.
+                    - cell "Missing" [ref=e177]
+                    - cell "+1" [ref=e178]
+                    - cell "Scored from visible validation, CI, failure-mode, environment, and automation guardrail evidence." [ref=e179]:
+                      - generic [ref=e180]: Scored from visible validation, CI, failure-mode, environment, and automation guardrail evidence.
+                  - row "Clarity README.md Found +2 Scored from setup, contributor, operator, recovery, and navigation clarity." [ref=e181]:
+                    - cell "Clarity" [ref=e182]:
+                      - generic [ref=e183]: Clarity
+                    - cell "README.md" [ref=e184]:
+                      - generic [ref=e185]: README.md
+                    - cell "Found" [ref=e186]
+                    - cell "+2" [ref=e187]
+                    - cell "Scored from setup, contributor, operator, recovery, and navigation clarity." [ref=e188]:
+                      - generic [ref=e189]: Scored from setup, contributor, operator, recovery, and navigation clarity.
+            - generic [ref=e190]:
+              - heading "Hidden-Trust Findings" [level=2] [ref=e191]
+              - list [ref=e192]:
+                - listitem [ref=e193]: ● Setup path is missing or unclear.
+                - listitem [ref=e194]: ● Validation path is not visible.
+                - listitem [ref=e195]: ● No local THC artifacts were found at docs/thc/.
+              - paragraph [ref=e196]: "Impact: Moderate"
+          - generic [ref=e197]:
+            - generic [ref=e198]:
+              - heading "Next Actions" [level=2] [ref=e199]
+              - generic [ref=e200]:
+                - generic [ref=e201]:
+                  - 'checkbox "Resolve level cap: Missing setup path." [ref=e202]'
+                  - generic [ref=e203]: "Resolve level cap: Missing setup path."
+                - generic [ref=e204]:
+                  - 'checkbox "Resolve level cap: No visible validation path." [ref=e205]'
+                  - generic [ref=e206]: "Resolve level cap: No visible validation path."
+                - generic [ref=e207]:
+                  - checkbox "Document a fresh-clone setup and validation path." [ref=e208]
+                  - generic [ref=e209]: Document a fresh-clone setup and validation path.
+                - generic [ref=e210]:
+                  - checkbox "Add deterministic validation commands and expose them in docs or package scripts." [ref=e211]
+                  - generic [ref=e212]: Add deterministic validation commands and expose them in docs or package scripts.
+            - generic [ref=e213]:
+              - heading "Local Artifact Status" [level=2] [ref=e214]
+              - list [ref=e215]:
+                - listitem [ref=e216]: "State: absent"
+                - listitem [ref=e217]: "Files: none"
+                - listitem [ref=e218]: No local THC artifacts were found at docs/thc/.
+        - complementary [ref=e219]:
+          - generic [ref=e220]:
+            - paragraph [ref=e222]: At-a-Glance
+            - list [ref=e223]:
+              - listitem [ref=e224]:
+                - generic [ref=e225]: Public repo inspected
+                - generic [ref=e226]: ✓
+              - listitem [ref=e227]:
+                - generic [ref=e228]: No code execution
+                - generic [ref=e229]: ✓
+              - listitem [ref=e230]:
+                - generic [ref=e231]: No private access
+                - generic [ref=e232]: ✓
+              - listitem [ref=e233]:
+                - generic [ref=e234]: Deterministic scoring
+                - generic [ref=e235]: ✓
+              - listitem [ref=e236]:
+                - generic [ref=e237]: Caps enforced
+                - generic [ref=e238]: ✓
+          - generic [ref=e239]:
+            - paragraph [ref=e241]: Caps Applied
+            - list [ref=e242]:
+              - listitem [ref=e243]: "-1 pts · Missing setup path"
+              - listitem [ref=e244]: "-2 pts · No visible validation path"
+          - generic [ref=e245]:
+            - paragraph [ref=e247]: Evidence Note
+            - text: Evidence is inferred from public state. No private access used.
+    - generic [ref=e248]:
+      - generic [ref=e249]: i
+      - generic [ref=e250]: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+  - button "Open Next.js Dev Tools" [ref=e256] [cursor=pointer]:
+    - img [ref=e257]
+  - alert [ref=e260]

@@ -64,8 +64,8 @@ export function DankMetric({ title, value, sub }: { title: string; value: string
       <p className="text-xs uppercase tracking-widest text-pink-400">{title}</p>
       <p className="mt-1 text-4xl font-black text-lime-300 drop-shadow-[0_0_10px_rgba(190,242,100,0.55)] 2xl:text-5xl">{value}</p>
       <p className="mt-1 uppercase text-pink-300">{sub}</p>
-      <div className="mt-2 h-2 border border-lime-300/25 bg-black">
-        <div className="h-full bg-gradient-to-r from-pink-500 via-lime-300 to-cyan-300" style={{ width: `${percent}%` }} />
+      <div className="mt-2 h-2 overflow-hidden border border-lime-300/25 bg-black">
+        <div className="dank-rainbow-fill h-full bg-gradient-to-r from-pink-500 via-lime-300 to-cyan-300" style={{ width: `${percent}%` }} />
       </div>
       {title === "Vibe Check" ? (
         <svg className="absolute bottom-2 right-3 h-8 w-16 text-pink-400" viewBox="0 0 64 32" aria-hidden>
@@ -84,8 +84,8 @@ export function DankMiniScore({ label, value, max }: { label: string; value: num
         <span>{value}/{max}</span>
       </div>
       <p className="mt-1 text-2xl font-black text-lime-300 2xl:text-3xl">{value}</p>
-      <div className="mt-2 h-2 border border-lime-300/30 bg-black">
-        <div className="h-full bg-gradient-to-r from-lime-300 to-pink-400" style={{ width: `${Math.round((value / max) * 100)}%` }} />
+      <div className="mt-2 h-2 overflow-hidden border border-lime-300/30 bg-black">
+        <div className="dank-rainbow-fill h-full bg-gradient-to-r from-lime-300 via-cyan-300 to-pink-400" style={{ width: `${Math.round((value / max) * 100)}%` }} />
       </div>
     </div>
   );
@@ -127,7 +127,7 @@ export function CheckList({ items }: { items: string[] }) {
 }
 
 export function EvidenceTable({ report, mode }: { report: THCReport; mode: "clarity" | "dank" }) {
-  const rows = report.evidenceTable.flatMap((row) => row.evidence.split(", ").map((evidence) => ({ category: row.category, evidence, score: row.score, notes: row.notes }))).slice(0, 4);
+  const rows = report.evidenceTable.flatMap((row) => row.evidence.split(", ").map((evidence) => ({ category: row.category, evidence, score: row.score, notes: row.notes }))).slice(0, mode === "dank" ? 3 : 4);
   return (
     <section id="evidence" className={mode === "dank" ? "min-h-0 overflow-x-auto overflow-y-hidden border border-lime-300/30 bg-black/80 p-3 lg:overflow-hidden" : "min-h-0 overflow-x-auto overflow-y-hidden border border-stone-300 bg-white/65 p-3 lg:overflow-hidden"}>
       <h2 className={mode === "dank" ? "mb-2 text-base font-black uppercase text-lime-300" : "mb-2 font-serif text-lg font-semibold"}>{mode === "dank" ? "Receipts" : "Evidence"}</h2>
@@ -194,7 +194,7 @@ export function NextActions({ report, mode }: { report: THCReport; mode: "clarit
         {report.nextActions.slice(0, 4).map((action) => (
           <label key={action} className="flex min-w-0 gap-2">
             <input type="checkbox" readOnly className="mt-0.5 shrink-0" />
-            <span className="truncate">{action}</span>
+            <span className="line-clamp-2 break-words">{action}</span>
           </label>
         ))}
       </div>
@@ -221,7 +221,35 @@ export function Disclaimer({ mode }: { mode: "clarity" | "dank" }) {
       <span className={mode === "dank" ? "grid h-7 w-7 shrink-0 place-items-center border border-pink-500 text-pink-400" : "grid h-7 w-7 shrink-0 place-items-center rounded-full border border-stone-400 text-stone-600"} aria-hidden>
         {mode === "dank" ? "☠" : "i"}
       </span>
-      <span>{invariantReportLabels.disclaimer}</span>
+      <span className="leading-5">
+        {invariantReportLabels.disclaimer}{" "}
+        <a
+          className={mode === "dank" ? "underline decoration-pink-500/60 underline-offset-2 hover:text-lime-200" : "underline decoration-stone-400 underline-offset-2 hover:text-emerald-800"}
+          href="https://github.com/Vel-Labs"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Vel Labs GitHub
+        </a>
+        {" · "}
+        <a
+          className={mode === "dank" ? "underline decoration-pink-500/60 underline-offset-2 hover:text-lime-200" : "underline decoration-stone-400 underline-offset-2 hover:text-emerald-800"}
+          href="https://github.com/velcrafting"
+          rel="noreferrer"
+          target="_blank"
+        >
+          velcrafting GitHub
+        </a>
+        {" · "}
+        <a
+          className={mode === "dank" ? "underline decoration-pink-500/60 underline-offset-2 hover:text-lime-200" : "underline decoration-stone-400 underline-offset-2 hover:text-emerald-800"}
+          href="https://x.com/Velcrafting"
+          rel="noreferrer"
+          target="_blank"
+        >
+          velcrafting X
+        </a>
+      </span>
     </footer>
   );
 }

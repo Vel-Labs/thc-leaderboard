@@ -1,0 +1,193 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: ☼
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: THC LEADERBOARD
+          - generic [ref=e9]: Truth · Hardening · Clarity
+        - generic [ref=e10]:
+          - generic [ref=e11]: Analyze a public GitHub repository
+          - generic [ref=e12]: ↘
+        - generic [ref=e13]:
+          - link "Sign in with GitHub" [ref=e14] [cursor=pointer]:
+            - /url: /auth/github
+            - generic [ref=e15]: ◆
+            - generic [ref=e16]: Sign in with GitHub
+          - generic [ref=e17]:
+            - button "Clarity" [pressed] [ref=e18]
+            - button "Dank" [ref=e19]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Public GitHub repository URL
+        - generic [ref=e24]:
+          - generic [ref=e25]: ↗
+          - textbox "Public GitHub repository URL" [ref=e26]:
+            - /placeholder: https://github.com/owner/repo
+        - button "Start Review ->" [ref=e27]
+    - generic [ref=e28]:
+      - complementary [ref=e29]:
+        - generic [ref=e30]:
+          - link "About" [ref=e31] [cursor=pointer]:
+            - /url: /
+            - text: About
+          - link "Audit" [ref=e33] [cursor=pointer]:
+            - /url: /audit
+            - text: Audit
+          - link "Leaderboard" [ref=e35] [cursor=pointer]:
+            - /url: /leaderboard
+            - text: Leaderboard
+        - paragraph [ref=e37]:
+          - generic [ref=e38]: □
+          - text: About Folder
+        - generic [ref=e39]: thc-leaderboard
+        - navigation [ref=e40]:
+          - link "Desk Dashboard" [ref=e41] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e42]: Desk
+            - generic [ref=e43]: Dashboard
+          - link "Methodology Concepts" [ref=e44] [cursor=pointer]:
+            - /url: /about/methodology
+            - generic [ref=e45]: Methodology
+            - generic [ref=e46]: Concepts
+          - link "Self-Audit Move up" [ref=e47] [cursor=pointer]:
+            - /url: /about/self-audit
+            - generic [ref=e48]: Self-Audit
+            - generic [ref=e49]: Move up
+          - link "Evidence Examples Good / weak" [ref=e50] [cursor=pointer]:
+            - /url: /about/evidence
+            - generic [ref=e51]: Evidence Examples
+            - generic [ref=e52]: Good / weak
+          - link "Trust Boundary Verify" [ref=e53] [cursor=pointer]:
+            - /url: /about/trust-boundary
+            - generic [ref=e54]: Trust Boundary
+            - generic [ref=e55]: Verify
+          - link "Reports Recent" [ref=e56] [cursor=pointer]:
+            - /url: /about/reports
+            - generic [ref=e57]: Reports
+            - generic [ref=e58]: Recent
+        - generic [ref=e59]: Public review registry. Local artifacts are input, not truth.
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - paragraph [ref=e65]: About folder page
+            - heading "Review Desk" [level=1] [ref=e66]
+            - paragraph [ref=e67]: A compact dashboard for how the app reviews public repositories, what THC measures, and what recent reports look like.
+            - generic [ref=e68]:
+              - text: Automated
+              - text: Public Review
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - article [ref=e73]:
+                - paragraph [ref=e74]: Input
+                - paragraph [ref=e75]: GitHub URL
+                - paragraph [ref=e76]: public repository root only
+              - article [ref=e77]:
+                - paragraph [ref=e78]: Review State
+                - paragraph [ref=e79]: Commit SHA
+                - paragraph [ref=e80]: resolved before scoring
+              - article [ref=e81]:
+                - paragraph [ref=e82]: Reasoning
+                - paragraph [ref=e83]: MiniMax
+                - paragraph [ref=e84]: bounded evidence notes
+              - article [ref=e85]:
+                - paragraph [ref=e86]: Authority
+                - paragraph [ref=e87]: Code
+                - paragraph [ref=e88]: score, caps, label
+            - generic [ref=e89]:
+              - generic [ref=e90]:
+                - heading "Review Flow" [level=2] [ref=e91]
+                - generic [ref=e92]:
+                  - generic [ref=e93]:
+                    - generic [ref=e94]: "1"
+                    - generic [ref=e95]:
+                      - generic [ref=e96]: Validate URL
+                      - generic [ref=e97]: Only public GitHub repository roots are accepted.
+                  - generic [ref=e98]:
+                    - generic [ref=e99]: "2"
+                    - generic [ref=e100]:
+                      - generic [ref=e101]: Inspect Files
+                      - generic [ref=e102]: README, package/build files, docs, tests, CI, changelog, agent instructions, docs/thc artifacts.
+                  - generic [ref=e103]:
+                    - generic [ref=e104]: "3"
+                    - generic [ref=e105]:
+                      - generic [ref=e106]: Generate Notes
+                      - generic [ref=e107]: MiniMax receives bounded evidence context for section analysis only.
+                  - generic [ref=e108]:
+                    - generic [ref=e109]: "4"
+                    - generic [ref=e110]:
+                      - generic [ref=e111]: Apply THC Rules
+                      - generic [ref=e112]: Scorecard totals and level caps are computed deterministically after evidence review.
+              - generic [ref=e113]:
+                - generic [ref=e114]:
+                  - generic [ref=e115]:
+                    - heading "Recent Reports" [level=2] [ref=e116]
+                    - link "All" [ref=e117] [cursor=pointer]:
+                      - /url: /leaderboard
+                  - link "Vel-Labs/ClearIntent THC-4 Reproducible 85" [ref=e119] [cursor=pointer]:
+                    - /url: /reports/a68b995b-8a73-4ea2-8e8e-eed9e9518e85
+                    - generic [ref=e120]:
+                      - generic [ref=e121]: Vel-Labs/ClearIntent
+                      - generic [ref=e122]: THC-4 Reproducible
+                    - generic [ref=e123]: "85"
+                - generic [ref=e124]:
+                  - heading "THC Methodology" [level=2] [ref=e125]
+                  - paragraph [ref=e126]: Truth, Hardening, and Clarity are scored from public evidence. Levels are mapped from score, then deterministic caps can lower the recommendation.
+                  - generic [ref=e127]:
+                    - article [ref=e128]:
+                      - generic [ref=e129]:
+                        - heading "Truth" [level=3] [ref=e130]
+                        - generic [ref=e131]: Note
+                      - paragraph [ref=e132]: 30 pts
+                    - article [ref=e133]:
+                      - generic [ref=e134]:
+                        - heading "Hardening" [level=3] [ref=e135]
+                        - generic [ref=e136]: Note
+                      - paragraph [ref=e137]: 35 pts
+                    - article [ref=e138]:
+                      - generic [ref=e139]:
+                        - heading "Clarity" [level=3] [ref=e140]
+                        - generic [ref=e141]: Note
+                      - paragraph [ref=e142]: 25 pts
+                    - article [ref=e143]:
+                      - generic [ref=e144]:
+                        - heading "Audit History" [level=3] [ref=e145]
+                        - generic [ref=e146]: Note
+                      - paragraph [ref=e147]: 10 pts
+                - generic [ref=e148]:
+                  - heading "Score Signals" [level=2] [ref=e149]
+                  - generic [ref=e150]:
+                    - article [ref=e151]:
+                      - generic [ref=e152]:
+                        - heading "Strong" [level=3] [ref=e153]
+                        - generic [ref=e154]: Strong
+                      - paragraph [ref=e155]: Public setup, checks, CI, docs, decisions, and current THC provenance.
+                    - article [ref=e156]:
+                      - generic [ref=e157]:
+                        - heading "Needs work" [level=3] [ref=e158]
+                        - generic [ref=e159]: Improve
+                      - paragraph [ref=e160]: Claims exist, but freshness, commands, or handoff are incomplete.
+                    - article [ref=e161]:
+                      - generic [ref=e162]:
+                        - heading "Absent" [level=3] [ref=e163]
+                        - generic [ref=e164]: Absent
+                      - paragraph [ref=e165]: No public evidence path, private-only proof, or unverifiable claims.
+                    - article [ref=e166]:
+                      - generic [ref=e167]:
+                        - heading "Neutral" [level=3] [ref=e168]
+                        - generic [ref=e169]: Note
+                      - paragraph [ref=e170]: Stars, popularity, and polish are display context only.
+        - complementary [ref=e171]:
+          - generic [ref=e172]:
+            - paragraph [ref=e174]: Review Boundary
+            - text: Public files inspected. No private access. No code execution. Deterministic scoring remains authoritative.
+          - generic [ref=e175]:
+            - paragraph [ref=e177]: Cadence Idea
+            - text: Manual audits capture now. Scheduled re-reviews should run from a queue, dedupe by repo, and save each reviewed commit.
+          - generic [ref=e178]:
+            - paragraph [ref=e180]: Download Path
+            - text: Report pages expose JSON download now. Markdown/PDF export can layer on the same report payload later.
+    - generic [ref=e181]:
+      - generic [ref=e182]: i
+      - generic [ref=e183]: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+  - button "Open Next.js Dev Tools" [ref=e189] [cursor=pointer]:
+    - img [ref=e190]

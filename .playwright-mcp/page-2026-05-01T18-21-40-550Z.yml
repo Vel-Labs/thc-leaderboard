@@ -1,0 +1,213 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: ☼
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: THC LEADERBOARD
+          - generic [ref=e9]: Truth · Hardening · Clarity
+        - generic [ref=e10]:
+          - generic [ref=e11]: Analyze a public GitHub repository
+          - generic [ref=e12]: ↘
+        - generic [ref=e13]:
+          - link "Sign in with GitHub" [ref=e14] [cursor=pointer]:
+            - /url: /auth/github
+            - generic [ref=e15]: ◆
+            - generic [ref=e16]: Sign in with GitHub
+          - generic [ref=e17]:
+            - button "Clarity" [pressed] [ref=e18]
+            - button "Dank" [ref=e19]
+      - generic [ref=e22]:
+        - generic [ref=e23]: Public GitHub repository URL
+        - generic [ref=e24]:
+          - generic [ref=e25]: ↗
+          - textbox "Public GitHub repository URL" [ref=e26]:
+            - /placeholder: https://github.com/owner/repo
+        - button "Start Review ->" [ref=e27]
+    - generic [ref=e28]:
+      - complementary [ref=e29]:
+        - generic [ref=e30]:
+          - link "About" [ref=e31] [cursor=pointer]:
+            - /url: /
+            - text: About
+          - link "Audit" [ref=e33] [cursor=pointer]:
+            - /url: /audit
+            - text: Audit
+          - link "Leaderboard" [ref=e35] [cursor=pointer]:
+            - /url: /leaderboard
+            - text: Leaderboard
+        - paragraph [ref=e37]:
+          - generic [ref=e38]: □
+          - text: About Folder
+        - generic [ref=e39]: thc-leaderboard
+        - navigation [ref=e40]:
+          - link "Desk Dashboard" [ref=e41] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e42]: Desk
+            - generic [ref=e43]: Dashboard
+          - link "Methodology Concepts" [ref=e44] [cursor=pointer]:
+            - /url: /about/methodology
+            - generic [ref=e45]: Methodology
+            - generic [ref=e46]: Concepts
+          - link "Self-Audit Move up" [ref=e47] [cursor=pointer]:
+            - /url: /about/self-audit
+            - generic [ref=e48]: Self-Audit
+            - generic [ref=e49]: Move up
+          - link "Evidence Examples Good / weak" [ref=e50] [cursor=pointer]:
+            - /url: /about/evidence
+            - generic [ref=e51]: Evidence Examples
+            - generic [ref=e52]: Good / weak
+          - link "Trust Boundary Verify" [ref=e53] [cursor=pointer]:
+            - /url: /about/trust-boundary
+            - generic [ref=e54]: Trust Boundary
+            - generic [ref=e55]: Verify
+          - link "Reports Recent" [ref=e56] [cursor=pointer]:
+            - /url: /about/reports
+            - generic [ref=e57]: Reports
+            - generic [ref=e58]: Recent
+        - generic [ref=e59]: Public review registry. Local artifacts are input, not truth.
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - paragraph [ref=e65]: Methodology folder page
+            - heading "THC Methodology" [level=1] [ref=e66]
+            - paragraph [ref=e67]: Truth, Hardening, and Clarity are evidence categories. The public level is computed from score, then constrained by deterministic caps.
+            - generic [ref=e68]:
+              - text: Automated
+              - text: Public Review
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - heading "Scorecard" [level=2] [ref=e73]
+              - generic [ref=e74]:
+                - generic [ref=e76]:
+                  - heading "1. Score Categories" [level=3] [ref=e77]
+                  - paragraph [ref=e78]: The base score is built from four documented evidence categories.
+                - generic [ref=e79]:
+                  - article [ref=e80]:
+                    - generic [ref=e81]:
+                      - heading "Truth / 30" [level=3] [ref=e82]
+                      - generic [ref=e83]: Strong
+                    - paragraph [ref=e84]: Explicit claims, public source of truth, boundaries, assumptions, and evidence trail.
+                  - article [ref=e85]:
+                    - generic [ref=e86]:
+                      - heading "Hardening / 35" [level=3] [ref=e87]
+                      - generic [ref=e88]: Strong
+                    - paragraph [ref=e89]: Validation commands, tests, CI, failure modes, environment notes, and guardrails.
+                  - article [ref=e90]:
+                    - generic [ref=e91]:
+                      - heading "Clarity / 25" [level=3] [ref=e92]
+                      - generic [ref=e93]: Improve
+                    - paragraph [ref=e94]: Fresh-clone setup, contributor guidance, operator docs, recovery notes, and navigation.
+                  - article [ref=e95]:
+                    - generic [ref=e96]:
+                      - heading "Audit History / 10" [level=3] [ref=e97]
+                      - generic [ref=e98]: Improve
+                    - paragraph [ref=e99]: Changelog, decisions, known risks, uncertainty, and prior review trail.
+              - generic [ref=e100]:
+                - generic [ref=e102]:
+                  - heading "2. Level Mapping" [level=3] [ref=e103]
+                  - paragraph [ref=e104]: The score maps to a THC level before cap logic is applied.
+                - generic [ref=e105]:
+                  - article [ref=e106]:
+                    - generic [ref=e107]:
+                      - heading "THC-0 Unverified" [level=3] [ref=e108]
+                      - generic [ref=e109]: Absent
+                    - paragraph [ref=e110]: Insufficient public evidence or major trust gaps remain.
+                  - article [ref=e111]:
+                    - generic [ref=e112]:
+                      - heading "THC-1 Documented" [level=3] [ref=e113]
+                      - generic [ref=e114]: Improve
+                    - paragraph [ref=e115]: The repo explains itself, but hardening evidence may still be thin.
+                  - article [ref=e116]:
+                    - generic [ref=e117]:
+                      - heading "THC-2 Hardened" [level=3] [ref=e118]
+                      - generic [ref=e119]: Improve
+                    - paragraph [ref=e120]: Validation and operational guardrails are visible enough to score.
+                  - article [ref=e121]:
+                    - generic [ref=e122]:
+                      - heading "THC-3 Inspectable" [level=3] [ref=e123]
+                      - generic [ref=e124]: Strong
+                    - paragraph [ref=e125]: A reviewer can follow the repo, evidence, and decisions from public state.
+                  - article [ref=e126]:
+                    - generic [ref=e127]:
+                      - heading "THC-4 Reproducible" [level=3] [ref=e128]
+                      - generic [ref=e129]: Strong
+                    - paragraph [ref=e130]: Setup and checks are strong enough for repeatable public review.
+                  - article [ref=e131]:
+                    - generic [ref=e132]:
+                      - heading "THC-5 High-THC" [level=3] [ref=e133]
+                      - generic [ref=e134]: Strong
+                    - paragraph [ref=e135]: High score plus no unresolved cap blockers under the methodology.
+              - generic [ref=e136]:
+                - generic [ref=e138]:
+                  - heading "3. Cap Checks" [level=3] [ref=e139]
+                  - paragraph [ref=e140]: Caps lower the recommended level when evidence is missing, stale, private, or unverifiable.
+                - generic [ref=e141]:
+                  - article [ref=e142]:
+                    - generic [ref=e143]:
+                      - heading "Missing setup path" [level=3] [ref=e144]
+                      - generic [ref=e145]: Absent
+                    - paragraph [ref=e146]: Caps level because reviewers cannot reproduce basic orientation.
+                  - article [ref=e147]:
+                    - generic [ref=e148]:
+                      - heading "No visible validation" [level=3] [ref=e149]
+                      - generic [ref=e150]: Absent
+                    - paragraph [ref=e151]: Caps level when tests/CI/commands are absent or unverifiable.
+                  - article [ref=e152]:
+                    - generic [ref=e153]:
+                      - heading "Stale local artifacts" [level=3] [ref=e154]
+                      - generic [ref=e155]: Improve
+                    - paragraph [ref=e156]: Local THC files point at a different revision than public review.
+                  - article [ref=e157]:
+                    - generic [ref=e158]:
+                      - heading "Private-only proof" [level=3] [ref=e159]
+                      - generic [ref=e160]: Improve
+                    - paragraph [ref=e161]: Private dashboards or maintainer memory cannot earn public score credit.
+            - generic [ref=e162]:
+              - generic [ref=e163]:
+                - heading "Evidence Color Key" [level=2] [ref=e164]
+                - generic [ref=e165]:
+                  - generic [ref=e166]:
+                    - generic [ref=e167]: Strong
+                    - generic [ref=e168]: Good public evidence.
+                  - generic [ref=e169]:
+                    - generic [ref=e170]: Improve
+                    - generic [ref=e171]: Partial, stale, or needs tightening.
+                  - generic [ref=e172]:
+                    - generic [ref=e173]: Absent
+                    - generic [ref=e174]: Missing, private, unverifiable, or unsafe to credit.
+              - group [ref=e175]:
+                - generic "× Score is not certification Absent" [ref=e176] [cursor=pointer]:
+                  - generic "Click to expand" [ref=e177]: ×
+                  - text: Score is not certification
+                  - generic [ref=e178]: Absent
+              - group [ref=e179]:
+                - generic "△ Caps are deterministic Improve" [ref=e180] [cursor=pointer]:
+                  - generic "Click to expand" [ref=e181]: △
+                  - text: Caps are deterministic
+                  - generic [ref=e182]: Improve
+              - group [ref=e183]:
+                - generic "× Popularity does not count Absent" [ref=e184] [cursor=pointer]:
+                  - generic "Click to expand" [ref=e185]: ×
+                  - text: Popularity does not count
+                  - generic [ref=e186]: Absent
+              - group [ref=e187]:
+                - generic "✓ Strong public evidence compounds Strong" [ref=e188] [cursor=pointer]:
+                  - generic "Click to expand" [ref=e189]: ✓
+                  - text: Strong public evidence compounds
+                  - generic [ref=e190]: Strong
+        - complementary [ref=e191]:
+          - generic [ref=e192]:
+            - paragraph [ref=e194]: Review Boundary
+            - text: Public files inspected. No private access. No code execution. Deterministic scoring remains authoritative.
+          - generic [ref=e195]:
+            - paragraph [ref=e197]: Cadence Idea
+            - text: Manual audits capture now. Scheduled re-reviews should run from a queue, dedupe by repo, and save each reviewed commit.
+          - generic [ref=e198]:
+            - paragraph [ref=e200]: Download Path
+            - text: Report pages expose JSON download now. Markdown/PDF export can layer on the same report payload later.
+    - generic [ref=e201]:
+      - generic [ref=e202]: i
+      - generic [ref=e203]: This is an automated public review artifact, not certification, security approval, production readiness, Vel Labs endorsement, or a reliability guarantee.
+  - button "Open Next.js Dev Tools" [ref=e209] [cursor=pointer]:
+    - img [ref=e210]
