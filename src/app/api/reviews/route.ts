@@ -1,4 +1,5 @@
 import { authorizeReviewSubmission, ReviewSubmissionError } from "@/lib/review-submissions";
+import { assertJsonRequest, RequestGuardError } from "@/lib/http-guards";
 import { createPublicReview } from "@/lib/thc/review";
 import { reviewRequestSchema } from "@/lib/thc/schema";
 
@@ -7,6 +8,7 @@ export const maxDuration = 45;
 
 export async function POST(request: Request) {
   try {
+    assertJsonRequest(request, 2_048);
     const body = await request.json();
     const parsed = reviewRequestSchema.safeParse(body);
     if (!parsed.success) {
@@ -18,7 +20,7 @@ export async function POST(request: Request) {
     return Response.json({ reportId: report.id, report });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Review failed.";
-    const status = error instanceof ReviewSubmissionError ? error.status : statusForError(message);
+    const status = error instanceof ReviewSubmissionError || error instanceof RequestGuardError ? error.status : statusForError(message);
     return Response.json({ error: message }, { status });
   }
 }

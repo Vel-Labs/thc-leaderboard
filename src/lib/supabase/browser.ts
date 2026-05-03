@@ -1,6 +1,7 @@
 "use client";
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { browserAuthPolicy } from "./auth-policy";
 
 let browserClient: SupabaseClient | null = null;
 
@@ -10,11 +11,7 @@ export function getBrowserSupabaseClient() {
   if (!url || !publishableKey) return null;
 
   browserClient ??= createClient(url, publishableKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-    },
+    auth: browserAuthPolicy,
   });
 
   return browserClient;

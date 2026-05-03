@@ -3,12 +3,14 @@ import { z } from "zod";
 const publicSupabaseEnvSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional().or(z.literal("")),
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1).optional().or(z.literal("")),
+  NEXT_PUBLIC_SITE_URL: z.string().url().optional().or(z.literal("")),
 });
 
 const serverSupabaseEnvSchema = publicSupabaseEnvSchema.extend({
   SUPABASE_SECRET_KEY: z.string().min(1).optional().or(z.literal("")),
   THC_STORAGE_DRIVER: z.enum(["file", "supabase"]).default("file"),
   THC_REVIEW_WORKER_SHARED_SECRET: z.string().min(24).optional().or(z.literal("")),
+  THC_SITE_URL: z.string().url().optional().or(z.literal("")),
 });
 
 export type SupabaseRuntimeConfig = {
@@ -18,6 +20,7 @@ export type SupabaseRuntimeConfig = {
   publishableKey?: string;
   secretKey?: string;
   workerSharedSecret?: string;
+  siteUrl?: string;
 };
 
 export function readSupabaseRuntimeConfig(env = process.env): SupabaseRuntimeConfig {
@@ -26,6 +29,7 @@ export function readSupabaseRuntimeConfig(env = process.env): SupabaseRuntimeCon
   const publishableKey = normalize(parsed.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
   const secretKey = normalize(parsed.SUPABASE_SECRET_KEY);
   const workerSharedSecret = normalize(parsed.THC_REVIEW_WORKER_SHARED_SECRET);
+  const siteUrl = normalize(parsed.THC_SITE_URL) ?? normalize(parsed.NEXT_PUBLIC_SITE_URL);
   const enabled = Boolean(url && publishableKey);
 
   if (Boolean(url) !== Boolean(publishableKey)) {
@@ -43,6 +47,7 @@ export function readSupabaseRuntimeConfig(env = process.env): SupabaseRuntimeCon
     publishableKey,
     secretKey,
     workerSharedSecret,
+    siteUrl,
   };
 }
 
@@ -50,6 +55,7 @@ export function readPublicSupabaseConfig(env = process.env) {
   const parsed = publicSupabaseEnvSchema.parse(env);
   const url = normalize(parsed.NEXT_PUBLIC_SUPABASE_URL);
   const publishableKey = normalize(parsed.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+  const siteUrl = normalize(parsed.NEXT_PUBLIC_SITE_URL);
   if (Boolean(url) !== Boolean(publishableKey)) {
     throw new Error("Supabase browser configuration requires both NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.");
   }
@@ -57,6 +63,7 @@ export function readPublicSupabaseConfig(env = process.env) {
     enabled: Boolean(url && publishableKey),
     url,
     publishableKey,
+    siteUrl,
   };
 }
 

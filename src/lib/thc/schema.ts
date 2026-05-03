@@ -128,7 +128,7 @@ export const reportSchema = z.object({
 });
 
 export const reviewRequestSchema = z.object({
-  repositoryUrl: z.string().min(1),
+  repositoryUrl: z.string().min(1).max(300),
 });
 
 export type ReviewLabel = z.infer<typeof reviewLabelSchema>;

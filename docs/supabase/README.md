@@ -18,9 +18,12 @@ Copy `.env.example` to `.env.local` and fill:
 ```txt
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+NEXT_PUBLIC_SITE_URL=
 SUPABASE_SECRET_KEY=
+THC_SITE_URL=
 THC_STORAGE_DRIVER=supabase
 THC_REVIEW_RATE_LIMIT_PER_HOUR=4
+THC_PREVIEW_RATE_LIMIT_PER_HOUR=30
 GITHUB_TOKEN=
 THC_GITHUB_FETCH_TIMEOUT_MS=8000
 THC_MINIMAX_TIMEOUT_MS=20000
@@ -67,7 +70,9 @@ GitHub login proves account control. It does not prove ownership of every submit
 
 ## Public Review Submissions
 
-When Supabase is configured, `/api/reviews` requires a signed-in Supabase/GitHub session and applies a per-user hourly review limit. The browser sends the current Supabase access token to the route, and the route verifies it server-side before running the public review. The server records each accepted attempt in `review_submissions`, which makes the limit durable across cold starts and multiple server instances.
+When Supabase is configured, `/api/repositories/preview` and `/api/reviews` require a signed-in Supabase/GitHub session. The browser sends the current Supabase access token to the route, and the route verifies it server-side before doing GitHub or review work. The server records each accepted review attempt through `register_review_submission`, which uses an advisory lock and makes the hourly review limit durable across cold starts, multiple server instances, and parallel requests.
+
+Browser session policy is intentionally simple: Supabase persists the user session with PKCE and auto-refresh under a named app storage key. The app does not create a second custom auth cookie or store server secrets in the browser. Server routes remain the authority for protected writes.
 
 Production review generation also requires `MINIMAX_API_KEY`. If MiniMax is not configured, production review creation fails closed instead of publishing mock AI reasoning. `MINIMAX_ALLOW_MOCKS=true` is only for explicit local/demo use. External GitHub and MiniMax calls are timeout-bounded; set `GITHUB_TOKEN` in production to raise GitHub API rate limits.
 

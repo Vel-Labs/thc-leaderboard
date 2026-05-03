@@ -45,8 +45,11 @@ THC_REVIEW_RATE_LIMIT_PER_HOUR=4
 Recommended for public launch:
 
 ```txt
+NEXT_PUBLIC_SITE_URL=https://thcmethod.com
+THC_SITE_URL=https://thcmethod.com
 GITHUB_TOKEN=
 THC_GITHUB_FETCH_TIMEOUT_MS=8000
+THC_PREVIEW_RATE_LIMIT_PER_HOUR=30
 ```
 
 See `docs/supabase/README.md` and `docs/supabase/schema.sql`.
@@ -66,7 +69,9 @@ Run `docs/supabase/schema.sql` in Supabase SQL Editor after creating a project. 
 
 GitHub OAuth is supported by Supabase Auth and should be used for identity, feedback, app stars, and future owner profiles.
 
-Public review submissions require GitHub sign-in when Supabase is configured. Anonymous local submissions are only a development fallback. Supabase-backed deployments store review attempts in `review_submissions` so the hourly review limit survives cold starts and multiple instances.
+Public preview and review submissions require GitHub sign-in when Supabase is configured. Anonymous local submissions are only a development fallback. Supabase-backed deployments store review attempts in `review_submissions` through a server-only RPC so the hourly review limit survives cold starts, multiple instances, and parallel requests.
+
+Browser auth uses Supabase's persisted PKCE session under a named app storage key. The browser never receives `SUPABASE_SECRET_KEY`; server routes verify bearer tokens before writes.
 
 ## Deploy on Vercel
 

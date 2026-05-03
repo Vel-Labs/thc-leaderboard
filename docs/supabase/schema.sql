@@ -153,6 +153,50 @@ CREATE TABLE IF NOT EXISTS public.review_submissions (
 
 COMMENT ON TABLE public.review_submissions IS 'Server-written submission ledger used for durable per-user review limits.';
 
+CREATE OR REPLACE FUNCTION public.register_review_submission(
+  p_user_id UUID,
+  p_repository_url TEXT,
+  p_limit INTEGER,
+  p_window_seconds INTEGER DEFAULT 3600
+)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  submission_count INTEGER;
+BEGIN
+  IF auth.role() <> 'service_role' THEN
+    RAISE EXCEPTION 'service_role_required';
+  END IF;
+
+  IF p_limit < 1 OR p_limit > 100 THEN
+    RAISE EXCEPTION 'invalid_review_submission_limit';
+  END IF;
+
+  PERFORM pg_advisory_xact_lock(hashtextextended(p_user_id::TEXT, 0));
+
+  SELECT COUNT(*)
+  INTO submission_count
+  FROM public.review_submissions
+  WHERE user_id = p_user_id
+    AND created_at >= NOW() - make_interval(secs => p_window_seconds);
+
+  IF submission_count >= p_limit THEN
+    RAISE EXCEPTION 'review_submission_limit_exceeded';
+  END IF;
+
+  INSERT INTO public.review_submissions (user_id, repository_url)
+  VALUES (p_user_id, p_repository_url);
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.register_review_submission(UUID, TEXT, INTEGER, INTEGER) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.register_review_submission(UUID, TEXT, INTEGER, INTEGER) FROM anon;
+REVOKE ALL ON FUNCTION public.register_review_submission(UUID, TEXT, INTEGER, INTEGER) FROM authenticated;
+GRANT EXECUTE ON FUNCTION public.register_review_submission(UUID, TEXT, INTEGER, INTEGER) TO service_role;
+
 CREATE INDEX IF NOT EXISTS idx_repositories_owner_id ON public.repositories(owner_id);
 CREATE INDEX IF NOT EXISTS idx_reports_repository_generated ON public.reports(repository_id, generated_at DESC);
 CREATE INDEX IF NOT EXISTS idx_reports_total_score ON public.reports(total_score DESC);
