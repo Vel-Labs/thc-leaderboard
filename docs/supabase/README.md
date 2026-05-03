@@ -23,6 +23,7 @@ SUPABASE_SECRET_KEY=
 THC_SITE_URL=
 THC_STORAGE_DRIVER=supabase
 THC_REVIEW_RATE_LIMIT_PER_HOUR=4
+THC_REVIEW_RATE_LIMIT_BYPASS_GITHUB_LOGINS=velcrafting
 THC_PREVIEW_RATE_LIMIT_PER_HOUR=30
 GITHUB_TOKEN=
 THC_GITHUB_FETCH_TIMEOUT_MS=8000
@@ -70,7 +71,7 @@ GitHub login proves account control. It does not prove ownership of every submit
 
 ## Public Review Submissions
 
-When Supabase is configured, `/api/repositories/preview` and `/api/reviews` require a signed-in Supabase/GitHub session. The browser sends the current Supabase access token to the route, and the route verifies it server-side before doing GitHub or review work. The server records each accepted review attempt through `register_review_submission`, which uses an advisory lock and makes the hourly review limit durable across cold starts, multiple server instances, and parallel requests.
+When Supabase is configured, `/api/repositories/preview` and `/api/reviews` require a signed-in Supabase/GitHub session. The browser sends the current Supabase access token to the route, and the route verifies it server-side before doing GitHub or review work. The server checks successful saved submissions before review work and inserts into `review_submissions` only after the report is saved, so failed provider/platform attempts do not burn user quota. `velcrafting` is always bypassed for owner testing; add more comma-separated GitHub logins with `THC_REVIEW_RATE_LIMIT_BYPASS_GITHUB_LOGINS`.
 
 Browser session policy is intentionally simple: Supabase persists the user session with PKCE and auto-refresh under a named app storage key. The app does not create a second custom auth cookie or store server secrets in the browser. Server routes remain the authority for protected writes.
 

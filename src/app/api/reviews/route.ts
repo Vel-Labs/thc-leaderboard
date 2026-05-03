@@ -1,4 +1,4 @@
-import { authorizeReviewSubmission, ReviewSubmissionError } from "@/lib/review-submissions";
+import { authorizeReviewSubmission, recordSuccessfulReviewSubmission, ReviewSubmissionError } from "@/lib/review-submissions";
 import { assertJsonRequest, RequestGuardError } from "@/lib/http-guards";
 import { createPublicReview } from "@/lib/thc/review";
 import { reviewRequestSchema } from "@/lib/thc/schema";
@@ -15,8 +15,9 @@ export async function POST(request: Request) {
       return Response.json({ error: "Repository URL is required." }, { status: 400 });
     }
 
-    const requester = await authorizeReviewSubmission(request, parsed.data.repositoryUrl);
+    const requester = await authorizeReviewSubmission(request);
     const report = await createPublicReview(parsed.data.repositoryUrl, { submittedBy: requester.userId });
+    await recordSuccessfulReviewSubmission(requester, parsed.data.repositoryUrl);
     return Response.json({ reportId: report.id, report });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Review failed.";

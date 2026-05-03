@@ -40,6 +40,7 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_SECRET_KEY=
 THC_STORAGE_DRIVER=supabase
 THC_REVIEW_RATE_LIMIT_PER_HOUR=4
+THC_REVIEW_RATE_LIMIT_BYPASS_GITHUB_LOGINS=velcrafting
 ```
 
 Recommended for public launch:
@@ -69,7 +70,7 @@ Run `docs/supabase/schema.sql` in Supabase SQL Editor after creating a project. 
 
 GitHub OAuth is supported by Supabase Auth and should be used for identity, feedback, app stars, and future owner profiles.
 
-Public preview and review submissions require GitHub sign-in when Supabase is configured. Anonymous local submissions are only a development fallback. Supabase-backed deployments store review attempts in `review_submissions` through a server-only RPC so the hourly review limit survives cold starts, multiple instances, and parallel requests.
+Public preview and review submissions require GitHub sign-in when Supabase is configured. Anonymous local submissions are only a development fallback. Supabase-backed deployments check `review_submissions` before review work and record a submission only after a report is saved, so failed provider or platform attempts do not burn quota. `velcrafting` is always bypassed; add more comma-separated GitHub logins with `THC_REVIEW_RATE_LIMIT_BYPASS_GITHUB_LOGINS`.
 
 Browser auth uses Supabase's persisted PKCE session under a named app storage key. The browser never receives `SUPABASE_SECRET_KEY`; server routes verify bearer tokens before writes.
 
