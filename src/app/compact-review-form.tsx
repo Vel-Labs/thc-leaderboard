@@ -30,9 +30,10 @@ export function CompactReviewForm() {
     setPreview(null);
     setStage("preview");
     try {
+      const reviewHeaders = await reviewRequestHeaders();
       const previewResponse = await fetch("/api/repositories/preview", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: reviewHeaders,
         body: JSON.stringify({ repositoryUrl }),
       });
       const previewPayload = (await previewResponse.json()) as { repository?: Preview; error?: string };
@@ -40,7 +41,6 @@ export function CompactReviewForm() {
       setPreview(previewPayload.repository);
       setStage("inspect");
       window.setTimeout(() => setStage((current) => (current === "inspect" ? "review" : current)), 600);
-      const reviewHeaders = await reviewRequestHeaders();
       const response = await fetch("/api/reviews", {
         method: "POST",
         headers: reviewHeaders,
