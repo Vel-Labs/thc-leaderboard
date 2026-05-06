@@ -27,6 +27,10 @@ export type RepositoryPreview = GitHubRepository & {
   openIssues: number;
 };
 
+export type RepositoryRevision = RepositoryPreview & {
+  reviewedCommitSha: string;
+};
+
 const candidateFiles = [
   "README.md",
   "readme.md",
@@ -157,6 +161,21 @@ export async function inspectPublicGitHubRepository(repositoryUrl: string): Prom
     reviewedCommitSha: branchInfo.commit.sha,
     files,
     inspectedFiles: Object.keys(files).sort(),
+  };
+}
+
+export async function resolvePublicGitHubRepositoryRevision(repositoryUrl: string): Promise<RepositoryRevision> {
+  const preview = await previewPublicGitHubRepository(repositoryUrl);
+  const branchResponse = await githubFetch(
+    `https://api.github.com/repos/${preview.owner}/${preview.repo}/branches/${encodeURIComponent(preview.defaultBranch)}`,
+  );
+  if (!branchResponse.ok) {
+    throw new Error(githubErrorMessage(branchResponse, "Could not resolve the reviewed commit SHA."));
+  }
+  const branchInfo = (await branchResponse.json()) as { commit: { sha: string } };
+  return {
+    ...preview,
+    reviewedCommitSha: branchInfo.commit.sha,
   };
 }
 

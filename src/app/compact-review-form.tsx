@@ -75,6 +75,13 @@ export function CompactReviewForm() {
       });
       const createPayload = await readApiResult<{ jobId?: string; job?: ReviewJob }>(createResponse, "Review job creation failed.");
       if (!createResponse.ok || !createPayload.jobId) throw new Error(createPayload.error ?? "Review job creation failed.");
+      if (createPayload.job?.status === "completed" && createPayload.job.report_id) {
+        setStage("save");
+        rememberSubmittedRepository(repositoryUrl);
+        router.push(`/reports/${createPayload.job.report_id}`);
+        router.refresh();
+        return;
+      }
 
       setStage("review");
       void fetch(`/api/reviews/jobs/${createPayload.jobId}/run`, {

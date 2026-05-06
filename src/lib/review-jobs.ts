@@ -1,6 +1,6 @@
 import "server-only";
 
-import { inspectPublicGitHubRepository, parseGitHubRepositoryUrl, type InspectedRepository } from "./github";
+import { inspectPublicGitHubRepository, parseGitHubRepositoryUrl, resolvePublicGitHubRepositoryRevision, type InspectedRepository } from "./github";
 import { getSupabaseServiceClient } from "./supabase/server";
 import { readSupabaseRuntimeConfig } from "./supabase/config";
 import { createPublicReview } from "./thc/review";
@@ -76,7 +76,20 @@ export function normalizeRepositoryUrl(repositoryUrl: string) {
 
 export async function createReviewJob(repositoryUrl: string, requestedBy?: string) {
   const supabase = supabaseOrThrow();
-  const normalized = normalizeRepositoryUrl(repositoryUrl);
+  const revision = await resolvePublicGitHubRepositoryRevision(repositoryUrl);
+  const normalized = normalizeRepositoryUrl(revision.repositoryUrl);
+  const completed = await findCompletedReviewForCommit(normalized, revision.reviewedCommitSha);
+  if (completed?.report_id) {
+    return createCompletedCachedJob({
+      repositoryUrl,
+      normalizedRepositoryUrl: normalized,
+      requestedBy,
+      reviewedCommitSha: revision.reviewedCommitSha,
+      defaultBranch: revision.defaultBranch,
+      reportId: completed.report_id,
+    });
+  }
+
   const active = await findActiveReviewForRepository(normalized);
   if (active) return active;
 
@@ -88,12 +101,47 @@ export async function createReviewJob(repositoryUrl: string, requestedBy?: strin
       requested_by: requestedBy ?? null,
       status: "queued",
       stage: "queued",
+      reviewed_commit_sha: revision.reviewedCommitSha,
+      default_branch: revision.defaultBranch,
       batch_status: initialBatches,
     })
     .select(jobSelect)
     .single();
 
   if (error || !data) throw new Error(error?.message ?? "Could not create review job.");
+  return normalizeJob(data);
+}
+
+async function createCompletedCachedJob(input: {
+  repositoryUrl: string;
+  normalizedRepositoryUrl: string;
+  requestedBy?: string;
+  reviewedCommitSha: string;
+  defaultBranch: string;
+  reportId: string;
+}) {
+  const supabase = supabaseOrThrow();
+  const now = new Date().toISOString();
+  const batch_status = completeAllBatches(initialBatches, "Existing completed report reused for this repository commit.");
+  const { data, error } = await supabase
+    .from("review_jobs")
+    .insert({
+      repository_url: input.repositoryUrl,
+      normalized_repository_url: input.normalizedRepositoryUrl,
+      requested_by: input.requestedBy ?? null,
+      status: "completed",
+      stage: "completed",
+      batch_status,
+      reviewed_commit_sha: input.reviewedCommitSha,
+      default_branch: input.defaultBranch,
+      completed_report_cache_key: `${input.normalizedRepositoryUrl}@${input.reviewedCommitSha}`,
+      report_id: input.reportId,
+      completed_at: now,
+    })
+    .select(jobSelect)
+    .single();
+
+  if (error || !data) throw new Error(error?.message ?? "Could not create cached review job.");
   return normalizeJob(data);
 }
 
@@ -166,6 +214,23 @@ async function findActiveReviewForRepository(normalizedRepositoryUrl: string) {
 
   if (error) throw new Error(error.message);
   return data ? normalizeJob(data) : null;
+}
+
+async function findCompletedReviewForCommit(normalizedRepositoryUrl: string, reviewedCommitSha: string) {
+  const supabase = supabaseOrThrow();
+  const { data, error } = await supabase
+    .from("review_jobs")
+    .select("id, report_id")
+    .eq("normalized_repository_url", normalizedRepositoryUrl)
+    .eq("reviewed_commit_sha", reviewedCommitSha)
+    .eq("status", "completed")
+    .not("report_id", "is", null)
+    .order("completed_at", { ascending: false, nullsFirst: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data as { id: string; report_id: string | null } | null;
 }
 
 async function leaseReviewJob(jobId: string) {
@@ -302,6 +367,16 @@ function updateBatch(batches: ReviewJobBatch[], key: ReviewJobStage, state: Revi
         notes: note ? [...item.notes, note] : item.notes,
       }
     : item);
+}
+
+function completeAllBatches(batches: ReviewJobBatch[], note: string) {
+  const completedAt = new Date().toISOString();
+  return batches.map((item) => ({
+    ...item,
+    state: "completed" as const,
+    completedAt,
+    notes: item.key === "saving" ? [...item.notes, note] : item.notes,
+  }));
 }
 
 function batchKeyFromReviewSlice(slice: ReviewBatch["slice"]): ReviewJobStage {
