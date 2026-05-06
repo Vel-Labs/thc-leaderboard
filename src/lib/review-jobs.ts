@@ -77,6 +77,9 @@ export function normalizeRepositoryUrl(repositoryUrl: string) {
 export async function createReviewJob(repositoryUrl: string, requestedBy?: string) {
   const supabase = supabaseOrThrow();
   const normalized = normalizeRepositoryUrl(repositoryUrl);
+  const active = await findActiveReviewForRepository(normalized);
+  if (active) return active;
+
   const { data, error } = await supabase
     .from("review_jobs")
     .insert({
@@ -111,6 +114,14 @@ export async function runReviewJob(jobId: string, requestedBy?: string) {
     await updateReviewJob(job.id, {}, "inspect", "running");
     const inspected = await inspectPublicGitHubRepository(job.repository_url);
     const normalized = normalizeRepositoryUrl(inspected.repositoryUrl);
+    const existingForCommit = await findReviewForCommit(normalized, inspected.reviewedCommitSha, job.id);
+    if (existingForCommit?.status === "completed" && existingForCommit.report_id) {
+      await markJobCompleted(job.id, existingForCommit.report_id, inspected, "Existing completed report reused for this repository commit.");
+      return getReviewJob(job.id);
+    }
+    if (existingForCommit && existingForCommit.status !== "completed") {
+      await cancelSupersededJob(existingForCommit.id, `Superseded by retry job ${job.id} for the same repository commit.`);
+    }
 
     await updateReviewJob(
       job.id,
@@ -122,12 +133,6 @@ export async function runReviewJob(jobId: string, requestedBy?: string) {
       "inspect",
       "completed",
     );
-
-    const cached = await findCompletedReviewForCommit(normalized, inspected.reviewedCommitSha, job.id);
-    if (cached?.report_id) {
-      await markJobCompleted(job.id, cached.report_id, inspected, "Existing completed report reused for this repository commit.");
-      return getReviewJob(job.id);
-    }
 
     await updateReviewJob(job.id, { stage: "thc_bot_handshake" }, "thc_bot_handshake", "running");
     await updateReviewJob(job.id, {}, "thc_bot_handshake", "completed");
@@ -146,6 +151,21 @@ export async function runReviewJob(jobId: string, requestedBy?: string) {
     await markJobFailed(job.id, message);
     throw error;
   }
+}
+
+async function findActiveReviewForRepository(normalizedRepositoryUrl: string) {
+  const supabase = supabaseOrThrow();
+  const { data, error } = await supabase
+    .from("review_jobs")
+    .select(jobSelect)
+    .eq("normalized_repository_url", normalizedRepositoryUrl)
+    .in("status", ["queued", "leased"])
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data ? normalizeJob(data) : null;
 }
 
 async function leaseReviewJob(jobId: string) {
@@ -176,22 +196,22 @@ async function leaseReviewJob(jobId: string) {
   return data ? normalizeJob(data) : null;
 }
 
-async function findCompletedReviewForCommit(normalizedRepositoryUrl: string, reviewedCommitSha: string, currentJobId: string) {
+async function findReviewForCommit(normalizedRepositoryUrl: string, reviewedCommitSha: string, currentJobId: string) {
   const supabase = supabaseOrThrow();
   const { data, error } = await supabase
     .from("review_jobs")
-    .select("id, report_id")
+    .select("id, status, report_id")
     .eq("normalized_repository_url", normalizedRepositoryUrl)
     .eq("reviewed_commit_sha", reviewedCommitSha)
-    .eq("status", "completed")
-    .not("report_id", "is", null)
+    .in("status", ["queued", "leased", "completed"])
     .neq("id", currentJobId)
-    .order("completed_at", { ascending: false })
+    .order("completed_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
 
   if (error) throw new Error(error.message);
-  return data as { id: string; report_id: string | null } | null;
+  return data as { id: string; status: ReviewJobStatus; report_id: string | null } | null;
 }
 
 async function updateReviewJob(
@@ -246,6 +266,23 @@ async function markJobFailed(jobId: string, message: string) {
     .from("review_jobs")
     .update({
       status: "failed",
+      stage: "failed",
+      last_error: message,
+      batch_status: job ? updateBatch(job.batch_status, job.stage, "failed", message) : initialBatches,
+      lease_owner: null,
+      leased_until: null,
+    })
+    .eq("id", jobId);
+  if (error) throw new Error(error.message);
+}
+
+async function cancelSupersededJob(jobId: string, message: string) {
+  const job = await getReviewJob(jobId);
+  const supabase = supabaseOrThrow();
+  const { error } = await supabase
+    .from("review_jobs")
+    .update({
+      status: "cancelled",
       stage: "failed",
       last_error: message,
       batch_status: job ? updateBatch(job.batch_status, job.stage, "failed", message) : initialBatches,
