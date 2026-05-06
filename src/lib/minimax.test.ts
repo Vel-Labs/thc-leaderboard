@@ -102,4 +102,46 @@ describe("generateMiniMaxReviewDraft", () => {
     ]);
     expect(draft.batches.every((batch) => batch.state === "completed")).toBe(true);
   });
+
+  it("publishes overview synthesis as running before synthesis completes", async () => {
+    process.env.MINIMAX_API_KEY = "test-key";
+    const updates: string[] = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (_url, init) => {
+        const body = JSON.parse(String((init as RequestInit).body));
+        const content = body.messages[1].content as string;
+        const slice = content.match(/Review slice: ([a-z-]+)/)?.[1] ?? "unknown";
+        return new Response(JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify(slice === "overview-synthesis"
+                  ? { summary: "Done.", strengths: [], risks: [], uncertaintyNotes: [] }
+                  : { definition: "Definition.", whatIsWrong: [], aiNote: "Note." }),
+              },
+            },
+          ],
+        }), { status: 200 });
+      }),
+    );
+
+    await generateMiniMaxReviewDraft(
+      {
+        projectName: "ClearIntent",
+        repositoryUrl: "https://github.com/Vel-Labs/ClearIntent",
+        reviewedCommitSha: "303e060ee6a5164a6392a0fff0fe123456789abc",
+        inspectedFiles: ["README.md"],
+        boundedEvidence: "README.md: visible setup evidence",
+      },
+      {
+        onBatch: (batch) => {
+          updates.push(`${batch.slice}:${batch.state}`);
+        },
+      },
+    );
+
+    expect(updates).toContain("overview-synthesis:running");
+    expect(updates).toContain("overview-synthesis:completed");
+  });
 });

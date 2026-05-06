@@ -17,6 +17,8 @@ type MiniMaxReviewOptions = {
 };
 
 const defaultMiniMaxTimeoutMs = 30_000;
+const defaultSynthesisTimeoutMs = 8_000;
+const defaultMiniMaxBudgetMs = 42_000;
 const reviewSlices = [
   "evidence",
   "local-artifacts",
@@ -48,7 +50,7 @@ export async function generateMiniMaxReviewDraft(context: ReviewContext, options
   }
 
   try {
-    return generateBatchedMiniMaxReviewDraft(context, apiKey, options);
+    return await generateBatchedMiniMaxReviewDraft(context, apiKey, options);
   } catch (error) {
     const message = error instanceof Error ? error.message : "MiniMax review failed.";
     if (message.includes("status 400") || message.includes("status 401") || message.includes("status 403")) {
@@ -61,9 +63,11 @@ export async function generateMiniMaxReviewDraft(context: ReviewContext, options
 }
 
 async function generateBatchedMiniMaxReviewDraft(context: ReviewContext, apiKey: string, options: MiniMaxReviewOptions): Promise<MiniMaxReviewDraft> {
+  const startedAt = Date.now();
   const settledSlices = await Promise.all(
     reviewSlices.map(async (slice) => {
       try {
+        await options.onBatch?.(runningBatch(slice));
         const value = await callMiniMaxJson(apiKey, slicePrompt(slice, context));
         const batch = completedBatch(slice);
         await options.onBatch?.(batch);
@@ -88,9 +92,21 @@ async function generateBatchedMiniMaxReviewDraft(context: ReviewContext, apiKey:
 
   const sectionAnalysis = sectionAnalysisFromSlices(context.projectName, settledSlices);
   const sliceBatches = settledSlices.map((slice) => slice.batch);
+  await options.onBatch?.(runningBatch("overview-synthesis"));
+
+  const remainingBudgetMs = miniMaxBudgetMs() - (Date.now() - startedAt);
+  if (remainingBudgetMs < 2_000) {
+    const reason = "MiniMax synthesis skipped because slice review consumed the live request budget.";
+    const fallback = providerUnavailableDraft(context, reason);
+    return {
+      ...fallback,
+      sectionAnalysis,
+      batches: [...sliceBatches, await publishBatch(fallbackBatch("overview-synthesis", reason), options)],
+    };
+  }
 
   try {
-    const synthesis = await callMiniMaxJson(apiKey, synthesisPrompt(context, sectionAnalysis));
+    const synthesis = await callMiniMaxJson(apiKey, synthesisPrompt(context, sectionAnalysis), Math.min(synthesisTimeoutMs(), remainingBudgetMs));
     const normalized = normalizeSynthesis(synthesis, context);
     return {
       ...normalized,
@@ -109,7 +125,7 @@ async function generateBatchedMiniMaxReviewDraft(context: ReviewContext, apiKey:
   }
 }
 
-async function callMiniMaxJson(apiKey: string, prompt: string) {
+async function callMiniMaxJson(apiKey: string, prompt: string, timeoutMs?: number) {
   const response = await fetchMiniMax({
     method: "POST",
     headers: {
@@ -131,7 +147,7 @@ async function callMiniMaxJson(apiKey: string, prompt: string) {
         },
       ],
     }),
-  });
+  }, timeoutMs);
 
   if (!response.ok) {
     throw new Error(`MiniMax review failed with status ${response.status}.`);
@@ -175,11 +191,11 @@ function mockReviewsAllowed() {
   return process.env.MINIMAX_ALLOW_MOCKS === "true" || process.env.NODE_ENV !== "production";
 }
 
-async function fetchMiniMax(init: RequestInit) {
+async function fetchMiniMax(init: RequestInit, timeoutMs = miniMaxTimeoutMs()) {
   try {
     return await fetch("https://api.minimax.io/v1/chat/completions", {
       ...init,
-      signal: AbortSignal.timeout(miniMaxTimeoutMs()),
+      signal: AbortSignal.timeout(timeoutMs),
     });
   } catch (error) {
     if (error instanceof Error && error.name === "TimeoutError") {
@@ -192,6 +208,16 @@ async function fetchMiniMax(init: RequestInit) {
 function miniMaxTimeoutMs() {
   const parsed = Number(process.env.THC_MINIMAX_TIMEOUT_MS ?? defaultMiniMaxTimeoutMs);
   return Number.isFinite(parsed) && parsed >= 1_000 ? Math.floor(parsed) : defaultMiniMaxTimeoutMs;
+}
+
+function synthesisTimeoutMs() {
+  const parsed = Number(process.env.THC_MINIMAX_SYNTHESIS_TIMEOUT_MS ?? defaultSynthesisTimeoutMs);
+  return Number.isFinite(parsed) && parsed >= 1_000 ? Math.floor(parsed) : defaultSynthesisTimeoutMs;
+}
+
+function miniMaxBudgetMs() {
+  const parsed = Number(process.env.THC_MINIMAX_LIVE_BUDGET_MS ?? defaultMiniMaxBudgetMs);
+  return Number.isFinite(parsed) && parsed >= 5_000 ? Math.floor(parsed) : defaultMiniMaxBudgetMs;
 }
 
 function parseMiniMaxJson(content: string) {
@@ -334,6 +360,16 @@ function completedBatch(slice: ReviewBatch["slice"]): ReviewBatch {
     provider: "minimax",
     completedAt: new Date().toISOString(),
     notes: ["Review slice completed."],
+  };
+}
+
+function runningBatch(slice: ReviewBatch["slice"]): ReviewBatch {
+  return {
+    slice,
+    state: "running",
+    provider: "minimax",
+    completedAt: null,
+    notes: ["Review slice started."],
   };
 }
 

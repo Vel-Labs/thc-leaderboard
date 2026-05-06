@@ -43,6 +43,9 @@ export type ReviewJob = {
   default_branch: string | null;
   report_id: string | null;
   last_error: string | null;
+  lease_owner: string | null;
+  leased_until: string | null;
+  attempts: number;
   created_at: string;
   updated_at: string;
   completed_at: string | null;
@@ -148,6 +151,11 @@ export async function runReviewJob(jobId: string, requestedBy?: string) {
 async function leaseReviewJob(jobId: string) {
   const supabase = supabaseOrThrow();
   const leaseUntil = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+  const existing = await getReviewJob(jobId);
+  if (!existing) return null;
+  if (existing.status === "completed" || existing.status === "failed" || existing.status === "cancelled") return null;
+  if (existing.status === "leased" && existing.leased_until && new Date(existing.leased_until).getTime() > Date.now()) return null;
+
   const { data, error } = await supabase
     .from("review_jobs")
     .update({
@@ -155,12 +163,12 @@ async function leaseReviewJob(jobId: string) {
       stage: "preview",
       lease_owner: runnerId,
       leased_until: leaseUntil,
-      attempts: 1,
+      attempts: existing.attempts + 1,
       started_at: new Date().toISOString(),
       last_error: null,
     })
     .eq("id", jobId)
-    .eq("status", "queued")
+    .in("status", ["queued", "leased"])
     .select(jobSelect)
     .maybeSingle();
 
@@ -278,7 +286,7 @@ function batch(key: ReviewJobStage, label: string): ReviewJobBatch {
   };
 }
 
-const jobSelect = "id, repository_url, normalized_repository_url, requested_by, status, stage, batch_status, reviewed_commit_sha, default_branch, report_id, last_error, created_at, updated_at, completed_at";
+const jobSelect = "id, repository_url, normalized_repository_url, requested_by, status, stage, batch_status, reviewed_commit_sha, default_branch, report_id, last_error, lease_owner, leased_until, attempts, created_at, updated_at, completed_at";
 
 function normalizeJob(data: Record<string, unknown>): ReviewJob {
   return {
@@ -293,6 +301,9 @@ function normalizeJob(data: Record<string, unknown>): ReviewJob {
     default_branch: nullableString(data.default_branch),
     report_id: nullableString(data.report_id),
     last_error: nullableString(data.last_error),
+    lease_owner: nullableString(data.lease_owner),
+    leased_until: nullableString(data.leased_until),
+    attempts: numberValue(data.attempts),
     created_at: stringValue(data.created_at),
     updated_at: stringValue(data.updated_at),
     completed_at: nullableString(data.completed_at),
@@ -326,4 +337,8 @@ function stringValue(value: unknown) {
 
 function nullableString(value: unknown) {
   return typeof value === "string" && value.trim() ? value : null;
+}
+
+function numberValue(value: unknown) {
+  return typeof value === "number" && Number.isFinite(value) ? value : 0;
 }
