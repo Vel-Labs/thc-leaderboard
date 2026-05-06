@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { ReviewAnalysis } from "./thc/schema";
+import type { ReviewAnalysis, ReviewBatch } from "./thc/schema";
 
 type ReviewContext = {
   projectName: string;
@@ -10,7 +10,22 @@ type ReviewContext = {
   boundedEvidence: string;
 };
 
+export type ReviewBatchUpdate = ReviewBatch;
+
+type MiniMaxReviewOptions = {
+  onBatch?: (batch: ReviewBatchUpdate) => Promise<void> | void;
+};
+
 const defaultMiniMaxTimeoutMs = 30_000;
+const reviewSlices = [
+  "evidence",
+  "local-artifacts",
+  "caps-applied",
+  "hidden-trust",
+  "next-actions",
+] as const;
+
+type ReviewSlice = (typeof reviewSlices)[number];
 
 export type MiniMaxReviewDraft = {
   summary: string;
@@ -18,72 +33,142 @@ export type MiniMaxReviewDraft = {
   risks: string[];
   uncertaintyNotes: string[];
   sectionAnalysis: ReviewAnalysis;
+  batches: ReviewBatch[];
 };
 
-export async function generateMiniMaxReviewDraft(context: ReviewContext): Promise<MiniMaxReviewDraft> {
+export async function generateMiniMaxReviewDraft(context: ReviewContext, options: MiniMaxReviewOptions = {}): Promise<MiniMaxReviewDraft> {
   const apiKey = process.env.MINIMAX_API_KEY;
   if (!apiKey) {
     if (!mockReviewsAllowed()) {
       throw new Error("MiniMax API key is required for public review generation.");
     }
-    return mockReviewDraft(context);
+    const draft = mockReviewDraft(context);
+    await publishBatches(draft.batches, options);
+    return draft;
   }
 
   try {
-    const response = await fetchMiniMax({
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: process.env.MINIMAX_MODEL ?? "MiniMax-M2.7",
-        response_format: { type: "json_object" },
-        messages: [
-          {
-            role: "system",
-            content:
-              "You assist THC public reviews. Return JSON only. Do not invent files, endorsements, certification, security approval, production readiness, or Vel Labs review.",
-          },
-          {
-            role: "user",
-            content: [
-              "Review this public repository evidence under THC: Truth, Hardening, Clarity.",
-              "Local THC artifacts, if present, are input only and not public truth.",
-              "Return keys: summary, strengths, risks, uncertaintyNotes, sectionAnalysis.",
-              "sectionAnalysis must include evidence, capsApplied, hiddenTrust, localArtifacts, nextActions.",
-              "Each sectionAnalysis entry must include definition, whatIsWrong, aiNote.",
-              "Do not change scoring or level meanings; explain only from public evidence.",
-              JSON.stringify(context),
-            ].join("\n\n"),
-          },
-        ],
-      }),
-    });
-
-    if (!response.ok) {
-      if (response.status === 401 || response.status === 403 || response.status === 400) {
-        throw new Error(`MiniMax review failed with status ${response.status}.`);
-      }
-      return providerUnavailableDraft(context, `MiniMax returned status ${response.status}.`);
-    }
-
-    const payload = (await response.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
-    const content = payload.choices?.[0]?.message?.content;
-    if (!content) {
-      return providerUnavailableDraft(context, "MiniMax returned no review content.");
-    }
-
-    return normalizeDraft(parseMiniMaxJson(content));
+    return generateBatchedMiniMaxReviewDraft(context, apiKey, options);
   } catch (error) {
     const message = error instanceof Error ? error.message : "MiniMax review failed.";
     if (message.includes("status 400") || message.includes("status 401") || message.includes("status 403")) {
       throw error;
     }
-    return providerUnavailableDraft(context, message);
+    const draft = providerUnavailableDraft(context, message);
+    await publishBatches(draft.batches, options);
+    return draft;
   }
+}
+
+async function generateBatchedMiniMaxReviewDraft(context: ReviewContext, apiKey: string, options: MiniMaxReviewOptions): Promise<MiniMaxReviewDraft> {
+  const settledSlices = await Promise.all(
+    reviewSlices.map(async (slice) => {
+      try {
+        const value = await callMiniMaxJson(apiKey, slicePrompt(slice, context));
+        const batch = completedBatch(slice);
+        await options.onBatch?.(batch);
+        return {
+          slice,
+          section: normalizeSection(value, fallbackSectionForSlice(slice, context.projectName)),
+          batch,
+        };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "MiniMax slice failed.";
+        if (message.includes("status 400") || message.includes("status 401") || message.includes("status 403")) throw error;
+        const batch = fallbackBatch(slice, message);
+        await options.onBatch?.(batch);
+        return {
+          slice,
+          section: fallbackSectionForSlice(slice, context.projectName),
+          batch,
+        };
+      }
+    }),
+  );
+
+  const sectionAnalysis = sectionAnalysisFromSlices(context.projectName, settledSlices);
+  const sliceBatches = settledSlices.map((slice) => slice.batch);
+
+  try {
+    const synthesis = await callMiniMaxJson(apiKey, synthesisPrompt(context, sectionAnalysis));
+    const normalized = normalizeSynthesis(synthesis, context);
+    return {
+      ...normalized,
+      sectionAnalysis,
+      batches: [...sliceBatches, await publishBatch(completedBatch("overview-synthesis"), options)],
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "MiniMax synthesis failed.";
+    if (message.includes("status 400") || message.includes("status 401") || message.includes("status 403")) throw error;
+    const fallback = providerUnavailableDraft(context, message);
+    return {
+      ...fallback,
+      sectionAnalysis,
+      batches: [...sliceBatches, await publishBatch(fallbackBatch("overview-synthesis", message), options)],
+    };
+  }
+}
+
+async function callMiniMaxJson(apiKey: string, prompt: string) {
+  const response = await fetchMiniMax({
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: process.env.MINIMAX_MODEL ?? "MiniMax-M2.7",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content:
+            "You assist THC public reviews. Return JSON only. Do not invent files, endorsements, certification, security approval, production readiness, or Vel Labs review.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`MiniMax review failed with status ${response.status}.`);
+  }
+
+  const payload = (await response.json()) as {
+    choices?: { message?: { content?: string } }[];
+  };
+  const content = payload.choices?.[0]?.message?.content;
+  if (!content) throw new Error("MiniMax returned no review content.");
+  return parseMiniMaxJson(content);
+}
+
+function slicePrompt(slice: ReviewSlice, context: ReviewContext) {
+  return [
+    `Review slice: ${slice}`,
+    "Review this public repository evidence under THC: Truth, Hardening, Clarity.",
+    "This is one scoped batch in a larger public audit. Do not summarize unrelated slices.",
+    "Local THC-BOT or local THC artifacts, if present, are input maps only and not public truth.",
+    "Return JSON keys only: definition, whatIsWrong, aiNote.",
+    "definition should define this slice for a public reviewer.",
+    "whatIsWrong should list concrete missing, stale, private, or weak public evidence for this slice.",
+    "aiNote should explain the slice result without changing deterministic score, caps, or levels.",
+    "Do not invent files, private evidence, endorsement, certification, security approval, production readiness, or Vel Labs review.",
+    JSON.stringify(context),
+  ].join("\n\n");
+}
+
+function synthesisPrompt(context: ReviewContext, sectionAnalysis: ReviewAnalysis) {
+  return [
+    "Review slice: overview-synthesis",
+    "Create the final overview from completed THC review slices only.",
+    "Return JSON keys only: summary, strengths, risks, uncertaintyNotes.",
+    "Do not change deterministic score, caps, levels, or public verification facts.",
+    "Do not invent files, endorsement, certification, security approval, production readiness, or Vel Labs review.",
+    JSON.stringify({ context, sectionAnalysis }),
+  ].join("\n\n");
 }
 
 function mockReviewsAllowed() {
@@ -140,6 +225,7 @@ function mockReviewDraft(context: ReviewContext): MiniMaxReviewDraft {
       "MiniMax API key was not configured, so deterministic mock reasoning was used.",
     ],
     sectionAnalysis: fallbackSectionAnalysis(context.projectName),
+    batches: fallbackBatches("MiniMax API key was not configured."),
   };
 }
 
@@ -159,35 +245,22 @@ function providerUnavailableDraft(context: ReviewContext, reason: string): MiniM
       "This report used deterministic fallback section notes so the public review could be saved instead of timing out.",
     ],
     sectionAnalysis: fallbackSectionAnalysis(context.projectName),
+    batches: fallbackBatches(reason),
   };
 }
 
-function normalizeDraft(value: unknown): MiniMaxReviewDraft {
+function normalizeSynthesis(value: unknown, context: ReviewContext) {
   const draft = value as Partial<MiniMaxReviewDraft>;
   return {
-    summary: typeof draft.summary === "string" ? draft.summary : "MiniMax returned limited review summary.",
+    summary: typeof draft.summary === "string" ? draft.summary : `${context.projectName} was reviewed from public repository artifacts at ${context.reviewedCommitSha.slice(0, 12)} using batched THC review slices.`,
     strengths: stringArray(draft.strengths),
     risks: stringArray(draft.risks),
     uncertaintyNotes: stringArray(draft.uncertaintyNotes),
-    sectionAnalysis: normalizeSectionAnalysis(draft.sectionAnalysis),
   };
 }
 
 function stringArray(value: unknown) {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string").slice(0, 6) : [];
-}
-
-function normalizeSectionAnalysis(value: unknown): ReviewAnalysis {
-  const fallback = fallbackSectionAnalysis("this repository");
-  if (!value || typeof value !== "object") return fallback;
-  const draft = value as Partial<Record<keyof ReviewAnalysis, unknown>>;
-  return {
-    evidence: normalizeSection(draft.evidence, fallback.evidence),
-    capsApplied: normalizeSection(draft.capsApplied, fallback.capsApplied),
-    hiddenTrust: normalizeSection(draft.hiddenTrust, fallback.hiddenTrust),
-    localArtifacts: normalizeSection(draft.localArtifacts, fallback.localArtifacts),
-    nextActions: normalizeSection(draft.nextActions, fallback.nextActions),
-  };
 }
 
 function normalizeSection(value: unknown, fallback: ReviewAnalysis[keyof ReviewAnalysis]) {
@@ -228,4 +301,64 @@ function fallbackSectionAnalysis(projectName: string): ReviewAnalysis {
       aiNote: "Prioritize changes that make the repo independently inspectable from a fresh clone.",
     },
   };
+}
+
+function sectionAnalysisFromSlices(
+  projectName: string,
+  slices: Array<{ slice: ReviewSlice; section: ReviewAnalysis[keyof ReviewAnalysis] }>,
+): ReviewAnalysis {
+  const fallback = fallbackSectionAnalysis(projectName);
+  const bySlice = new Map(slices.map((slice) => [slice.slice, slice.section]));
+  return {
+    evidence: bySlice.get("evidence") ?? fallback.evidence,
+    localArtifacts: bySlice.get("local-artifacts") ?? fallback.localArtifacts,
+    capsApplied: bySlice.get("caps-applied") ?? fallback.capsApplied,
+    hiddenTrust: bySlice.get("hidden-trust") ?? fallback.hiddenTrust,
+    nextActions: bySlice.get("next-actions") ?? fallback.nextActions,
+  };
+}
+
+function fallbackSectionForSlice(slice: ReviewSlice, projectName: string) {
+  const fallback = fallbackSectionAnalysis(projectName);
+  if (slice === "local-artifacts") return fallback.localArtifacts;
+  if (slice === "caps-applied") return fallback.capsApplied;
+  if (slice === "hidden-trust") return fallback.hiddenTrust;
+  if (slice === "next-actions") return fallback.nextActions;
+  return fallback.evidence;
+}
+
+function completedBatch(slice: ReviewBatch["slice"]): ReviewBatch {
+  return {
+    slice,
+    state: "completed",
+    provider: "minimax",
+    completedAt: new Date().toISOString(),
+    notes: ["Review slice completed."],
+  };
+}
+
+function fallbackBatch(slice: ReviewBatch["slice"], reason: string): ReviewBatch {
+  return {
+    slice,
+    state: "fallback",
+    provider: "deterministic-fallback",
+    completedAt: new Date().toISOString(),
+    notes: [`Review slice used fallback notes: ${reason}`],
+  };
+}
+
+function fallbackBatches(reason: string): ReviewBatch[] {
+  return [
+    ...reviewSlices.map((slice) => fallbackBatch(slice, reason)),
+    fallbackBatch("overview-synthesis", reason),
+  ];
+}
+
+async function publishBatch(batch: ReviewBatch, options: MiniMaxReviewOptions) {
+  await options.onBatch?.(batch);
+  return batch;
+}
+
+async function publishBatches(batches: ReviewBatch[], options: MiniMaxReviewOptions) {
+  for (const batch of batches) await options.onBatch?.(batch);
 }

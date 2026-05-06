@@ -50,6 +50,22 @@ const candidateFiles = [
   "docs/thc/README.md",
   "docs/thc/LOCAL_CHECK.md",
   "docs/thc/LOCAL_CHECK.provenance.json",
+  "docs/thc/THC-BOT.md",
+  "docs/thc/THC-BOT.history.json",
+  "docs/thc/THC-BOT.html",
+];
+
+const thcBotRunFiles = [
+  "THC-BOT.md",
+  "THC-BOT.contract.json",
+  "THC-BOT.provenance.json",
+  "slices/overview.json",
+  "slices/evidence.json",
+  "slices/local-artifacts.json",
+  "slices/caps-applied.json",
+  "slices/hidden-trust.json",
+  "slices/next-actions.json",
+  "slices/uncertainty.json",
 ];
 
 const defaultGitHubFetchTimeoutMs = 8_000;
@@ -122,6 +138,12 @@ export async function inspectPublicGitHubRepository(repositoryUrl: string): Prom
       if (content !== undefined) files[path] = content;
     }),
   );
+  await Promise.all(
+    latestThcBotRunCandidateFiles(files["docs/thc/THC-BOT.history.json"]).map(async (path) => {
+      const content = await fetchGitHubTextFile(parsed, path, branchInfo.commit.sha);
+      if (content !== undefined) files[path] = content;
+    }),
+  );
 
   return {
     ...parsed,
@@ -136,6 +158,24 @@ export async function inspectPublicGitHubRepository(repositoryUrl: string): Prom
     files,
     inspectedFiles: Object.keys(files).sort(),
   };
+}
+
+export function latestThcBotRunCandidateFiles(historyText: string | undefined) {
+  if (!historyText) return [];
+  let history: { artifactKind?: unknown; runs?: unknown };
+  try {
+    history = JSON.parse(historyText);
+  } catch {
+    return [];
+  }
+  if (history.artifactKind !== "THC-BOT History" || !Array.isArray(history.runs)) return [];
+  const latest = history.runs
+    .filter((run): run is Record<string, unknown> => Boolean(run) && typeof run === "object" && !Array.isArray(run))
+    .sort((a, b) => stringValue(b.generatedAt)?.localeCompare(stringValue(a.generatedAt) ?? "") ?? 0)[0];
+  const runPath = normalizeThcBotRunPath(stringValue(latest?.path) ?? (stringValue(latest?.runId) ? `runs/${stringValue(latest?.runId)}/` : null));
+  if (!runPath) return [];
+  const root = `docs/thc/${runPath}`.replace(/\/$/, "");
+  return thcBotRunFiles.map((path) => `${root}/${path}`);
 }
 
 export async function previewPublicGitHubRepository(repositoryUrl: string): Promise<RepositoryPreview> {
@@ -223,4 +263,14 @@ function githubErrorMessage(response: Response, fallback: string) {
     return `GitHub rate limit reached or request was blocked.${suffix}`;
   }
   return `${fallback} GitHub returned status ${response.status}.`;
+}
+
+function normalizeThcBotRunPath(value: string | null) {
+  if (!value) return null;
+  const trimmed = value.replace(/^\/+/, "").replace(/\.\./g, "").replace(/^docs\/thc\//, "");
+  return trimmed.endsWith("/") ? trimmed : `${trimmed}/`;
+}
+
+function stringValue(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
 }

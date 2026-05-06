@@ -203,11 +203,14 @@ export function NextActions({ report, mode }: { report: THCReport; mode: "clarit
 }
 
 export function LocalStatus({ report, mode }: { report: THCReport; mode: "clarity" | "dank" }) {
+  const bot = report.localArtifactStatus.thcBot;
   return (
     <section id="local-artifacts" className={mode === "dank" ? "border border-lime-300/35 bg-black/75 p-2.5 text-lime-100" : "rotate-[-1deg] border border-stone-300 bg-emerald-50 p-2.5 shadow-[6px_8px_16px_rgba(68,64,60,0.1)]"}>
-      <h2 className={mode === "dank" ? "mb-2 text-base font-black uppercase text-lime-300" : "mb-2 font-serif text-lg font-semibold"}>{mode === "dank" ? "Claimed Lore" : "Local Artifact Status"}</h2>
+      <h2 className={mode === "dank" ? "mb-2 text-base font-black uppercase text-lime-300" : "mb-2 font-serif text-lg font-semibold"}>{bot.detected ? "Local THC-BOT Artifacts Detected" : mode === "dank" ? "Claimed Lore" : "Local Artifact Status"}</h2>
       <ul className="space-y-1 text-xs 2xl:text-sm">
         <li>State: {report.localArtifactStatus.state}</li>
+        {bot.detected ? <li>Used as review map: {bot.publicVerificationState}</li> : null}
+        {bot.detected ? <li>Local/Public: {bot.localScore ?? "unknown"} / {bot.publicScore ?? "not publicly verified"}</li> : null}
         <li>Files: {report.localArtifactStatus.filesPresent.length || "none"}</li>
         {report.localArtifactStatus.findings.slice(0, 1).map((finding) => <li key={finding} className="truncate">{finding}</li>)}
       </ul>

@@ -1,13 +1,34 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
 import { rememberSubmittedRepository } from "@/lib/ui/browser-submissions";
 import { readApiResult } from "./api-response";
 import { useDisplayMode } from "./mode-shell";
 import { reviewRequestHeaders } from "./review-session";
 
 type ReviewState = "idle" | "validating" | "fetching" | "reviewing" | "saving" | "error";
+
+type ReviewJob = {
+  id: string;
+  status: "queued" | "leased" | "completed" | "failed" | "cancelled";
+  report_id: string | null;
+  last_error: string | null;
+  batch_status?: Array<{
+    key: string;
+    label: string;
+    state: "queued" | "running" | "completed" | "fallback" | "failed";
+  }>;
+};
+
+const reviewBatchSteps = [
+  "Evidence",
+  "Local Artifacts",
+  "Caps Applied",
+  "Hidden Trust",
+  "Next Actions",
+  "Overview",
+];
 
 const labels: Record<ReviewState, string> = {
   idle: "Ready",
@@ -24,30 +45,42 @@ export function ReviewForm() {
   const [repositoryUrl, setRepositoryUrl] = useState("");
   const [state, setState] = useState<ReviewState>("idle");
   const [error, setError] = useState("");
+  const [batchCursor, setBatchCursor] = useState(0);
+  const [jobBatches, setJobBatches] = useState<ReviewJob["batch_status"]>([]);
 
-  async function submitReview(event: React.FormEvent<HTMLFormElement>) {
+  async function submitReview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+    setBatchCursor(0);
+    setJobBatches([]);
     setState("validating");
 
     try {
       setState("fetching");
-      setTimeout(() => setState((current) => (current === "fetching" ? "reviewing" : current)), 700);
       const reviewHeaders = await reviewRequestHeaders();
-      const response = await fetch("/api/reviews", {
+      const createResponse = await fetch("/api/reviews/jobs", {
         method: "POST",
         headers: reviewHeaders,
         body: JSON.stringify({ repositoryUrl }),
       });
+      const createPayload = await readApiResult<{ jobId?: string; job?: ReviewJob }>(createResponse, "Review job creation failed.");
+      if (!createResponse.ok || !createPayload.jobId) throw new Error(createPayload.error ?? "Review job creation failed.");
 
-      const payload = await readApiResult<{ reportId?: string }>(response, "Review failed.");
-      if (!response.ok || !payload.reportId) {
-        throw new Error(payload.error ?? "Review failed.");
-      }
+      setState("reviewing");
+      void fetch(`/api/reviews/jobs/${createPayload.jobId}/run`, {
+        method: "POST",
+        headers: reviewHeaders,
+      }).catch((caught) => {
+        setError(caught instanceof Error ? caught.message : "Review job failed.");
+      });
+
+      const completed = await pollReviewJob(createPayload.jobId, setJobBatches, setBatchCursor);
+      if (!completed.report_id) throw new Error(completed.last_error ?? "Review completed without a report.");
 
       setState("saving");
+      setBatchCursor(reviewBatchSteps.length);
       rememberSubmittedRepository(repositoryUrl);
-      router.push(`/reports/${payload.reportId}`);
+      router.push(`/reports/${completed.report_id}`);
       router.refresh();
     } catch (caught) {
       setState("error");
@@ -109,6 +142,16 @@ export function ReviewForm() {
             style={{ width: state === "idle" ? "8%" : state === "error" ? "100%" : busy ? "70%" : "100%" }}
           />
         </div>
+        {state === "reviewing" ? (
+          <div className={mode === "dank" ? "grid gap-1 border border-pink-500/25 bg-black/60 p-2 text-[11px] uppercase text-lime-100 sm:grid-cols-6" : "grid gap-1 rounded-md border border-zinc-200 bg-white/70 p-2 text-[11px] text-zinc-700 sm:grid-cols-6"}>
+            {visibleBatchSteps(jobBatches).map((step, index) => (
+              <div key={step.label} className="flex min-w-0 items-center gap-2">
+                <span className={step.done || batchCursor > index ? "text-emerald-700" : step.active || batchCursor === index ? "text-amber-600" : "text-zinc-400"}>{step.done || batchCursor > index ? "✓" : step.active || batchCursor === index ? "…" : "○"}</span>
+                <span className="truncate">{step.label}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
         {error ? <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p> : null}
         <p className={mode === "dank" ? "text-xs leading-5 text-lime-50/55" : "text-xs leading-5 text-zinc-500"}>
           v1 fetches public GitHub files and sends bounded evidence to configured AI review providers for section notes. It does not run installs, scripts, tests, or project code.
@@ -116,4 +159,37 @@ export function ReviewForm() {
       </div>
     </form>
   );
+}
+
+async function pollReviewJob(
+  jobId: string,
+  setBatches: (batches: ReviewJob["batch_status"]) => void,
+  setCursor: Dispatch<SetStateAction<number>>,
+) {
+  const deadline = Date.now() + 90_000;
+  while (Date.now() < deadline) {
+    const response = await fetch(`/api/reviews/jobs/${jobId}`, { cache: "no-store" });
+    const payload = await readApiResult<{ job?: ReviewJob }>(response, "Review job lookup failed.");
+    if (!response.ok || !payload.job) throw new Error(payload.error ?? "Review job lookup failed.");
+    setBatches(payload.job.batch_status ?? []);
+    setCursor(Math.max(0, visibleBatchSteps(payload.job.batch_status).filter((step) => step.done).length));
+    if (payload.job.status === "completed") return payload.job;
+    if (payload.job.status === "failed" || payload.job.status === "cancelled") {
+      throw new Error(payload.job.last_error ?? "Review job failed.");
+    }
+    await new Promise((resolve) => window.setTimeout(resolve, 1800));
+  }
+  throw new Error("Review is still running. Check back on this job again shortly.");
+}
+
+function visibleBatchSteps(batches: ReviewJob["batch_status"] = []) {
+  if (!batches.length) return reviewBatchSteps.map((label) => ({ label, done: false, active: false }));
+  const selected = ["evidence", "local_artifacts", "caps_applied", "hidden_trust", "next_actions", "overview_synthesis"];
+  return batches
+    .filter((batch) => selected.includes(batch.key))
+    .map((batch) => ({
+      label: batch.label,
+      done: batch.state === "completed" || batch.state === "fallback",
+      active: batch.state === "running",
+    }));
 }

@@ -800,6 +800,22 @@ function AIAnalysisDetail({ report, mode }: { report: THCReport; mode: "clarity"
       <article className={mode === "dank" ? "border border-lime-300/35 bg-black/70 p-4 text-lime-100" : "border border-stone-300 bg-white/75 p-4 text-stone-900"}>
         <h2 className={mode === "dank" ? "text-xl font-black uppercase text-lime-300" : "font-serif text-2xl font-semibold"}>{mode === "dank" ? "Provider Read" : "AI Review Summary"}</h2>
         <p className="mt-3 text-sm leading-6">{report.summary}</p>
+        {report.reviewBatches.length ? (
+          <div className="mt-4">
+            <h3 className={mode === "dank" ? "text-xs font-black uppercase text-pink-300" : "text-xs font-semibold uppercase tracking-wide text-stone-600"}>{mode === "dank" ? "Batch audit queue" : "Batched Review Progress"}</h3>
+            <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {report.reviewBatches.map((batch) => (
+                <div key={batch.slice} className={mode === "dank" ? "border border-lime-300/25 bg-black/60 p-2 text-xs" : "border border-stone-200 bg-white/70 p-2 text-xs"}>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="truncate font-semibold">{batchLabel(batch.slice)}</span>
+                    <span className={batch.state === "completed" ? "text-emerald-700" : "text-amber-700"}>{batch.state}</span>
+                  </div>
+                  <p className="mt-1 truncate opacity-70">{batch.provider}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
         {report.uncertaintyNotes.length ? (
           <div className="mt-3">
             <h3 className={mode === "dank" ? "text-xs font-black uppercase text-pink-300" : "text-xs font-semibold uppercase tracking-wide text-stone-600"}>{mode === "dank" ? "Known fuzz" : "Uncertainty Notes"}</h3>
@@ -833,13 +849,72 @@ function AIAnalysisDetail({ report, mode }: { report: THCReport; mode: "clarity"
   );
 }
 
+function batchLabel(slice: string) {
+  const labels: Record<string, string> = {
+    evidence: "Evidence",
+    "local-artifacts": "Local Artifacts",
+    "caps-applied": "Caps Applied",
+    "hidden-trust": "Hidden Trust",
+    "next-actions": "Next Actions",
+    "overview-synthesis": "Overview Synthesis",
+  };
+  return labels[slice] ?? slice;
+}
+
 function LocalDetail({ report, mode }: { report: THCReport; mode: "clarity" | "dank" }) {
+  const bot = report.localArtifactStatus.thcBot;
   return (
     <div className={mode === "dank" ? "grid gap-3 text-lime-100" : "grid gap-3 text-stone-800"}>
       <p><strong>State:</strong> {report.localArtifactStatus.state}</p>
       <p><strong>Files present:</strong> {report.localArtifactStatus.filesPresent.length ? report.localArtifactStatus.filesPresent.join(", ") : "none"}</p>
+      {bot.detected ? (
+        <article className={mode === "dank" ? "border border-lime-300/35 bg-black/65 p-4" : "border border-stone-300 bg-white/75 p-4"}>
+          <h2 className={mode === "dank" ? "text-lg font-black uppercase text-lime-300" : "font-serif text-xl font-semibold"}>Local THC-BOT Artifacts Detected</h2>
+          <p className="mt-2 text-sm leading-6">
+            These artifacts were used as a review map and independently checked against public evidence. They are not certification, endorsement, or leaderboard acceptance.
+          </p>
+          <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+            <div><dt className="font-semibold">Latest run</dt><dd className="break-all font-mono">{bot.latestRunId}</dd></div>
+            <div><dt className="font-semibold">Contract</dt><dd>{bot.contractVersion ?? "unknown"}</dd></div>
+            <div><dt className="font-semibold">Reviewed revision</dt><dd className="break-all font-mono">{bot.reviewedRevision ?? "unknown"}</dd></div>
+            <div><dt className="font-semibold">Local validation</dt><dd>{bot.localValidationState}</dd></div>
+            <div><dt className="font-semibold">Public verification</dt><dd>{bot.publicVerificationState}</dd></div>
+            <div><dt className="font-semibold">Public readiness</dt><dd>{bot.publicReadinessStatus}</dd></div>
+            <div><dt className="font-semibold">Local score</dt><dd>{bot.localScore ?? "unknown"}</dd></div>
+            <div><dt className="font-semibold">Public verified score</dt><dd>{bot.publicScore ?? "not publicly verified"}</dd></div>
+            <div><dt className="font-semibold">Score difference</dt><dd>{bot.scoreDelta ?? "not available"}</dd></div>
+            <div><dt className="font-semibold">Confidence impact</dt><dd>{bot.confidenceImpact}</dd></div>
+          </dl>
+          {bot.capsConfirmed.length || bot.capsDisputedOrMissing.length ? (
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <ArtifactList title="Caps confirmed" items={bot.capsConfirmed} />
+              <ArtifactList title="Caps disputed or missing" items={bot.capsDisputedOrMissing} />
+            </div>
+          ) : null}
+          {bot.evidenceLinksVerified.length || bot.evidenceLinksStaleMissingOrPrivate.length ? (
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <ArtifactList title="Evidence links verified" items={bot.evidenceLinksVerified} />
+              <ArtifactList title="Evidence stale, missing, or private" items={bot.evidenceLinksStaleMissingOrPrivate} />
+            </div>
+          ) : null}
+          {bot.ignoredFiles.length ? <p className="mt-3 text-xs opacity-75">Ignored non-canonical files: {bot.ignoredFiles.join(", ")}</p> : null}
+        </article>
+      ) : (
+        <p><strong>THC-BOT:</strong> not detected; public audit used repository files directly.</p>
+      )}
       {report.localArtifactStatus.findings.map((finding) => <p key={finding}>• {finding}</p>)}
       {report.localArtifactStatus.publicReviewHandoffNotes.map((note) => <p key={note}>• {note}</p>)}
+    </div>
+  );
+}
+
+function ArtifactList({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div>
+      <h3 className="text-xs font-semibold uppercase tracking-wide opacity-70">{title}</h3>
+      <ul className="mt-1 space-y-1 text-sm">
+        {items.length ? items.map((item) => <li key={item}>• {item}</li>) : <li>None recorded.</li>}
+      </ul>
     </div>
   );
 }

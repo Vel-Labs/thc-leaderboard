@@ -1,10 +1,10 @@
 import "server-only";
 
 import { randomUUID } from "node:crypto";
-import { inspectPublicGitHubRepository } from "@/lib/github";
-import { generateMiniMaxReviewDraft } from "@/lib/minimax";
+import { inspectPublicGitHubRepository, type InspectedRepository } from "@/lib/github";
+import { generateMiniMaxReviewDraft, type ReviewBatchUpdate } from "@/lib/minimax";
 import { saveReport } from "@/lib/storage";
-import { assessLocalArtifacts } from "./local-artifacts";
+import { assessLocalArtifacts, withPublicVerificationResult } from "./local-artifacts";
 import { applyLevelCaps, levelFromScore, sumEvidenceScores } from "./scoring";
 import type { EvidenceRow, HiddenTrustFinding, THCReport } from "./schema";
 
@@ -12,11 +12,13 @@ const rubricVersion = "THC Methodology 0.2.0";
 
 type CreatePublicReviewOptions = {
   submittedBy?: string;
+  inspected?: InspectedRepository;
+  onBatch?: (batch: ReviewBatchUpdate) => Promise<void> | void;
 };
 
 export async function createPublicReview(repositoryUrl: string, options: CreatePublicReviewOptions = {}): Promise<THCReport> {
-  const inspected = await inspectPublicGitHubRepository(repositoryUrl);
-  const localArtifactStatus = assessLocalArtifacts({
+  const inspected = options.inspected ?? await inspectPublicGitHubRepository(repositoryUrl);
+  let localArtifactStatus = assessLocalArtifacts({
     reviewedCommitSha: inspected.reviewedCommitSha,
     files: inspected.files,
   });
@@ -26,14 +28,23 @@ export async function createPublicReview(repositoryUrl: string, options: CreateP
   const caps = inferCaps(inspected.files, localArtifactStatus.findings);
   const capped = applyLevelCaps(levelFromScore(totalScore), caps);
   const hiddenTrustFindings = inferHiddenTrustFindings(inspected.files, localArtifactStatus.findings);
-  const boundedEvidence = buildBoundedEvidence(inspected.files);
-  const draft = await generateMiniMaxReviewDraft({
-    projectName: inspected.projectName,
-    repositoryUrl: inspected.repositoryUrl,
-    reviewedCommitSha: inspected.reviewedCommitSha,
-    inspectedFiles: inspected.inspectedFiles,
-    boundedEvidence,
+  localArtifactStatus = withPublicVerificationResult(localArtifactStatus, {
+    publicScore: totalScore,
+    publicCaps: caps,
+    publicHiddenTrustFindings: hiddenTrustFindings.map((finding) => finding.finding),
+    publicEvidenceLinks: evidenceTable.flatMap((row) => row.evidence.split(", ")).filter((evidence) => !evidence.startsWith("No direct")),
   });
+  const boundedEvidence = buildBoundedEvidence(inspected.files);
+  const draft = await generateMiniMaxReviewDraft(
+    {
+      projectName: inspected.projectName,
+      repositoryUrl: inspected.repositoryUrl,
+      reviewedCommitSha: inspected.reviewedCommitSha,
+      inspectedFiles: inspected.inspectedFiles,
+      boundedEvidence,
+    },
+    { onBatch: options.onBatch },
+  );
 
   const report: THCReport = {
     id: randomUUID(),
@@ -67,6 +78,7 @@ export async function createPublicReview(repositoryUrl: string, options: CreateP
     ],
     topStrength: draft.strengths[0] ?? "Public repository state was inspected without executing project code.",
     topHiddenTrustFinding: hiddenTrustFindings[0]?.finding ?? "No critical hidden-trust finding was identified from the inspected files.",
+    reviewBatches: draft.batches,
     reviewAnalysis: draft.sectionAnalysis,
   };
 

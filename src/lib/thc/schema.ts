@@ -53,6 +53,53 @@ export const localArtifactStatusSchema = z.object({
   filesPresent: z.array(z.string()),
   findings: z.array(z.string()),
   publicReviewHandoffNotes: z.array(z.string()),
+  thcBot: z.object({
+    detected: z.boolean(),
+    latestRunId: z.string().nullable(),
+    contractVersion: z.string().nullable(),
+    reviewedRevision: z.string().nullable(),
+    localValidationState: z.enum(["Complete", "Partial Validation", "Invalid", "absent"]),
+    publicVerificationState: z.enum([
+      "full-audit",
+      "verified-map",
+      "hints-only",
+      "private-only",
+      "not-publicly-verified",
+    ]),
+    localRecommendedLevel: z.string().nullable(),
+    localScore: z.number().int().min(0).max(100).nullable(),
+    publicScore: z.number().int().min(0).max(100).nullable(),
+    scoreDelta: z.number().int().nullable(),
+    confidenceImpact: z.enum(["none", "reduced", "blocked"]),
+    publicReadinessStatus: z.string(),
+    capsConfirmed: z.array(z.string()),
+    capsDisputedOrMissing: z.array(z.string()),
+    hiddenTrustConfirmed: z.array(z.string()),
+    hiddenTrustAdded: z.array(z.string()),
+    evidenceLinksVerified: z.array(z.string()),
+    evidenceLinksStaleMissingOrPrivate: z.array(z.string()),
+    ignoredFiles: z.array(z.string()),
+  }).default({
+    detected: false,
+    latestRunId: null,
+    contractVersion: null,
+    reviewedRevision: null,
+    localValidationState: "absent",
+    publicVerificationState: "full-audit",
+    localRecommendedLevel: null,
+    localScore: null,
+    publicScore: null,
+    scoreDelta: null,
+    confidenceImpact: "none",
+    publicReadinessStatus: "full public audit required",
+    capsConfirmed: [],
+    capsDisputedOrMissing: [],
+    hiddenTrustConfirmed: [],
+    hiddenTrustAdded: [],
+    evidenceLinksVerified: [],
+    evidenceLinksStaleMissingOrPrivate: [],
+    ignoredFiles: [],
+  }),
 });
 
 export const sectionAnalysisSchema = z.object({
@@ -67,6 +114,21 @@ export const reviewAnalysisSchema = z.object({
   hiddenTrust: sectionAnalysisSchema,
   localArtifacts: sectionAnalysisSchema,
   nextActions: sectionAnalysisSchema,
+});
+
+export const reviewBatchSchema = z.object({
+  slice: z.enum([
+    "evidence",
+    "local-artifacts",
+    "caps-applied",
+    "hidden-trust",
+    "next-actions",
+    "overview-synthesis",
+  ]),
+  state: z.enum(["queued", "running", "completed", "fallback"]),
+  provider: z.string(),
+  completedAt: z.string().nullable(),
+  notes: z.array(z.string()),
 });
 
 export const reportSchema = z.object({
@@ -98,6 +160,7 @@ export const reportSchema = z.object({
   uncertaintyNotes: z.array(z.string()),
   topStrength: z.string(),
   topHiddenTrustFinding: z.string(),
+  reviewBatches: z.array(reviewBatchSchema).default([]),
   reviewAnalysis: reviewAnalysisSchema.default({
     evidence: {
       definition: "Evidence is the public repository material inspected for the THC review.",
@@ -138,4 +201,5 @@ export type EvidenceRow = z.infer<typeof evidenceRowSchema>;
 export type HiddenTrustFinding = z.infer<typeof hiddenTrustFindingSchema>;
 export type LocalArtifactStatus = z.infer<typeof localArtifactStatusSchema>;
 export type ReviewAnalysis = z.infer<typeof reviewAnalysisSchema>;
+export type ReviewBatch = z.infer<typeof reviewBatchSchema>;
 export type THCReport = z.infer<typeof reportSchema>;
