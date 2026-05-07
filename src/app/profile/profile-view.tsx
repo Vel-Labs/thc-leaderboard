@@ -36,12 +36,28 @@ type Profile = {
   avatarUrl?: string;
 };
 
+type FeedbackCategory = "methodology" | "report" | "false_positive" | "false_negative" | "feature_request";
+type FeedbackStatus = "idle" | "sending" | "sent" | "error";
+
+const feedbackCategoryLabels: Record<FeedbackCategory, string> = {
+  feature_request: "Feature request",
+  methodology: "Methodology",
+  report: "Report issue",
+  false_positive: "False positive",
+  false_negative: "False negative",
+};
+
 export function ProfileView({ reports }: { reports: THCReport[] }) {
   const { mode } = useDisplayMode();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loadouts, setLoadouts] = useState<ProfileAccessoryLoadouts>(defaultProfileAccessoryLoadouts);
   const [selectedAccessory, setSelectedAccessory] = useState<DankAccessoryId>("hat");
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [feedbackCategory, setFeedbackCategory] = useState<FeedbackCategory>("feature_request");
+  const [feedbackBody, setFeedbackBody] = useState("");
+  const [feedbackStatus, setFeedbackStatus] = useState<FeedbackStatus>("idle");
+  const [feedbackError, setFeedbackError] = useState("");
   const [submittedRepos, setSubmittedRepos] = useState<string[]>([]);
   const myReports = reports.filter((report) => repositoryWasSubmitted(report.repositoryUrl, submittedRepos));
   const activeMode = mode as AccessoryMode;
@@ -146,6 +162,40 @@ export function ProfileView({ reports }: { reports: THCReport[] }) {
     setSaveStatus("saved");
   }
 
+  async function submitFeedback() {
+    const supabase = getBrowserSupabaseClient();
+    if (!supabase || !profile) return;
+
+    setFeedbackStatus("sending");
+    setFeedbackError("");
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) {
+      setFeedbackStatus("error");
+      setFeedbackError("Sign in with GitHub before sending feedback.");
+      return;
+    }
+
+    const response = await fetch("/api/profile/feedback", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ category: feedbackCategory, body: feedbackBody }),
+    });
+
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as { error?: string } | null;
+      setFeedbackStatus("error");
+      setFeedbackError(data?.error ?? "Could not send feedback.");
+      return;
+    }
+
+    setFeedbackStatus("sent");
+    setFeedbackBody("");
+  }
+
   const profileHeader = (
     <section className={mode === "dank" ? "border-b border-pink-500/45 pb-3" : "border-b border-stone-300 pb-3"}>
       <div className="flex flex-wrap items-center justify-between gap-5">
@@ -159,11 +209,16 @@ export function ProfileView({ reports }: { reports: THCReport[] }) {
             <p className={mode === "dank" ? "mt-2 text-sm uppercase text-pink-300" : "mt-2 text-base text-stone-600"}>{profile ? `@${profile.login}` : "Sign in with GitHub to connect this profile."}</p>
           </div>
         </div>
-        {profile ? (
-          <button type="button" onClick={signOut} className={mode === "dank" ? "border border-pink-500/50 px-3 py-1.5 text-xs font-black uppercase text-pink-200" : "rounded-full border border-stone-300 bg-white px-3 py-1.5 text-xs font-semibold text-stone-700"}>
-            Sign out
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" onClick={() => setFeedbackOpen(true)} disabled={!profile} className={mode === "dank" ? "border border-lime-300/45 px-3 py-1.5 text-xs font-black uppercase text-lime-200 hover:border-lime-200 disabled:cursor-not-allowed disabled:opacity-45" : "rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 hover:border-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"}>
+            Feedback
           </button>
-        ) : null}
+          {profile ? (
+            <button type="button" onClick={signOut} className={mode === "dank" ? "border border-pink-500/50 px-3 py-1.5 text-xs font-black uppercase text-pink-200" : "rounded-full border border-stone-300 bg-white px-3 py-1.5 text-xs font-semibold text-stone-700"}>
+              Sign out
+            </button>
+          ) : null}
+        </div>
       </div>
     </section>
   );
@@ -283,6 +338,30 @@ export function ProfileView({ reports }: { reports: THCReport[] }) {
         </section>
       </div>
       <Disclaimer mode={mode} />
+      {feedbackOpen ? (
+        <FeedbackModal
+          body={feedbackBody}
+          category={feedbackCategory}
+          error={feedbackError}
+          mode={mode}
+          onBodyChange={(value) => {
+            setFeedbackBody(value);
+            if (feedbackStatus !== "sending") setFeedbackStatus("idle");
+          }}
+          onCategoryChange={(value) => {
+            setFeedbackCategory(value);
+            if (feedbackStatus !== "sending") setFeedbackStatus("idle");
+          }}
+          onClose={() => {
+            setFeedbackOpen(false);
+            setFeedbackStatus("idle");
+            setFeedbackError("");
+          }}
+          onSubmit={submitFeedback}
+          signedIn={Boolean(profile)}
+          status={feedbackStatus}
+        />
+      ) : null}
     </main>
   );
 }
@@ -403,6 +482,87 @@ function ProfileRail({ mode, saveStatus }: { mode: "clarity" | "dank"; saveStatu
       <div className="rounded-sm border border-stone-300 bg-white/75 p-4 text-sm text-stone-700">Use this page for GitHub identity, reviewed repos, achievements, and public display settings.</div>
       <div className="rounded-sm border border-amber-200 bg-amber-100/80 p-4 text-sm text-amber-950">Profile settings never change methodology scores.</div>
     </>
+  );
+}
+
+function FeedbackModal({
+  body,
+  category,
+  error,
+  mode,
+  onBodyChange,
+  onCategoryChange,
+  onClose,
+  onSubmit,
+  signedIn,
+  status,
+}: {
+  body: string;
+  category: FeedbackCategory;
+  error: string;
+  mode: "clarity" | "dank";
+  onBodyChange: (value: string) => void;
+  onCategoryChange: (value: FeedbackCategory) => void;
+  onClose: () => void;
+  onSubmit: () => void;
+  signedIn: boolean;
+  status: FeedbackStatus;
+}) {
+  const canSubmit = signedIn && status !== "sending" && body.trim().length >= 10;
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/55 px-4 py-6" role="presentation" onMouseDown={onClose}>
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="profile-feedback-title"
+        className={mode === "dank" ? "w-full max-w-xl border border-lime-300/45 bg-black p-5 font-mono text-lime-100 shadow-[0_0_45px_rgba(190,242,100,0.22)]" : "w-full max-w-xl rounded-sm border border-stone-300 bg-[#fbf7ec] p-5 text-zinc-950 shadow-[0_22px_70px_rgba(28,25,23,0.28)]"}
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className={mode === "dank" ? "text-xs font-black uppercase tracking-[0.22em] text-lime-300" : "text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700"}>Signed-in feedback</p>
+            <h2 id="profile-feedback-title" className={mode === "dank" ? "mt-1 text-2xl font-black uppercase text-pink-300" : "mt-1 font-serif text-2xl font-semibold text-zinc-950"}>Send Feedback</h2>
+          </div>
+          <button type="button" onClick={onClose} className={mode === "dank" ? "border border-pink-500/45 px-2 py-1 text-xs font-black uppercase text-pink-200" : "rounded-sm border border-stone-300 bg-white px-2 py-1 text-xs font-semibold uppercase text-stone-700"}>
+            Close
+          </button>
+        </div>
+
+        <div className="mt-5 grid gap-4">
+          <label className={mode === "dank" ? "grid gap-1.5 text-sm font-black uppercase text-lime-100" : "grid gap-1.5 text-sm font-semibold uppercase text-stone-700"}>
+            Category
+            <select value={category} onChange={(event) => onCategoryChange(event.currentTarget.value as FeedbackCategory)} className={mode === "dank" ? "border border-lime-300/35 bg-black px-3 py-2.5 text-base text-lime-100" : "rounded-sm border border-stone-300 bg-white px-3 py-2.5 text-base text-stone-900"}>
+              {Object.entries(feedbackCategoryLabels).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={mode === "dank" ? "grid gap-1.5 text-sm font-black uppercase text-lime-100" : "grid gap-1.5 text-sm font-semibold uppercase text-stone-700"}>
+            Details
+            <textarea
+              value={body}
+              onChange={(event) => onBodyChange(event.currentTarget.value)}
+              minLength={10}
+              maxLength={4000}
+              rows={7}
+              placeholder="Accessory idea, feature request, report issue, or methodology feedback..."
+              className={mode === "dank" ? "min-h-36 resize-y border border-lime-300/35 bg-black px-3 py-2.5 text-base normal-case text-lime-100 placeholder:text-lime-100/35" : "min-h-36 resize-y rounded-sm border border-stone-300 bg-white px-3 py-2.5 text-base normal-case text-stone-900 placeholder:text-stone-400"}
+            />
+          </label>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className={mode === "dank" ? "text-xs uppercase text-lime-100/55" : "text-sm text-stone-500"}>{signedIn ? "Stored in Supabase as product feedback. It never affects scoring." : "Sign in with GitHub to send feedback."}</p>
+            <button type="button" onClick={onSubmit} disabled={!canSubmit} className={mode === "dank" ? "border border-lime-300 bg-lime-300/15 px-4 py-2 text-xs font-black uppercase text-lime-100 hover:bg-lime-300/25 disabled:cursor-not-allowed disabled:opacity-45" : "rounded-sm bg-emerald-700 px-4 py-2 text-xs font-semibold uppercase text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50"}>
+              {status === "sending" ? "Sending" : "Send feedback"}
+            </button>
+          </div>
+          {status === "sent" ? <p className={mode === "dank" ? "text-sm font-black uppercase text-lime-300" : "text-sm font-semibold text-emerald-700"}>Feedback sent.</p> : null}
+          {status === "error" ? <p className={mode === "dank" ? "text-sm font-black uppercase text-pink-300" : "text-sm font-semibold text-red-700"}>{error || "Could not send feedback."}</p> : null}
+        </div>
+      </section>
+    </div>
   );
 }
 
