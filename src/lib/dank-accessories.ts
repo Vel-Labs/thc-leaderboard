@@ -20,16 +20,16 @@ export const accessoryLabels: Record<DankAccessoryId, string> = {
 };
 
 export const defaultDankAccessories: DankAccessoryState = {
-  hat: { equipped: true, x: 0, y: -37, scale: 1, opacity: 1, flipped: false },
-  glasses: { equipped: true, x: 0, y: -17, scale: 1, opacity: 1, flipped: false },
-  necklace: { equipped: true, x: 4, y: 28, scale: 1, opacity: 1, flipped: false },
-  joint: { equipped: true, x: -23, y: 11, scale: 1, opacity: 1, flipped: false },
+  hat: { equipped: false, x: 0, y: -37, scale: 1, opacity: 1, flipped: false },
+  glasses: { equipped: false, x: 0, y: -17, scale: 1, opacity: 1, flipped: false },
+  necklace: { equipped: false, x: 4, y: 28, scale: 1, opacity: 1, flipped: false },
+  joint: { equipped: false, x: -23, y: 11, scale: 1, opacity: 1, flipped: false },
 };
 
 export const defaultClarityAccessories: DankAccessoryState = {
-  hat: { equipped: true, x: 0, y: -38, scale: 0.95, opacity: 1, flipped: false },
-  glasses: { equipped: true, x: 0, y: -15, scale: 0.88, opacity: 1, flipped: false },
-  necklace: { equipped: true, x: 25, y: 22, scale: 0.72, opacity: 1, flipped: false },
+  hat: { equipped: false, x: 0, y: -38, scale: 0.95, opacity: 1, flipped: false },
+  glasses: { equipped: false, x: 0, y: -15, scale: 0.88, opacity: 1, flipped: false },
+  necklace: { equipped: false, x: 25, y: 22, scale: 0.72, opacity: 1, flipped: false },
   joint: { equipped: false, x: -24, y: 12, scale: 0.85, opacity: 1, flipped: false },
 };
 
@@ -38,13 +38,13 @@ export const defaultProfileAccessoryLoadouts: ProfileAccessoryLoadouts = {
   dank: defaultDankAccessories,
 };
 
-export function normalizeAccessoryState(value: unknown): DankAccessoryState {
+export function normalizeAccessoryState(value: unknown, defaultsById: DankAccessoryState = defaultDankAccessories): DankAccessoryState {
   const source = typeof value === "object" && value !== null ? (value as Partial<Record<DankAccessoryId, Partial<DankAccessorySettings>>>) : {};
   return accessoryOrder.reduce((state, id) => {
-    const defaults = defaultDankAccessories[id];
+    const defaults = defaultsById[id];
     const incoming = source[id] ?? {};
     state[id] = {
-      equipped: typeof incoming.equipped === "boolean" ? incoming.equipped : defaults.equipped,
+      equipped: typeof incoming.equipped === "boolean" ? incoming.equipped : false,
       x: clampNumber(incoming.x, -64, 64, defaults.x),
       y: clampNumber(incoming.y, -72, 72, defaults.y),
       scale: clampNumber(incoming.scale, 0.35, 2, defaults.scale),
@@ -64,8 +64,8 @@ export function normalizeProfileAccessoryLoadouts(value: unknown): ProfileAccess
   const legacyLooksLikeAccessoryState = accessoryOrder.some((id) => Object.prototype.hasOwnProperty.call(source, id));
 
   return {
-    clarity: normalizeAccessoryState(source.clarity ?? defaultClarityAccessories),
-    dank: normalizeAccessoryState(source.dank ?? (legacyLooksLikeAccessoryState ? value : defaultDankAccessories)),
+    clarity: normalizeAccessoryState(source.clarity ?? defaultClarityAccessories, defaultClarityAccessories),
+    dank: normalizeAccessoryState(source.dank ?? (legacyLooksLikeAccessoryState ? value : defaultDankAccessories), defaultDankAccessories),
   };
 }
 

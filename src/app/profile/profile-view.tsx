@@ -148,8 +148,8 @@ export function ProfileView({ reports }: { reports: THCReport[] }) {
           <h2 className={mode === "dank" ? "mt-1 text-3xl font-black uppercase text-pink-300" : "mt-1 font-serif text-3xl font-semibold text-zinc-950"}>Avatar Cosmetics</h2>
           <p className={mode === "dank" ? "mt-2 max-w-3xl text-base leading-7 text-lime-100/70" : "mt-2 max-w-3xl text-base leading-7 text-stone-600"}>
             {mode === "dank"
-              ? "Hat, glasses, necklace, and joint are unlocked for dank mode. Future accessories can unlock from streaks and achievements."
-              : "Formal accessories are independent from dank mode. Tune the cap, glasses, cube, and pointer without changing the dank loadout."}
+              ? "Accessories stay hidden until you add and save them. Future items can unlock from streaks and achievements."
+              : "Formal accessories stay hidden until you add and save them. Tune the cap, glasses, cube, and pointer without changing the dank loadout."}
           </p>
         </div>
         <div className="grid min-w-[300px] gap-2">
