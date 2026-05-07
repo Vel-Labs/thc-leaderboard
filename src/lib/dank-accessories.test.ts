@@ -21,4 +21,17 @@ describe("profile accessory loadouts", () => {
     expect(loadouts.dank.glasses.equipped).toBe(true);
     expect(loadouts.dank.hat.equipped).toBe(false);
   });
+
+  test("accepts JSON encoded saved loadouts", () => {
+    const loadouts = normalizeProfileAccessoryLoadouts(
+      JSON.stringify({
+        dank: {
+          hat: { equipped: true },
+        },
+      }),
+    );
+
+    expect(loadouts.dank.hat.equipped).toBe(true);
+    expect(loadouts.clarity.hat.equipped).toBe(false);
+  });
 });

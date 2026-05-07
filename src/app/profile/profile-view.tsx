@@ -13,6 +13,8 @@ import {
   accessoryOrder,
   defaultAccessoriesForMode,
   defaultProfileAccessoryLoadouts,
+  fetchPublicAccessoryLoadouts,
+  normalizeProfileAccessoryLoadouts,
   readAccessoryLoadouts,
   writeAccessoryLoadouts,
   type AccessoryMode,
@@ -47,17 +49,35 @@ export function ProfileView({ reports }: { reports: THCReport[] }) {
   const selectedSettings = accessories[selectedAccessory];
 
   useEffect(() => {
+    let cancelled = false;
     const hydrationId = window.setTimeout(() => {
       setLoadouts(readAccessoryLoadouts());
       setSubmittedRepos(readSubmittedRepositories());
     }, 0);
     const supabase = getBrowserSupabaseClient();
-    if (!supabase) return () => window.clearTimeout(hydrationId);
+    if (!supabase) {
+      return () => {
+        cancelled = true;
+        window.clearTimeout(hydrationId);
+      };
+    }
 
     supabase.auth.getUser().then(({ data }) => {
-      setProfile(data.user ? profileFromUser(data.user) : null);
+      if (cancelled) return;
+      const nextProfile = data.user ? profileFromUser(data.user) : null;
+      setProfile(nextProfile);
+      if (!nextProfile) return;
+
+      fetchPublicAccessoryLoadouts(nextProfile.login).then((savedLoadouts) => {
+        if (cancelled || !savedLoadouts) return;
+        setLoadouts(savedLoadouts);
+        writeAccessoryLoadouts(savedLoadouts);
+      });
     });
-    return () => window.clearTimeout(hydrationId);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(hydrationId);
+    };
   }, []);
 
   async function signOut() {
@@ -114,7 +134,16 @@ export function ProfileView({ reports }: { reports: THCReport[] }) {
       },
       body: JSON.stringify({ loadouts }),
     });
-    setSaveStatus(response.ok ? "saved" : "error");
+    if (!response.ok) {
+      setSaveStatus("error");
+      return;
+    }
+
+    const responseData = (await response.json()) as { loadouts?: unknown };
+    const savedLoadouts = responseData.loadouts ? normalizeProfileAccessoryLoadouts(responseData.loadouts) : loadouts;
+    setLoadouts(savedLoadouts);
+    writeAccessoryLoadouts(savedLoadouts);
+    setSaveStatus("saved");
   }
 
   const profileHeader = (

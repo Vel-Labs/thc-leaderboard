@@ -55,6 +55,17 @@ export function writeAccessoryLoadouts(loadouts: ProfileAccessoryLoadouts) {
   window.dispatchEvent(new CustomEvent("thc-accessory-loadouts-change", { detail: normalized }));
 }
 
+export async function fetchPublicAccessoryLoadouts(owner: string): Promise<ProfileAccessoryLoadouts | null> {
+  try {
+    const response = await fetch(`/api/owners/${encodeURIComponent(owner)}/dank-loadout`);
+    if (!response.ok) return null;
+    const data = (await response.json()) as { loadouts?: unknown };
+    return data.loadouts ? normalizeProfileAccessoryLoadouts(data.loadouts) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function readAccessoriesForMode(mode: AccessoryMode): DankAccessoryState {
   return readAccessoryLoadouts()[mode];
 }

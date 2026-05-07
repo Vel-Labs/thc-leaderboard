@@ -39,6 +39,10 @@ export const defaultProfileAccessoryLoadouts: ProfileAccessoryLoadouts = {
 };
 
 export function normalizeAccessoryState(value: unknown, defaultsById: DankAccessoryState = defaultDankAccessories): DankAccessoryState {
+  if (typeof value === "string") {
+    return normalizeAccessoryState(parseJsonValue(value), defaultsById);
+  }
+
   const source = typeof value === "object" && value !== null ? (value as Partial<Record<DankAccessoryId, Partial<DankAccessorySettings>>>) : {};
   return accessoryOrder.reduce((state, id) => {
     const defaults = defaultsById[id];
@@ -60,6 +64,10 @@ export function defaultAccessoriesForMode(mode: AccessoryMode) {
 }
 
 export function normalizeProfileAccessoryLoadouts(value: unknown): ProfileAccessoryLoadouts {
+  if (typeof value === "string") {
+    return normalizeProfileAccessoryLoadouts(parseJsonValue(value));
+  }
+
   const source = typeof value === "object" && value !== null ? (value as Partial<Record<AccessoryMode, unknown>>) : {};
   const legacyLooksLikeAccessoryState = accessoryOrder.some((id) => Object.prototype.hasOwnProperty.call(source, id));
 
@@ -71,4 +79,12 @@ export function normalizeProfileAccessoryLoadouts(value: unknown): ProfileAccess
 
 function clampNumber(value: unknown, min: number, max: number, fallback: number) {
   return typeof value === "number" && Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : fallback;
+}
+
+function parseJsonValue(value: string) {
+  try {
+    return JSON.parse(value) as unknown;
+  } catch {
+    return {};
+  }
 }

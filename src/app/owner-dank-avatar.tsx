@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { AvatarWithDankAccessories, type ProfileAccessoryLoadouts } from "./avatar-cosmetics";
+import { AvatarWithDankAccessories, fetchPublicAccessoryLoadouts, type ProfileAccessoryLoadouts } from "./avatar-cosmetics";
 
 type OwnerDankAvatarProps = {
   avatarUrl?: string;
@@ -12,19 +12,19 @@ type OwnerDankAvatarProps = {
 };
 
 export function OwnerDankAvatar({ avatarUrl, owner, mode, size = "sm" }: OwnerDankAvatarProps) {
-  const [loadouts, setLoadouts] = useState<ProfileAccessoryLoadouts | null>(null);
+  const [savedProfile, setSavedProfile] = useState<{ owner: string; loadouts: ProfileAccessoryLoadouts | null } | null>(null);
   const pixelSize = size === "md" ? 36 : 28;
+  const loadouts = savedProfile?.owner === owner ? savedProfile.loadouts : null;
 
   useEffect(() => {
-    if (mode !== "dank" || owner === "unknown") return;
+    if (owner === "unknown") return;
     let cancelled = false;
-    fetch(`/api/owners/${encodeURIComponent(owner)}/dank-loadout`)
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: { loadouts?: ProfileAccessoryLoadouts | null } | null) => {
-        if (!cancelled) setLoadouts(data?.loadouts ?? null);
+    fetchPublicAccessoryLoadouts(owner)
+      .then((savedLoadouts) => {
+        if (!cancelled) setSavedProfile({ owner, loadouts: savedLoadouts });
       })
       .catch(() => {
-        if (!cancelled) setLoadouts(null);
+        if (!cancelled) setSavedProfile({ owner, loadouts: null });
       });
     return () => {
       cancelled = true;
