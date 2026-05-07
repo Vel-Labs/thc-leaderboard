@@ -46,6 +46,7 @@ const feedbackCategoryLabels: Record<FeedbackCategory, string> = {
   false_positive: "False positive",
   false_negative: "False negative",
 };
+const feedbackMinCharacters = 10;
 
 export function ProfileView({ reports }: { reports: THCReport[] }) {
   const { mode } = useDisplayMode();
@@ -508,7 +509,8 @@ function FeedbackModal({
   signedIn: boolean;
   status: FeedbackStatus;
 }) {
-  const canSubmit = signedIn && status !== "sending" && body.trim().length >= 10;
+  const characterCount = body.trim().length;
+  const canSubmit = signedIn && status !== "sending" && characterCount >= feedbackMinCharacters;
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/55 px-4 py-6" role="presentation" onMouseDown={onClose}>
@@ -541,14 +543,17 @@ function FeedbackModal({
             </select>
           </label>
           <label className={mode === "dank" ? "grid gap-1.5 text-sm font-black uppercase text-lime-100" : "grid gap-1.5 text-sm font-semibold uppercase text-stone-700"}>
-            Details
+            <span className="flex items-center justify-between gap-3">
+              <span>Details</span>
+              <span className={mode === "dank" ? "font-mono text-xs text-pink-300" : "font-mono text-xs text-emerald-700"}>{characterCount} characters</span>
+            </span>
             <textarea
               value={body}
               onChange={(event) => onBodyChange(event.currentTarget.value)}
-              minLength={10}
+              minLength={feedbackMinCharacters}
               maxLength={4000}
               rows={7}
-              placeholder="Accessory idea, feature request, report issue, or methodology feedback..."
+              placeholder={`Please provide 1-2 sentences (${feedbackMinCharacters} characters minimum).`}
               className={mode === "dank" ? "min-h-36 resize-y border border-lime-300/35 bg-black px-3 py-2.5 text-base normal-case text-lime-100 placeholder:text-lime-100/35" : "min-h-36 resize-y rounded-sm border border-stone-300 bg-white px-3 py-2.5 text-base normal-case text-stone-900 placeholder:text-stone-400"}
             />
           </label>
