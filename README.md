@@ -6,23 +6,28 @@ The app can run locally with file-backed report JSON. Supabase setup docs and SQ
 
 ## Getting Started
 
-First, run the development server:
+Requirements: Node.js 20.9 or newer and npm (the installed Next.js 16.2.4 package requires Node.js >=20.9.0).
+
+From the project root:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Validation
+
+```bash
+npm test
+```
+
+The local tests use fixtures and mocks; they do not qualify live provider, authentication, or deployed behavior.
+
 ## Environment
 
-Copy `.env.example` to `.env.local`.
+Create `.env.local` when configuring the integrations below; this checkout does not include an `.env.example`. Keep credentials local and out of source control.
 
 Required for live MiniMax review:
 
